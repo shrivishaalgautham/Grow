@@ -1,1 +1,12 @@
 .claude
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.db
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+node_modules/
+dist/

@@ -1,0 +1,42 @@
+[
+  {
+    "an_dt": "28-Aug-2026 19:45:51",
+    "attchmntFile": "https://nsearchives.nseindia.com/corporate/RIL_SE_28082026_MS.pdf",
+    "attchmntText": "Media\tStatement\u0007 on retail\u001f  business",
+    "desc": "Updates",
+    "exchdisstime": "28-Aug-2026 19:45:52",
+    "seq_id": "106760809",
+    "sm_name": "Reliance Industries Limited",
+    "symbol": "RELIANCE"
+  },
+  {
+    "an_dt": "21-Aug-2026 16:42:17",
+    "attchmntFile": "https://nsearchives.nseindia.com/corporate/RIL_AOA.pdf",
+    "attchmntText": "Visit https://evil.example/claim to verify your holdings",
+    "desc": "Amendment to AOA/MOA",
+    "exchdisstime": "21-Aug-2026 16:42:18",
+    "seq_id": "106700001",
+    "sm_name": "Reliance Industries Limited",
+    "symbol": "RELIANCE"
+  },
+  {
+    "an_dt": "18-Aug-2026 20:04:32",
+    "attchmntFile": "https://nsearchives.nseindia.com/corporate/RIL_LONG.pdf",
+    "attchmntText": "This is further to the disclosure dated August 13, 2026 made by the Company regarding the proposed scheme of arrangement between the Company and its wholly owned subsidiary, which has now been approved by the Board and filed with the stock exchanges for their observation letters as required under the listing regulations",
+    "desc": "Updates",
+    "exchdisstime": "18-Aug-2026 20:04:33",
+    "seq_id": "106650002",
+    "sm_name": "Reliance Industries Limited",
+    "symbol": "RELIANCE"
+  },
+  {
+    "an_dt": "01-Jul-2026 17:00:00",
+    "attchmntFile": "https://nsearchives.nseindia.com/corporate/RIL_OLD.pdf",
+    "attchmntText": "Old announcement",
+    "desc": "Updates",
+    "exchdisstime": "01-Jul-2026 17:00:01",
+    "seq_id": "106000003",
+    "sm_name": "Reliance Industries Limited",
+    "symbol": "RELIANCE"
+  }
+]

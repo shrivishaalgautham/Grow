@@ -317,7 +317,7 @@ That last line is the money. It proves the engine is **bidirectional** — it re
 
 One narrative paragraph for the away-period — not per-stock summaries:
 
-> You were away 3 days. Two things mattered: TATAMOTORS broke to a 52-week high on 3× volume, and the rest of your auto exposure didn't follow — unusual for a group that's moved together all quarter.
+> You were away 3 days. Two things mattered: TMPV broke to a 52-week high on 3× volume, and the rest of your auto exposure didn't follow — unusual for a group that's moved together all quarter.
 
 The differentiation is not the summary, it is the **grounding discipline**:
 
@@ -341,7 +341,7 @@ NL text → LLM → JSON rule → Pydantic validation → plain-English confirma
 
 ```json
 {
-  "symbols": ["TATAMOTORS.NS"],
+  "symbols": ["TMPV.NS"],
   "all": [
     {"field": "abs_residual_pct", "op": ">=", "value": 1.5},
     {"field": "abs_peer_return_pct", "op": "<=", "value": 0.5}
@@ -491,7 +491,7 @@ GET    /api/health/providers           per-provider status, circuit state, last 
   "briefing": "You were away 3 days. Two things mattered: ...",
   "briefing_source": "llm",
   "items": [{
-    "symbol": "TATAMOTORS.NS",
+    "symbol": "TMPV.NS",
     "price": 982.40, "as_of": "2026-09-04T10:14:32+05:30", "confidence": "fresh",
     "change_since_seen_pct": 6.2,
     "today_change_pct": 2.1,
@@ -527,7 +527,7 @@ Username only. *"No password — this demo identifies you by name so your watchl
 
 > **While you were away — 3 days**
 > 4 of your 12 stocks did something meaningful.
-> *TATAMOTORS broke to a 52-week high on 3× volume, and the rest of your auto exposure didn't follow — unusual for a group that's moved together all quarter.*
+> *TMPV broke to a 52-week high on 3× volume, and the rest of your auto exposure didn't follow — unusual for a group that's moved together all quarter.*
 > `[Mark all reviewed]`
 
 Then changed symbols as cards ranked by score; below a divider, the unchanged remainder in a compact, deliberately quiet table.
@@ -535,7 +535,7 @@ Then changed symbols as cards ranked by score; below a divider, the unchanged re
 **The visual argument that sells the project** — the decomposition on every card:
 
 ```
-TATAMOTORS                                          ₹982.40
+TMPV                                          ₹982.40
 Today  +2.1%   │  Peer group  -0.3%   │  Stock-specific  +2.4%
                                         ▲ biggest in 3 months
 
@@ -740,11 +740,11 @@ The confirmation text is rendered by code from the validated JSON, so what the u
 Input: *"tell me when Tata Motors moves without the auto sector moving"*
 Compiled:
 ```json
-{"symbols": ["TATAMOTORS.NS"],
+{"symbols": ["TMPV.NS"],
  "all": [{"field": "abs_residual_pct", "op": ">=", "value": 1.5},
          {"field": "abs_peer_return_pct", "op": "<=", "value": 0.5}]}
 ```
-Rendered: *"Alert on TATAMOTORS when its stock-specific move is at least 1.5% and its peer group moves no more than 0.5%."*
+Rendered: *"Alert on TMPV when its stock-specific move is at least 1.5% and its peer group moves no more than 0.5%."*
 
 Note the threshold `1.5` is the model's default when the user names no number. The rendered sentence makes that default visible so the user can correct it before saving.
 
