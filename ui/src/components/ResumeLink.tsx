@@ -63,7 +63,7 @@ export function ResumeLink({
           <button
             type="button"
             onClick={copy}
-            className="flex-1 rounded-md bg-ink px-3 py-2 text-xs font-semibold text-canvas transition-opacity hover:opacity-90"
+            className="flex-1 rounded-md bg-brand px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-strong"
           >
             {copied ? "Copied" : "Copy link"}
           </button>

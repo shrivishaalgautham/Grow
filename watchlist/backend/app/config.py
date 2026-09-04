@@ -16,6 +16,8 @@ class Settings(BaseSettings):
         "z-ai/glm-5.2:free",
     ]
     yahoo_rps: float = 2
+    yahoo_impersonate: str = "chrome"
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
     bse_enabled: bool = True
     replay_date: date | None = None
     refresh_hot_seconds: int = 90

@@ -90,10 +90,17 @@ def _fired_signals(
     signals: list[Signal] = []
     if abs(d.residual_pct) >= EXCESS_FLOOR_PCT and d.z_score >= EXCESS_Z:
         signals.append(_excess_move(facts, d))
-    if rvol >= RVOL_CONFIRM:
+    is_anchored = bool(signals) or any(_is_year_level(name) for name in breaks)
+    if is_anchored and rvol >= RVOL_CONFIRM:
         signals.append(_volume_confirmed(facts, rvol, rvol_is_approximate))
-    signals.extend(_level_break(facts, b, name) for name in breaks)
+    signals.extend(
+        _level_break(facts, b, name) for name in breaks if is_anchored or _is_year_level(name)
+    )
     return signals
+
+
+def _is_year_level(name: str) -> bool:
+    return name.startswith("52w_")
 
 
 def _excess_move(facts: SessionFacts, d: Decomposition) -> Signal:

@@ -2,8 +2,6 @@ import logging
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
 
-import httpx
-
 from app.providers.base import (
     BROWSER_USER_AGENT,
     Catalyst,
@@ -11,13 +9,14 @@ from app.providers.base import (
     sanitize_headline,
     validate_symbol,
 )
+from app.providers.transport import browser_client
 from app.providers.upstream import Upstream
 
 log = logging.getLogger(__name__)
 
 FEED_URL = "https://feeds.finance.yahoo.com/rss/2.0/headline"
 
-_client = httpx.Client(headers={"User-Agent": BROWSER_USER_AGENT}, timeout=10.0)
+_client = browser_client({"User-Agent": BROWSER_USER_AGENT})
 _upstream = Upstream("yahoo_rss", _client, rate_per_sec=1.0)
 
 

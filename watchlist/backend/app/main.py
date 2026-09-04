@@ -6,11 +6,12 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import auth, symbols, watchlist
+from app.api import auth, evidence, rules, symbols, watchlist
 from app.api import health as health_api
 from app.cache import cache
 from app.config import settings
 from app.deps import ApiError
+from app.jobs.scheduler import start_scheduler, stop_scheduler
 from app.schemas import ErrorBody, ErrorOut, HealthOut
 
 log = logging.getLogger(__name__)
@@ -30,7 +31,9 @@ def configure_logging() -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     log.info("startup cache_mode=%s cache_ok=%s", cache.mode, cache.ping())
+    start_scheduler(app)
     yield
+    stop_scheduler()
     log.info("shutdown")
 
 
@@ -65,6 +68,13 @@ def create_app() -> FastAPI:
     app.add_exception_handler(ApiError, api_error_handler)
     app.add_exception_handler(Exception, unhandled_error_handler)
     app.add_api_route("/api/health", health, methods=["GET"], response_model=HealthOut)
-    for router in (auth.router, watchlist.router, symbols.router, health_api.router):
+    for router in (
+        auth.router,
+        watchlist.router,
+        symbols.router,
+        rules.router,
+        evidence.router,
+        health_api.router,
+    ):
         app.include_router(router, prefix="/api")
     return app

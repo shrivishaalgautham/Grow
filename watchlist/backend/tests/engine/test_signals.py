@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import pytest
 
 from app.engine.signals import evaluate, since_seen_signal
@@ -79,16 +81,26 @@ def test_excess_move_text_for_the_beta_method_and_raw_z_sentence():
 
 
 def test_volume_confirmed_text_distinguishes_intraday_approximation():
-    end_of_day = evaluate(make_facts(volume=3_100_000.0), make_baseline())
-    early = evaluate(make_facts(volume=3_100_000.0, minutes_since_open=30), make_baseline())
+    anchored = make_facts(price=105.0, volume=3_100_000.0)
+    end_of_day = evaluate(anchored, make_baseline())
+    early = evaluate(replace(anchored, minutes_since_open=30), make_baseline())
 
-    (eod_signal,) = end_of_day.signals
-    (early_signal,) = early.signals
-    assert eod_signal.type == "VOLUME_CONFIRMED"
+    eod_signal = next(s for s in end_of_day.signals if s.type == "VOLUME_CONFIRMED")
+    early_signal = next(s for s in early.signals if s.type == "VOLUME_CONFIRMED")
     assert eod_signal.headline == "3.1× normal volume"
     assert eod_signal.detail == "Versus the 20-day median."
     assert early.rvol_is_approximate is True
     assert early_signal.detail == "Adjusted for time of day."
+
+
+def test_volume_and_prev_day_breaks_need_an_excess_move_or_year_level_anchor():
+    baseline = make_baseline(prev_high=102.0)
+    unanchored = make_facts(price=100.5, day_high=103.0, volume=3_100_000.0)
+
+    assert evaluate(unanchored, baseline).signals == []
+    assert evaluate(unanchored, baseline).breaks == ["prev_high"]
+    anchored = evaluate(replace(unanchored, price=105.0), baseline)
+    assert signal_types(anchored) == ["EXCESS_MOVE", "VOLUME_CONFIRMED", "LEVEL_BREAK"]
 
 
 def test_level_break_emits_one_signal_per_break():

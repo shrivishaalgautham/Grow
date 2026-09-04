@@ -33,10 +33,12 @@ export function Decomposition({
   today,
   peer,
   residual,
+  peerHint = "Its group did this too",
 }: {
   today: number;
   peer: number;
   residual: number;
+  peerHint?: string;
 }) {
   const magnitude = Math.abs(peer) + Math.abs(residual);
   const peerShare = magnitude === 0 ? 0 : (Math.abs(peer) / magnitude) * 100;
@@ -45,7 +47,7 @@ export function Decomposition({
     <div>
       <div className="grid grid-cols-3 gap-4">
         <Column label="Today" value={today} hint="Total price move" />
-        <Column label="Peers" value={peer} hint="Its group did this too" />
+        <Column label="Peers" value={peer} hint={peerHint} />
         <Column
           label="Stock-specific"
           value={residual}

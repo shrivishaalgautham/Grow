@@ -48,7 +48,10 @@ def db(test_engine):
 
 
 @pytest.fixture(autouse=True)
-def isolated_cache():
+def isolated_cache(monkeypatch):
+    monkeypatch.setattr(cache, "_redis", None)
+    monkeypatch.setattr(cache, "mode", "memory")
+    monkeypatch.setattr(settings, "redis_url", "")
     cache._memory.clear()
     yield
     cache._memory.clear()

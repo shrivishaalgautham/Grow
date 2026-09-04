@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app import clock
+from app.ai import briefing as briefing_ai
 from app.api.ratelimit import global_ip_limit
 from app.cache import cache
 from app.db import get_session
@@ -12,7 +13,7 @@ from app.deps import ApiError, current_user, valid_symbol
 from app.engine.digest import build_digest, build_item
 from app.models import Symbol, User, UserSymbolState, WatchlistItem
 from app.quotes import load_quotes
-from app.schemas import DigestOut, Item, ItemAdd, SeenIn, SeenOut
+from app.schemas import BriefingOut, DigestOut, Item, ItemAdd, SeenIn, SeenOut
 
 WATCHLIST_CAP = 50
 REFRESH_REQUEST_TTL = 600
@@ -23,6 +24,12 @@ router = APIRouter(prefix="/watchlist", tags=["watchlist"], dependencies=[Depend
 @router.get("/digest", response_model=DigestOut)
 def digest(user: User = Depends(current_user), session: Session = Depends(get_session)):
     return build_digest(session, user, clock.now())
+
+
+@router.get("/briefing", response_model=BriefingOut)
+def briefing(user: User = Depends(current_user), session: Session = Depends(get_session)):
+    now = clock.now()
+    return briefing_ai.generate(session, user, build_digest(session, user, now), now)
 
 
 @router.post("/items", status_code=201, response_model=Item)

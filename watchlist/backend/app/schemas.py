@@ -372,7 +372,7 @@ class Suppressed(BaseModel):
     total: int
     market_wide: int
     below_floor: int
-    unconfirmed_volume: int
+    within_noise: int
 
 
 class CaughtExtra(BaseModel):

@@ -18,6 +18,7 @@ dependencies = [
     "numpy",
     "scikit-learn",
     "python-dateutil",
+    "curl-cffi>=0.16.3",
 ]
 
 [dependency-groups]

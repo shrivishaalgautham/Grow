@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { BriefingOut, DigestOut } from "@/api/types";
 import { formatAwayDuration, formatDay } from "@/lib/format";
 
@@ -76,18 +77,29 @@ export function DigestHero({
       )}
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
-        <p className="text-[11px] text-faint">
-          Bars through {formatDay(digest.latest_bar_date)}
-          {briefing &&
-            ` · briefing ${briefing.source === "llm" ? "written by a model" : "assembled from a template"}${briefing.was_cached ? ", cached" : ""}`}
-        </p>
+        <div className="text-[11px] text-faint">
+          <p>
+            Bars through {formatDay(digest.latest_bar_date)}
+            {briefing &&
+              ` · briefing ${briefing.source === "llm" ? "written by a model" : "assembled from a template"}${briefing.was_cached ? ", cached" : ""}`}
+          </p>
+          {digest.total_count > 0 && (
+            <Link
+              href="/evidence"
+              className="mt-1 inline-block text-[12px] font-medium text-brand-strong hover:underline"
+            >
+              Why you&rsquo;re seeing {digest.changed_count} and not every 2% move
+              &rarr;
+            </Link>
+          )}
+        </div>
 
         {digest.changed_count > 0 && (
           <button
             type="button"
             onClick={onMarkAll}
             disabled={isMarkAllPending}
-            className="rounded-md bg-ink px-3.5 py-2 text-xs font-semibold text-canvas transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="rounded-md bg-brand px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-strong disabled:opacity-50"
           >
             Mark all reviewed
           </button>

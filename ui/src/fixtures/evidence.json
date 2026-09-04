@@ -17,7 +17,7 @@
     "total": 3877,
     "market_wide": 2140,
     "below_floor": 1094,
-    "unconfirmed_volume": 643
+    "within_noise": 643
   },
   "caught_extra": [
     {

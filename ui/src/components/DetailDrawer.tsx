@@ -122,6 +122,11 @@ export function DetailDrawer({
             today={item.today_change_pct}
             peer={item.peer_change_pct}
             residual={item.residual_pct}
+            peerHint={
+              item.peer.method === "cluster"
+                ? `${item.peer.size} behavioural peers did this too`
+                : "Beta-adjusted Nifty move"
+            }
           />
           <DisputedPrices quote={item.quote} />
         </div>
@@ -147,6 +152,10 @@ export function DetailDrawer({
             <Stat
               label="vs 200 DMA"
               value={formatSignedPercent(item.sma_distance_pct["200"], 1)}
+            />
+            <Stat
+              label="Day range"
+              value={`${formatInr(item.quote.day_low)} – ${formatInr(item.quote.day_high)}`}
             />
             <Stat label="52w high" value={formatInr(item.levels.high_52w)} />
             <Stat label="52w low" value={formatInr(item.levels.low_52w)} />

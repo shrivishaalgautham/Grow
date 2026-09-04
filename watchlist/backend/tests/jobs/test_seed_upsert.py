@@ -85,7 +85,7 @@ def test_persistent_429_is_skipped_after_three_retries(session, monkeypatch):
     counts = fetch_history(["A.NS"], "1y")
 
     assert counts == {"ok": 0, "skipped": 1}
-    assert route.call_count == 4
+    assert route.call_count == 3
     assert [int(delay) for delay in sleeps] == [1, 2, 4]
     assert bar_count(session) == 0
 

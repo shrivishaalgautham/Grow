@@ -7,6 +7,7 @@ import httpx
 from app.clock import IST
 from app.config import settings
 from app.providers.base import BROWSER_USER_AGENT, Bar, LiveQuote, ProviderError, validate_symbol
+from app.providers.transport import browser_client
 from app.providers.upstream import Upstream
 
 log = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ class Yahoo:
     name = "yahoo"
 
     def __init__(self, client: httpx.Client | None = None) -> None:
-        client = client or httpx.Client(headers={"User-Agent": BROWSER_USER_AGENT}, timeout=10.0)
+        client = client or browser_client({"User-Agent": BROWSER_USER_AGENT})
         self._upstream = Upstream(self.name, client, settings.yahoo_rps)
 
     def history(self, symbol: str, range_: str = "1y") -> list[Bar]:
