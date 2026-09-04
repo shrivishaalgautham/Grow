@@ -3,10 +3,11 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import auth, symbols, watchlist
+from app.api import auth, catalysts, evidence, rules, symbols, watchlist
 from app.api import health as health_api
 from app.cache import cache
 from app.config import settings
@@ -43,6 +44,17 @@ async def api_error_handler(request: Request, exc: ApiError) -> JSONResponse:
     return error_response(exc.status, exc.code, exc.message, exc.retry_after_seconds)
 
 
+async def validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    code = "invalid_rule" if request.url.path.startswith("/api/rules") else "invalid_request"
+    return error_response(400, code, _first_violation(exc))
+
+
+def _first_violation(exc: RequestValidationError) -> str:
+    first = exc.errors()[0]
+    location = ".".join(str(part) for part in first["loc"] if part != "body")
+    return f"{location}: {first['msg']}"[:200]
+
+
 async def unhandled_error_handler(request: Request, exc: Exception) -> JSONResponse:
     log.exception("unhandled_error path=%s", request.url.path)
     return error_response(500, "internal_error", "internal error")
@@ -63,8 +75,18 @@ def create_app() -> FastAPI:
         allow_headers=["Authorization", "Content-Type"],
     )
     app.add_exception_handler(ApiError, api_error_handler)
+    app.add_exception_handler(RequestValidationError, validation_error_handler)
     app.add_exception_handler(Exception, unhandled_error_handler)
     app.add_api_route("/api/health", health, methods=["GET"], response_model=HealthOut)
-    for router in (auth.router, watchlist.router, symbols.router, health_api.router):
+    routers = (
+        auth.router,
+        watchlist.router,
+        symbols.router,
+        catalysts.router,
+        rules.router,
+        evidence.router,
+        health_api.router,
+    )
+    for router in routers:
         app.include_router(router, prefix="/api")
     return app

@@ -8,13 +8,16 @@ from app.providers.ratelimit import CircuitBreaker, TokenBucket
 
 log = logging.getLogger(__name__)
 
+MAX_RETRIES = 3
+
 
 class Upstream:
     def __init__(self, provider: str, client: httpx.Client, rate_per_sec: float) -> None:
         self.provider = provider
         self.client = client
         self.bucket = TokenBucket(provider, rate_per_sec)
-        self.breaker = CircuitBreaker(provider)
+        # one request exhausting its retry budget must not open the circuit on its own
+        self.breaker = CircuitBreaker(provider, failure_threshold=MAX_RETRIES + 1)
 
     def get(self, op: str, symbol: str, url: str, params: dict[str, str]) -> httpx.Response:
         if not self.breaker.allow():

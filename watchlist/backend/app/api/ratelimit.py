@@ -1,18 +1,28 @@
 from datetime import datetime, time, timedelta
 
+from fastapi import Depends
+
 from app import clock
 from app.cache import cache
 from app.config import settings
-from app.deps import ApiError, rate_limit
+from app.deps import ApiError, current_user, enforce_window, rate_limit
+from app.models import User
 
 DAY_SECONDS = 86400
+LLM_HOURLY_LIMIT = 5
+LLM_DAILY_LIMIT = 20
 
 global_ip_limit = rate_limit("global", 30, 60, per="ip")
 
-llm_user_limits = (
-    rate_limit("llm_hour", 5, 3600, per="user"),
-    rate_limit("llm_day", 20, DAY_SECONDS, per="user"),
-)
+
+def enforce_llm_budget(user: User) -> None:
+    enforce_window("llm_hour", LLM_HOURLY_LIMIT, 3600, str(user.id))
+    enforce_window("llm_day", LLM_DAILY_LIMIT, DAY_SECONDS, str(user.id))
+    llm_global_daily()
+
+
+def llm_budget(user: User = Depends(current_user)) -> None:
+    enforce_llm_budget(user)
 
 
 def llm_global_daily() -> None:

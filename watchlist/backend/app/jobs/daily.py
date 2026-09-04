@@ -21,6 +21,7 @@ from app.engine.signals import SessionFacts, evaluate
 from app.jobs import store
 from app.models import PeerCluster
 from app.providers.base import INDEX_SYMBOL, Bar, ProviderError
+from app.providers.upstream import MAX_RETRIES
 from app.providers.yahoo import Yahoo
 
 log = logging.getLogger(__name__)
@@ -33,7 +34,6 @@ INDEX_ROW = {
     "isin": "",
     "is_active": False,
 }
-MAX_RETRIES = 3
 BACKOFF_BASE_S = 1.0
 HISTORY_SESSIONS = 300
 CLUSTER_MAX_AGE = timedelta(days=7)

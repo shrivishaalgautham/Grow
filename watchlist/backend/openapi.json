@@ -22,10 +22,1319 @@
           }
         }
       }
+    },
+    "/api/auth/session": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Create Session",
+        "operationId": "create_session_api_auth_session_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Delete Session",
+        "operationId": "delete_session_api_auth_session_delete",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Me",
+        "operationId": "me_api_auth_me_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watchlist/digest": {
+      "get": {
+        "tags": [
+          "watchlist"
+        ],
+        "summary": "Digest",
+        "operationId": "digest_api_watchlist_digest_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DigestOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watchlist/briefing": {
+      "get": {
+        "tags": [
+          "watchlist"
+        ],
+        "summary": "Briefing",
+        "operationId": "briefing_api_watchlist_briefing_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefingOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watchlist/items": {
+      "post": {
+        "tags": [
+          "watchlist"
+        ],
+        "summary": "Add Item",
+        "operationId": "add_item_api_watchlist_items_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemAdd"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Item"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watchlist/items/{symbol}": {
+      "delete": {
+        "tags": [
+          "watchlist"
+        ],
+        "summary": "Remove Item",
+        "operationId": "remove_item_api_watchlist_items__symbol__delete",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watchlist/seen": {
+      "post": {
+        "tags": [
+          "watchlist"
+        ],
+        "summary": "Mark Seen",
+        "operationId": "mark_seen_api_watchlist_seen_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeenIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/symbols/search": {
+      "get": {
+        "tags": [
+          "symbols"
+        ],
+        "summary": "Search",
+        "operationId": "search_api_symbols_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Q"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SymbolSearchOut"
+                  },
+                  "title": "Response Search Api Symbols Search Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/symbols/{symbol}/history": {
+      "get": {
+        "tags": [
+          "symbols"
+        ],
+        "summary": "History",
+        "operationId": "history_api_symbols__symbol__history_get",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 90,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/symbols/{symbol}/peers": {
+      "get": {
+        "tags": [
+          "symbols"
+        ],
+        "summary": "Peers",
+        "operationId": "peers_api_symbols__symbol__peers_get",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeersOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/symbols/{symbol}/catalysts": {
+      "get": {
+        "tags": [
+          "symbols"
+        ],
+        "summary": "Catalysts",
+        "operationId": "catalysts_api_symbols__symbol__catalysts_get",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalystsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rules/compile": {
+      "post": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Compile Text",
+        "operationId": "compile_text_api_rules_compile_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleCompileIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleCompileOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rules": {
+      "post": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Create Rule",
+        "operationId": "create_rule_api_rules_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleCreateIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "List Rules",
+        "operationId": "list_rules_api_rules_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuleListItem"
+                  },
+                  "title": "Response List Rules Api Rules Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rules/{rule_id}": {
+      "delete": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Delete Rule",
+        "operationId": "delete_rule_api_rules__rule_id__delete",
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Rule Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/evidence/noise-reduction": {
+      "get": {
+        "tags": [
+          "evidence"
+        ],
+        "summary": "Noise Reduction",
+        "operationId": "noise_reduction_api_evidence_noise_reduction_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 180,
+              "minimum": 10,
+              "default": 90,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health/providers": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Providers",
+        "operationId": "providers_api_health_providers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProvidersHealthOut"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AlertCount": {
+        "properties": {
+          "alerts": {
+            "type": "integer",
+            "title": "Alerts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alerts"
+        ],
+        "title": "AlertCount"
+      },
+      "AltQuote": {
+        "properties": {
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "yahoo",
+              "bse"
+            ],
+            "title": "Source"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          }
+        },
+        "type": "object",
+        "required": [
+          "price",
+          "source",
+          "as_of"
+        ],
+        "title": "AltQuote"
+      },
+      "BriefingOut": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 600,
+            "title": "Text"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "template"
+            ],
+            "title": "Source"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "was_cached": {
+            "type": "boolean",
+            "title": "Was Cached"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "source",
+          "generated_at",
+          "was_cached"
+        ],
+        "title": "BriefingOut"
+      },
+      "CatalystItem": {
+        "properties": {
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "headline",
+          "source",
+          "url",
+          "published_at"
+        ],
+        "title": "CatalystItem"
+      },
+      "CatalystsOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "none_found",
+              "unavailable",
+              "pending"
+            ],
+            "title": "Status"
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetched At"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CatalystItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "fetched_at",
+          "items"
+        ],
+        "title": "CatalystsOut"
+      },
+      "CaughtExtra": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$",
+            "title": "Symbol"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "today_change_pct": {
+            "type": "number",
+            "title": "Today Change Pct"
+          },
+          "peer_change_pct": {
+            "type": "number",
+            "title": "Peer Change Pct"
+          },
+          "residual_pct": {
+            "type": "number",
+            "title": "Residual Pct"
+          },
+          "z_score": {
+            "type": "number",
+            "title": "Z Score"
+          },
+          "rvol": {
+            "type": "number",
+            "title": "Rvol"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbol",
+          "date",
+          "today_change_pct",
+          "peer_change_pct",
+          "residual_pct",
+          "z_score",
+          "rvol"
+        ],
+        "title": "CaughtExtra"
+      },
+      "DigestOut": {
+        "properties": {
+          "now": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Now"
+          },
+          "market_status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "pre_open"
+            ],
+            "title": "Market Status"
+          },
+          "replay_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replay Date"
+          },
+          "latest_bar_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Latest Bar Date"
+          },
+          "away_duration_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Away Duration Seconds"
+          },
+          "last_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Reviewed At"
+          },
+          "changed_count": {
+            "type": "integer",
+            "title": "Changed Count"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "providers_degraded": {
+            "type": "boolean",
+            "title": "Providers Degraded"
+          }
+        },
+        "type": "object",
+        "required": [
+          "now",
+          "market_status",
+          "replay_date",
+          "latest_bar_date",
+          "away_duration_seconds",
+          "last_reviewed_at",
+          "changed_count",
+          "total_count",
+          "items",
+          "providers_degraded"
+        ],
+        "title": "DigestOut"
+      },
+      "EvidenceOut": {
+        "properties": {
+          "days": {
+            "type": "integer",
+            "title": "Days"
+          },
+          "symbols_count": {
+            "type": "integer",
+            "title": "Symbols Count"
+          },
+          "from_date": {
+            "type": "string",
+            "format": "date",
+            "title": "From Date"
+          },
+          "to_date": {
+            "type": "string",
+            "format": "date",
+            "title": "To Date"
+          },
+          "computed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Computed At"
+          },
+          "naive_pct_2": {
+            "$ref": "#/components/schemas/AlertCount"
+          },
+          "raw_z_2": {
+            "$ref": "#/components/schemas/AlertCount"
+          },
+          "engine": {
+            "$ref": "#/components/schemas/AlertCount"
+          },
+          "suppressed": {
+            "$ref": "#/components/schemas/Suppressed"
+          },
+          "caught_extra": {
+            "items": {
+              "$ref": "#/components/schemas/CaughtExtra"
+            },
+            "type": "array",
+            "title": "Caught Extra"
+          }
+        },
+        "type": "object",
+        "required": [
+          "days",
+          "symbols_count",
+          "from_date",
+          "to_date",
+          "computed_at",
+          "naive_pct_2",
+          "raw_z_2",
+          "engine",
+          "suppressed",
+          "caught_extra"
+        ],
+        "title": "EvidenceOut"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
       "HealthOut": {
         "properties": {
           "ok": {
@@ -39,6 +1348,1166 @@
           "ok"
         ],
         "title": "HealthOut"
+      },
+      "HistoryBar": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "close": {
+            "type": "number",
+            "title": "Close"
+          },
+          "volume": {
+            "type": "integer",
+            "title": "Volume"
+          },
+          "today_change_pct": {
+            "type": "number",
+            "title": "Today Change Pct"
+          },
+          "residual_pct": {
+            "type": "number",
+            "title": "Residual Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "close",
+          "volume",
+          "today_change_pct",
+          "residual_pct"
+        ],
+        "title": "HistoryBar"
+      },
+      "HistoryOut": {
+        "properties": {
+          "bars": {
+            "items": {
+              "$ref": "#/components/schemas/HistoryBar"
+            },
+            "type": "array",
+            "title": "Bars"
+          },
+          "levels": {
+            "$ref": "#/components/schemas/Levels"
+          },
+          "sma": {
+            "$ref": "#/components/schemas/SmaSeries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bars",
+          "levels",
+          "sma"
+        ],
+        "title": "HistoryOut"
+      },
+      "Item": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$",
+            "title": "Symbol"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "industry": {
+            "type": "string",
+            "title": "Industry"
+          },
+          "quote": {
+            "$ref": "#/components/schemas/Quote"
+          },
+          "today_change_pct": {
+            "type": "number",
+            "title": "Today Change Pct"
+          },
+          "peer_change_pct": {
+            "type": "number",
+            "title": "Peer Change Pct"
+          },
+          "residual_pct": {
+            "type": "number",
+            "title": "Residual Pct"
+          },
+          "z_score": {
+            "type": "number",
+            "title": "Z Score"
+          },
+          "raw_z_score": {
+            "type": "number",
+            "title": "Raw Z Score"
+          },
+          "rvol": {
+            "type": "number",
+            "title": "Rvol"
+          },
+          "rvol_is_approximate": {
+            "type": "boolean",
+            "title": "Rvol Is Approximate"
+          },
+          "change_since_seen_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Since Seen Pct"
+          },
+          "last_seen_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Seen At"
+          },
+          "attention": {
+            "type": "string",
+            "enum": [
+              "high",
+              "notable",
+              "quiet"
+            ],
+            "title": "Attention"
+          },
+          "is_changed": {
+            "type": "boolean",
+            "title": "Is Changed"
+          },
+          "low_confidence": {
+            "type": "boolean",
+            "title": "Low Confidence"
+          },
+          "signals": {
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            },
+            "type": "array",
+            "title": "Signals"
+          },
+          "levels": {
+            "$ref": "#/components/schemas/Levels"
+          },
+          "sma_distance_pct": {
+            "$ref": "#/components/schemas/SmaDistance"
+          },
+          "peer": {
+            "$ref": "#/components/schemas/Peer"
+          },
+          "catalyst_status": {
+            "type": "string",
+            "enum": [
+              "not_fetched",
+              "pending",
+              "found",
+              "none_found",
+              "unavailable"
+            ],
+            "title": "Catalyst Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbol",
+          "name",
+          "industry",
+          "quote",
+          "today_change_pct",
+          "peer_change_pct",
+          "residual_pct",
+          "z_score",
+          "raw_z_score",
+          "rvol",
+          "rvol_is_approximate",
+          "change_since_seen_pct",
+          "last_seen_at",
+          "attention",
+          "is_changed",
+          "low_confidence",
+          "signals",
+          "levels",
+          "sma_distance_pct",
+          "peer",
+          "catalyst_status"
+        ],
+        "title": "Item"
+      },
+      "ItemAdd": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$",
+            "title": "Symbol"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbol"
+        ],
+        "title": "ItemAdd"
+      },
+      "Levels": {
+        "properties": {
+          "high_52w": {
+            "type": "number",
+            "title": "High 52W"
+          },
+          "low_52w": {
+            "type": "number",
+            "title": "Low 52W"
+          },
+          "prev_high": {
+            "type": "number",
+            "title": "Prev High"
+          },
+          "prev_low": {
+            "type": "number",
+            "title": "Prev Low"
+          }
+        },
+        "type": "object",
+        "required": [
+          "high_52w",
+          "low_52w",
+          "prev_high",
+          "prev_low"
+        ],
+        "title": "Levels"
+      },
+      "MeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "is_sample": {
+            "type": "boolean",
+            "title": "Is Sample"
+          },
+          "last_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Reviewed At"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "display_name",
+          "is_sample",
+          "last_reviewed_at",
+          "expires_at"
+        ],
+        "title": "MeOut"
+      },
+      "Peer": {
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "cluster",
+              "beta"
+            ],
+            "title": "Method"
+          },
+          "cluster_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cluster Id"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "members": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Members"
+          }
+        },
+        "type": "object",
+        "required": [
+          "method",
+          "cluster_id",
+          "size",
+          "members"
+        ],
+        "title": "Peer"
+      },
+      "PeerMember": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$",
+            "title": "Symbol"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "today_change_pct": {
+            "type": "number",
+            "title": "Today Change Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbol",
+          "name",
+          "today_change_pct"
+        ],
+        "title": "PeerMember"
+      },
+      "PeersOut": {
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "cluster",
+              "beta"
+            ],
+            "title": "Method"
+          },
+          "cluster_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cluster Id"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "peer_change_pct": {
+            "type": "number",
+            "title": "Peer Change Pct"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/PeerMember"
+            },
+            "type": "array",
+            "title": "Members"
+          }
+        },
+        "type": "object",
+        "required": [
+          "method",
+          "cluster_id",
+          "size",
+          "peer_change_pct",
+          "members"
+        ],
+        "title": "PeersOut"
+      },
+      "ProviderHealth": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "circuit_state": {
+            "type": "string",
+            "enum": [
+              "closed",
+              "open",
+              "half_open"
+            ],
+            "title": "Circuit State"
+          },
+          "last_success_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Success At"
+          },
+          "consecutive_failures": {
+            "type": "integer",
+            "title": "Consecutive Failures"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "circuit_state",
+          "last_success_at",
+          "consecutive_failures"
+        ],
+        "title": "ProviderHealth"
+      },
+      "ProvidersHealthOut": {
+        "properties": {
+          "providers": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderHealth"
+            },
+            "type": "array",
+            "title": "Providers"
+          },
+          "scheduler": {
+            "$ref": "#/components/schemas/SchedulerHealth"
+          },
+          "redis": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "down",
+              "disabled"
+            ],
+            "title": "Redis"
+          },
+          "db": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "down"
+            ],
+            "title": "Db"
+          }
+        },
+        "type": "object",
+        "required": [
+          "providers",
+          "scheduler",
+          "redis",
+          "db"
+        ],
+        "title": "ProvidersHealthOut"
+      },
+      "Quote": {
+        "properties": {
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "prev_close": {
+            "type": "number",
+            "title": "Prev Close"
+          },
+          "day_high": {
+            "type": "number",
+            "title": "Day High"
+          },
+          "day_low": {
+            "type": "number",
+            "title": "Day Low"
+          },
+          "volume": {
+            "type": "integer",
+            "title": "Volume"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "yahoo",
+              "bse"
+            ],
+            "title": "Source"
+          },
+          "staleness_seconds": {
+            "type": "integer",
+            "title": "Staleness Seconds"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "fresh",
+              "delayed",
+              "stale",
+              "disputed",
+              "closed"
+            ],
+            "title": "Confidence"
+          },
+          "alt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AltQuote"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "divergence_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Divergence Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "price",
+          "prev_close",
+          "day_high",
+          "day_low",
+          "volume",
+          "as_of",
+          "source",
+          "staleness_seconds",
+          "confidence",
+          "alt",
+          "divergence_pct"
+        ],
+        "title": "Quote"
+      },
+      "Rule": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string",
+                "const": "all"
+              }
+            ],
+            "maxLength": 20,
+            "title": "Symbols"
+          },
+          "all": {
+            "items": {
+              "$ref": "#/components/schemas/RuleCondition"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "All"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbols",
+          "all"
+        ],
+        "title": "Rule"
+      },
+      "RuleCompileIn": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "RuleCompileIn"
+      },
+      "RuleCompileOut": {
+        "properties": {
+          "rule": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rule"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preview": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preview"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule",
+          "preview"
+        ],
+        "title": "RuleCompileOut"
+      },
+      "RuleCondition": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "residual_pct",
+              "abs_residual_pct",
+              "z_score",
+              "rvol",
+              "peer_return_pct",
+              "abs_peer_return_pct",
+              "level_break",
+              "has_catalyst"
+            ],
+            "title": "Field"
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              ">=",
+              "<=",
+              "=="
+            ],
+            "title": "Op"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "op",
+          "value"
+        ],
+        "title": "RuleCondition"
+      },
+      "RuleCreateIn": {
+        "properties": {
+          "nl_text": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Nl Text"
+          },
+          "rule": {
+            "$ref": "#/components/schemas/Rule"
+          }
+        },
+        "type": "object",
+        "required": [
+          "nl_text",
+          "rule"
+        ],
+        "title": "RuleCreateIn"
+      },
+      "RuleListItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "nl_text": {
+            "type": "string",
+            "title": "Nl Text"
+          },
+          "preview": {
+            "type": "string",
+            "title": "Preview"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "matched_today": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched Today"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "nl_text",
+          "preview",
+          "enabled",
+          "created_at",
+          "matched_today"
+        ],
+        "title": "RuleListItem"
+      },
+      "RuleOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "nl_text": {
+            "type": "string",
+            "title": "Nl Text"
+          },
+          "rule": {
+            "$ref": "#/components/schemas/Rule"
+          },
+          "preview": {
+            "type": "string",
+            "title": "Preview"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "nl_text",
+          "rule",
+          "preview",
+          "enabled",
+          "created_at"
+        ],
+        "title": "RuleOut"
+      },
+      "SchedulerHealth": {
+        "properties": {
+          "last_refresh_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Refresh At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "last_refresh_at"
+        ],
+        "title": "SchedulerHealth"
+      },
+      "SeenIn": {
+        "properties": {
+          "symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string",
+                "const": "all"
+              }
+            ],
+            "maxLength": 100,
+            "title": "Symbols"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbols"
+        ],
+        "title": "SeenIn"
+      },
+      "SeenOut": {
+        "properties": {
+          "marked": {
+            "type": "integer",
+            "title": "Marked"
+          },
+          "reviewed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Reviewed At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "marked",
+          "reviewed_at"
+        ],
+        "title": "SeenOut"
+      },
+      "SessionCreate": {
+        "properties": {
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "start_with_sample": {
+            "type": "boolean",
+            "title": "Start With Sample",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "SessionCreate"
+      },
+      "SessionOut": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "expires_at",
+          "user"
+        ],
+        "title": "SessionOut"
+      },
+      "Signal": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "EXCESS_MOVE",
+              "VOLUME_CONFIRMED",
+              "LEVEL_BREAK",
+              "SINCE_SEEN_MOVE",
+              "USER_RULE"
+            ],
+            "title": "Type"
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "fired_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Fired At"
+          },
+          "trading_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Trading Date"
+          },
+          "rule_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "headline",
+          "detail",
+          "fired_at",
+          "trading_date",
+          "rule_id"
+        ],
+        "title": "Signal"
+      },
+      "SmaDistance": {
+        "properties": {
+          "20": {
+            "type": "number",
+            "title": "20"
+          },
+          "50": {
+            "type": "number",
+            "title": "50"
+          },
+          "200": {
+            "type": "number",
+            "title": "200"
+          }
+        },
+        "type": "object",
+        "required": [
+          "20",
+          "50",
+          "200"
+        ],
+        "title": "SmaDistance"
+      },
+      "SmaSeries": {
+        "properties": {
+          "20": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "20"
+          },
+          "50": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "50"
+          },
+          "200": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "200"
+          }
+        },
+        "type": "object",
+        "required": [
+          "20",
+          "50",
+          "200"
+        ],
+        "title": "SmaSeries"
+      },
+      "Suppressed": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "market_wide": {
+            "type": "integer",
+            "title": "Market Wide"
+          },
+          "below_floor": {
+            "type": "integer",
+            "title": "Below Floor"
+          },
+          "unconfirmed_volume": {
+            "type": "integer",
+            "title": "Unconfirmed Volume"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "market_wide",
+          "below_floor",
+          "unconfirmed_volume"
+        ],
+        "title": "Suppressed"
+      },
+      "SymbolSearchOut": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "pattern": "^[A-Z0-9&-]{1,20}\\.(NS|BO)$",
+            "title": "Symbol"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "industry": {
+            "type": "string",
+            "title": "Industry"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbol",
+          "name",
+          "industry"
+        ],
+        "title": "SymbolSearchOut"
+      },
+      "UserOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "is_sample": {
+            "type": "boolean",
+            "title": "Is Sample"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "display_name",
+          "is_sample"
+        ],
+        "title": "UserOut"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     }
   }

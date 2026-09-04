@@ -22,9 +22,9 @@ from app.providers.ratelimit import TokenBucket
 from tests.synthetic import bars_from_returns
 
 BACKEND = Path(__file__).resolve().parent.parent.parent
-MAINTENANCE_URL = "postgresql+psycopg://watchlist:watchlist@localhost:5432/watchlist"
+MAINTENANCE_URL = "postgresql+psycopg://watchlist:watchlist@localhost:5433/watchlist"
 TEST_DB = "watchlist_test_jobs"
-TEST_URL = f"postgresql+psycopg://watchlist:watchlist@localhost:5432/{TEST_DB}"
+TEST_URL = f"postgresql+psycopg://watchlist:watchlist@localhost:5433/{TEST_DB}"
 YAHOO_HOST = "query1.finance.yahoo.com"
 BSE_HOST = "api.bseindia.com"
 SESSIONS = 300

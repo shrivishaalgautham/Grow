@@ -73,8 +73,10 @@ def upsert_quotes(session: Session, rows: Sequence[dict]) -> int:
 def insert_signal_events(session: Session, rows: Sequence[dict]) -> int:
     if not rows:
         return 0
-    result = session.execute(insert(SignalEvent).values(list(rows)).on_conflict_do_nothing())
-    return result.rowcount
+    inserted = session.execute(
+        insert(SignalEvent).values(list(rows)).on_conflict_do_nothing().returning(SignalEvent.id)
+    )
+    return len(inserted.all())
 
 
 def _excluded(statement, row: dict, key: str) -> dict:

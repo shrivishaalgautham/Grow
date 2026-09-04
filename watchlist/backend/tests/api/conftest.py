@@ -14,7 +14,7 @@ from app.main import create_app
 from tests.api.support import seed_market
 
 BACKEND = Path(__file__).resolve().parents[2]
-MAINTENANCE_URL = "postgresql+psycopg://watchlist:watchlist@localhost:5432/postgres"
+MAINTENANCE_URL = "postgresql+psycopg://watchlist:watchlist@localhost:5433/postgres"
 TEST_DB = "watchlist_test_api"
 TEST_URL = f"{MAINTENANCE_URL.rsplit('/', 1)[0]}/{TEST_DB}"
 
@@ -50,8 +50,12 @@ def db(test_engine):
 @pytest.fixture(autouse=True)
 def isolated_cache():
     cache._memory.clear()
+    if cache._redis:
+        cache._redis.flushdb()
     yield
     cache._memory.clear()
+    if cache._redis:
+        cache._redis.flushdb()
 
 
 @pytest.fixture
