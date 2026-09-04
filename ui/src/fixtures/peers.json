@@ -1,0 +1,38 @@
+{
+  "method": "cluster",
+  "cluster_id": "materials-cyclical",
+  "size": 6,
+  "peer_change_pct": -0.41,
+  "members": [
+    {
+      "symbol": "ADANIENT.NS",
+      "name": "Adani Enterprises",
+      "today_change_pct": -6.82
+    },
+    {
+      "symbol": "JSWSTEEL.NS",
+      "name": "JSW Steel",
+      "today_change_pct": -0.62
+    },
+    {
+      "symbol": "TATASTEEL.NS",
+      "name": "Tata Steel",
+      "today_change_pct": -0.18
+    },
+    {
+      "symbol": "HINDALCO.NS",
+      "name": "Hindalco Industries",
+      "today_change_pct": 0.24
+    },
+    {
+      "symbol": "VEDL.NS",
+      "name": "Vedanta",
+      "today_change_pct": -0.91
+    },
+    {
+      "symbol": "COALINDIA.NS",
+      "name": "Coal India",
+      "today_change_pct": -0.32
+    }
+  ]
+}

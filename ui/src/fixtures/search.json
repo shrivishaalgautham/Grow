@@ -1,0 +1,52 @@
+[
+  {
+    "symbol": "HDFCLIFE.NS",
+    "name": "HDFC Life Insurance",
+    "industry": "Financial Services"
+  },
+  {
+    "symbol": "HDFCAMC.NS",
+    "name": "HDFC Asset Management",
+    "industry": "Financial Services"
+  },
+  {
+    "symbol": "HEROMOTOCO.NS",
+    "name": "Hero MotoCorp",
+    "industry": "Automobile & Auto Components"
+  },
+  {
+    "symbol": "HINDALCO.NS",
+    "name": "Hindalco Industries",
+    "industry": "Metals & Mining"
+  },
+  {
+    "symbol": "HINDUNILVR.NS",
+    "name": "Hindustan Unilever",
+    "industry": "Fast Moving Consumer Goods"
+  },
+  {
+    "symbol": "JSWSTEEL.NS",
+    "name": "JSW Steel",
+    "industry": "Metals & Mining"
+  },
+  {
+    "symbol": "KOTAKBANK.NS",
+    "name": "Kotak Mahindra Bank",
+    "industry": "Financial Services"
+  },
+  {
+    "symbol": "TATASTEEL.NS",
+    "name": "Tata Steel",
+    "industry": "Metals & Mining"
+  },
+  {
+    "symbol": "TITAN.NS",
+    "name": "Titan Company",
+    "industry": "Consumer Durables"
+  },
+  {
+    "symbol": "WIPRO.NS",
+    "name": "Wipro",
+    "industry": "Information Technology"
+  }
+]

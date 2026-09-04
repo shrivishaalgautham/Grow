@@ -1,0 +1,78 @@
+{
+  "days": 90,
+  "symbols_count": 150,
+  "from_date": "2026-05-06",
+  "to_date": "2026-09-04",
+  "computed_at": "2026-09-04T06:10:00+05:30",
+  "naive_pct_2": {
+    "alerts": 4188
+  },
+  "raw_z_2": {
+    "alerts": 1372
+  },
+  "engine": {
+    "alerts": 311
+  },
+  "suppressed": {
+    "total": 3877,
+    "market_wide": 2140,
+    "below_floor": 1094,
+    "unconfirmed_volume": 643
+  },
+  "caught_extra": [
+    {
+      "symbol": "SUNPHARMA.NS",
+      "date": "2026-08-14",
+      "today_change_pct": 1.24,
+      "peer_change_pct": -2.61,
+      "residual_pct": 3.85,
+      "z_score": 4.02,
+      "rvol": 3.11
+    },
+    {
+      "symbol": "ITC.NS",
+      "date": "2026-07-29",
+      "today_change_pct": -1.08,
+      "peer_change_pct": 1.94,
+      "residual_pct": -3.02,
+      "z_score": 3.41,
+      "rvol": 2.68
+    },
+    {
+      "symbol": "BHARTIARTL.NS",
+      "date": "2026-07-11",
+      "today_change_pct": 1.62,
+      "peer_change_pct": -1.35,
+      "residual_pct": 2.97,
+      "z_score": 3.18,
+      "rvol": 2.94
+    },
+    {
+      "symbol": "LT.NS",
+      "date": "2026-06-24",
+      "today_change_pct": -1.41,
+      "peer_change_pct": 1.52,
+      "residual_pct": -2.93,
+      "z_score": 3.05,
+      "rvol": 2.22
+    },
+    {
+      "symbol": "HDFCBANK.NS",
+      "date": "2026-06-09",
+      "today_change_pct": 0.94,
+      "peer_change_pct": -1.88,
+      "residual_pct": 2.82,
+      "z_score": 2.97,
+      "rvol": 3.46
+    },
+    {
+      "symbol": "TMPV.NS",
+      "date": "2026-05-21",
+      "today_change_pct": -1.77,
+      "peer_change_pct": 1.11,
+      "residual_pct": -2.88,
+      "z_score": 2.84,
+      "rvol": 2.05
+    }
+  ]
+}

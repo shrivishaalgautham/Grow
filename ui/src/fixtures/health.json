@@ -1,0 +1,21 @@
+{
+  "providers": [
+    {
+      "provider": "yahoo",
+      "circuit_state": "closed",
+      "last_success_at": "2026-09-04T11:19:30+05:30",
+      "consecutive_failures": 0
+    },
+    {
+      "provider": "bse",
+      "circuit_state": "half_open",
+      "last_success_at": "2026-09-04T11:04:10+05:30",
+      "consecutive_failures": 2
+    }
+  ],
+  "scheduler": {
+    "last_refresh_at": "2026-09-04T11:19:30+05:30"
+  },
+  "redis": "ok",
+  "db": "ok"
+}

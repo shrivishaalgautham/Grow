@@ -1,0 +1,658 @@
+{
+  "bars": [
+    {
+      "date": "2026-05-06",
+      "close": 2641.31,
+      "volume": 6204220,
+      "today_change_pct": 1.12,
+      "residual_pct": 1.03
+    },
+    {
+      "date": "2026-05-07",
+      "close": 2643.92,
+      "volume": 4451637,
+      "today_change_pct": 0.1,
+      "residual_pct": -0.28
+    },
+    {
+      "date": "2026-05-08",
+      "close": 2631.38,
+      "volume": 5272830,
+      "today_change_pct": -0.47,
+      "residual_pct": -0.9
+    },
+    {
+      "date": "2026-05-11",
+      "close": 2641.56,
+      "volume": 8593514,
+      "today_change_pct": 0.39,
+      "residual_pct": 0.08
+    },
+    {
+      "date": "2026-05-12",
+      "close": 2620.67,
+      "volume": 4554216,
+      "today_change_pct": -0.79,
+      "residual_pct": -0.56
+    },
+    {
+      "date": "2026-05-13",
+      "close": 2655.08,
+      "volume": 5740756,
+      "today_change_pct": 1.31,
+      "residual_pct": 1.6
+    },
+    {
+      "date": "2026-05-14",
+      "close": 2620.6,
+      "volume": 5061849,
+      "today_change_pct": -1.3,
+      "residual_pct": -1.62
+    },
+    {
+      "date": "2026-05-15",
+      "close": 2647.03,
+      "volume": 8585042,
+      "today_change_pct": 1.01,
+      "residual_pct": 0.77
+    },
+    {
+      "date": "2026-05-18",
+      "close": 2613.1,
+      "volume": 6973628,
+      "today_change_pct": -1.28,
+      "residual_pct": -1.7
+    },
+    {
+      "date": "2026-05-19",
+      "close": 2605.51,
+      "volume": 3619818,
+      "today_change_pct": -0.29,
+      "residual_pct": -0.68
+    },
+    {
+      "date": "2026-05-20",
+      "close": 2569.2,
+      "volume": 3171876,
+      "today_change_pct": -1.39,
+      "residual_pct": -1.01
+    },
+    {
+      "date": "2026-05-21",
+      "close": 2566.91,
+      "volume": 6394580,
+      "today_change_pct": -0.09,
+      "residual_pct": -0.12
+    },
+    {
+      "date": "2026-05-22",
+      "close": 2600.85,
+      "volume": 4208367,
+      "today_change_pct": 1.32,
+      "residual_pct": 1.4
+    },
+    {
+      "date": "2026-05-25",
+      "close": 2563.25,
+      "volume": 4064820,
+      "today_change_pct": -1.45,
+      "residual_pct": -1.88
+    },
+    {
+      "date": "2026-05-26",
+      "close": 2572.31,
+      "volume": 3359822,
+      "today_change_pct": 0.35,
+      "residual_pct": 0.5
+    },
+    {
+      "date": "2026-05-27",
+      "close": 2549.47,
+      "volume": 4344746,
+      "today_change_pct": -0.89,
+      "residual_pct": -0.9
+    },
+    {
+      "date": "2026-05-28",
+      "close": 2576.69,
+      "volume": 5159619,
+      "today_change_pct": 1.07,
+      "residual_pct": 1.31
+    },
+    {
+      "date": "2026-05-29",
+      "close": 2565.09,
+      "volume": 3053839,
+      "today_change_pct": -0.45,
+      "residual_pct": -0.07
+    },
+    {
+      "date": "2026-06-01",
+      "close": 2540.25,
+      "volume": 7617281,
+      "today_change_pct": -0.97,
+      "residual_pct": -1.37
+    },
+    {
+      "date": "2026-06-02",
+      "close": 2508.26,
+      "volume": 5294011,
+      "today_change_pct": -1.26,
+      "residual_pct": -1.12
+    },
+    {
+      "date": "2026-06-03",
+      "close": 2511.69,
+      "volume": 5059924,
+      "today_change_pct": 0.14,
+      "residual_pct": 0.09
+    },
+    {
+      "date": "2026-06-04",
+      "close": 2550.49,
+      "volume": 4323174,
+      "today_change_pct": 1.54,
+      "residual_pct": 1.88
+    },
+    {
+      "date": "2026-06-05",
+      "close": 2569.02,
+      "volume": 4824144,
+      "today_change_pct": 0.73,
+      "residual_pct": 0.29
+    },
+    {
+      "date": "2026-06-08",
+      "close": 2581.26,
+      "volume": 8332210,
+      "today_change_pct": 0.48,
+      "residual_pct": 0.76
+    },
+    {
+      "date": "2026-06-09",
+      "close": 2558.42,
+      "volume": 6950075,
+      "today_change_pct": -0.88,
+      "residual_pct": -0.63
+    },
+    {
+      "date": "2026-06-10",
+      "close": 2519.27,
+      "volume": 4211103,
+      "today_change_pct": -1.53,
+      "residual_pct": -1.2
+    },
+    {
+      "date": "2026-06-11",
+      "close": 2540.68,
+      "volume": 7935296,
+      "today_change_pct": 0.85,
+      "residual_pct": 0.5
+    },
+    {
+      "date": "2026-06-12",
+      "close": 2504.86,
+      "volume": 3576242,
+      "today_change_pct": -1.41,
+      "residual_pct": -1.54
+    },
+    {
+      "date": "2026-06-15",
+      "close": 2471.84,
+      "volume": 3036033,
+      "today_change_pct": -1.32,
+      "residual_pct": -1.7
+    },
+    {
+      "date": "2026-06-16",
+      "close": 2470.79,
+      "volume": 7760144,
+      "today_change_pct": -0.04,
+      "residual_pct": 0.36
+    },
+    {
+      "date": "2026-06-17",
+      "close": 2504.89,
+      "volume": 3740632,
+      "today_change_pct": 1.38,
+      "residual_pct": 1.06
+    },
+    {
+      "date": "2026-06-18",
+      "close": 2526.23,
+      "volume": 8599241,
+      "today_change_pct": 0.85,
+      "residual_pct": 0.55
+    },
+    {
+      "date": "2026-06-19",
+      "close": 2556.95,
+      "volume": 7238029,
+      "today_change_pct": 1.22,
+      "residual_pct": 1.11
+    },
+    {
+      "date": "2026-06-22",
+      "close": 2586.73,
+      "volume": 3583307,
+      "today_change_pct": 1.16,
+      "residual_pct": 1.22
+    },
+    {
+      "date": "2026-06-23",
+      "close": 2559.1,
+      "volume": 5814486,
+      "today_change_pct": -1.07,
+      "residual_pct": -0.89
+    },
+    {
+      "date": "2026-06-24",
+      "close": 2578.27,
+      "volume": 3115780,
+      "today_change_pct": 0.75,
+      "residual_pct": 1.05
+    },
+    {
+      "date": "2026-06-25",
+      "close": 2547.45,
+      "volume": 5251265,
+      "today_change_pct": -1.2,
+      "residual_pct": -1.53
+    },
+    {
+      "date": "2026-06-26",
+      "close": 2513.36,
+      "volume": 8329636,
+      "today_change_pct": -1.34,
+      "residual_pct": -1.12
+    },
+    {
+      "date": "2026-06-29",
+      "close": 2532.7,
+      "volume": 4946235,
+      "today_change_pct": 0.77,
+      "residual_pct": 0.41
+    },
+    {
+      "date": "2026-06-30",
+      "close": 2500.23,
+      "volume": 4315500,
+      "today_change_pct": -1.28,
+      "residual_pct": -1.16
+    },
+    {
+      "date": "2026-07-01",
+      "close": 2484.32,
+      "volume": 5123178,
+      "today_change_pct": -0.64,
+      "residual_pct": -0.48
+    },
+    {
+      "date": "2026-07-02",
+      "close": 2492.05,
+      "volume": 4924484,
+      "today_change_pct": 0.31,
+      "residual_pct": 0.18
+    },
+    {
+      "date": "2026-07-03",
+      "close": 2463.91,
+      "volume": 7956219,
+      "today_change_pct": -1.13,
+      "residual_pct": -1.55
+    },
+    {
+      "date": "2026-07-06",
+      "close": 2457.22,
+      "volume": 8334540,
+      "today_change_pct": -0.27,
+      "residual_pct": 0.04
+    },
+    {
+      "date": "2026-07-07",
+      "close": 2476.27,
+      "volume": 3474514,
+      "today_change_pct": 0.78,
+      "residual_pct": 0.76
+    },
+    {
+      "date": "2026-07-08",
+      "close": 2502.6,
+      "volume": 5745953,
+      "today_change_pct": 1.06,
+      "residual_pct": 0.87
+    },
+    {
+      "date": "2026-07-09",
+      "close": 2516.1,
+      "volume": 8914825,
+      "today_change_pct": 0.54,
+      "residual_pct": 0.56
+    },
+    {
+      "date": "2026-07-10",
+      "close": 2492.83,
+      "volume": 4761932,
+      "today_change_pct": -0.92,
+      "residual_pct": -1.12
+    },
+    {
+      "date": "2026-07-13",
+      "close": 2471.56,
+      "volume": 6237453,
+      "today_change_pct": -0.85,
+      "residual_pct": -1.13
+    },
+    {
+      "date": "2026-07-14",
+      "close": 2469.7,
+      "volume": 7935677,
+      "today_change_pct": -0.08,
+      "residual_pct": 0.29
+    },
+    {
+      "date": "2026-07-15",
+      "close": 2503.69,
+      "volume": 6469994,
+      "today_change_pct": 1.38,
+      "residual_pct": 1.65
+    },
+    {
+      "date": "2026-07-16",
+      "close": 2475.13,
+      "volume": 3755392,
+      "today_change_pct": -1.14,
+      "residual_pct": -1.4
+    },
+    {
+      "date": "2026-07-17",
+      "close": 2499.9,
+      "volume": 5404262,
+      "today_change_pct": 1,
+      "residual_pct": 0.75
+    },
+    {
+      "date": "2026-07-20",
+      "close": 2493.98,
+      "volume": 5386335,
+      "today_change_pct": -0.24,
+      "residual_pct": -0.61
+    },
+    {
+      "date": "2026-07-21",
+      "close": 2510.78,
+      "volume": 5967689,
+      "today_change_pct": 0.67,
+      "residual_pct": 0.36
+    },
+    {
+      "date": "2026-07-22",
+      "close": 2521.97,
+      "volume": 5729898,
+      "today_change_pct": 0.45,
+      "residual_pct": 0.64
+    },
+    {
+      "date": "2026-07-23",
+      "close": 2513.31,
+      "volume": 7906513,
+      "today_change_pct": -0.34,
+      "residual_pct": -0.1
+    },
+    {
+      "date": "2026-07-24",
+      "close": 2485.52,
+      "volume": 5437922,
+      "today_change_pct": -1.11,
+      "residual_pct": -1.17
+    },
+    {
+      "date": "2026-07-27",
+      "close": 2516.36,
+      "volume": 7352476,
+      "today_change_pct": 1.24,
+      "residual_pct": 0.83
+    },
+    {
+      "date": "2026-07-28",
+      "close": 2555.81,
+      "volume": 5261039,
+      "today_change_pct": 1.57,
+      "residual_pct": 1.76
+    },
+    {
+      "date": "2026-07-29",
+      "close": 2521.45,
+      "volume": 5185663,
+      "today_change_pct": -1.34,
+      "residual_pct": -0.96
+    },
+    {
+      "date": "2026-07-30",
+      "close": 2505.75,
+      "volume": 4338690,
+      "today_change_pct": -0.62,
+      "residual_pct": -0.94
+    },
+    {
+      "date": "2026-07-31",
+      "close": 2537.17,
+      "volume": 3268792,
+      "today_change_pct": 1.25,
+      "residual_pct": 1.25
+    },
+    {
+      "date": "2026-08-03",
+      "close": 2216.4,
+      "volume": 7263893,
+      "today_change_pct": -6.82,
+      "residual_pct": -6.41
+    }
+  ],
+  "levels": {
+    "high_52w": 3743.9,
+    "low_52w": 2025.1,
+    "prev_high": 2402.75,
+    "prev_low": 2238
+  },
+  "sma": {
+    "20": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      2596.62,
+      2590.14,
+      2585.47,
+      2582.35,
+      2579.34,
+      2576.22,
+      2569.43,
+      2565.44,
+      2558.33,
+      2551.27,
+      2544.53,
+      2541.31,
+      2539.28,
+      2537.09,
+      2538.26,
+      2537.6,
+      2539.04,
+      2537.58,
+      2534.99,
+      2534.61,
+      2534.21,
+      2532.84,
+      2529.92,
+      2524.67,
+      2518.46,
+      2514.36,
+      2513.52,
+      2512.29,
+      2511.69,
+      2511.68,
+      2511.62,
+      2511.56,
+      2509.01,
+      2506.16,
+      2501.52,
+      2499.1,
+      2496.29,
+      2494.58,
+      2493.19,
+      2492.37,
+      2495.15,
+      2497.01,
+      2497.69,
+      2501.35,
+      2496.7
+    ],
+    "50": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      2548.86,
+      2546.11,
+      2542.74,
+      2540.11,
+      2537.16,
+      2534.96,
+      2532.3,
+      2530.15,
+      2526.92,
+      2524.98,
+      2523.99,
+      2523.04,
+      2521.81,
+      2520.54,
+      2516.56
+    ],
+    "200": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  }
+}

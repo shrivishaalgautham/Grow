@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #0a0c0f;
+  --color-surface: #111419;
+  --color-raised: #171b22;
+  --color-line: #21262e;
+  --color-line-strong: #313945;
+
+  --color-ink: #e9edf2;
+  --color-muted: #98a1ae;
+  --color-faint: #626c7a;
+
+  --color-up: #35c98a;
+  --color-down: #f05a60;
+
+  --color-high: #f2a43c;
+  --color-notable: #7b9ce0;
+  --color-rule: #c084fc;
+
+  --color-fresh: #35c98a;
+  --color-delayed: #f2a43c;
+  --color-stale: #8b95a3;
+  --color-disputed: #c084fc;
+  --color-closed: #7b8593;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--color-canvas);
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.numeric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-notable);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton {
+  background: var(--color-raised);
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

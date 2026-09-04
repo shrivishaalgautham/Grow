@@ -1,0 +1,708 @@
+{
+  "now": "2026-09-04T11:20:00+05:30",
+  "market_status": "open",
+  "replay_date": null,
+  "latest_bar_date": "2026-09-04",
+  "away_duration_seconds": 611400,
+  "last_reviewed_at": "2026-08-28T09:30:00+05:30",
+  "changed_count": 5,
+  "total_count": 12,
+  "items": [
+    {
+      "symbol": "ADANIENT.NS",
+      "name": "Adani Enterprises",
+      "industry": "Metals & Mining",
+      "quote": {
+        "price": 2216.4,
+        "prev_close": 2378.62,
+        "day_high": 2388.13,
+        "day_low": 2207.53,
+        "volume": 18942310,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": -6.82,
+      "peer_change_pct": -0.41,
+      "residual_pct": -6.41,
+      "z_score": 4.12,
+      "raw_z_score": 4.05,
+      "rvol": 3.81,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -11.4,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "high",
+      "is_changed": true,
+      "low_confidence": false,
+      "signals": [
+        {
+          "type": "EXCESS_MOVE",
+          "headline": "Down 6.4% beyond its peer group",
+          "detail": "Residual −6.41% is 4.1 standard deviations from its 60-day residual distribution. The market was flat (Nifty −0.39%).",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        },
+        {
+          "type": "VOLUME_CONFIRMED",
+          "headline": "Trading on 3.8x normal volume",
+          "detail": "18.9M shares against a 20-day median of 4.97M. Volume confirms the move was not a thin-book artefact.",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        },
+        {
+          "type": "LEVEL_BREAK",
+          "headline": "Broke below its previous-session low",
+          "detail": "Traded through 2,238.00, the 2026-09-03 low, at 09:47. Has not recovered the level since.",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        }
+      ],
+      "levels": {
+        "high_52w": 3743.9,
+        "low_52w": 2025.1,
+        "prev_high": 2402.75,
+        "prev_low": 2238
+      },
+      "sma_distance_pct": {
+        "20": -9.4,
+        "50": -12.8,
+        "200": -18.6
+      },
+      "peer": {
+        "method": "beta",
+        "cluster_id": null,
+        "size": 0,
+        "members": []
+      },
+      "catalyst_status": "found"
+    },
+    {
+      "symbol": "SUNPHARMA.NS",
+      "name": "Sun Pharmaceutical Industries",
+      "industry": "Healthcare",
+      "quote": {
+        "price": 1688.7,
+        "prev_close": 1626.25,
+        "day_high": 1695.45,
+        "day_low": 1619.75,
+        "volume": 9120440,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 940,
+        "confidence": "delayed",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": 3.84,
+      "peer_change_pct": 0.22,
+      "residual_pct": 3.62,
+      "z_score": 3.05,
+      "raw_z_score": 2.91,
+      "rvol": 2.14,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": 6.92,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "high",
+      "is_changed": true,
+      "low_confidence": false,
+      "signals": [
+        {
+          "type": "EXCESS_MOVE",
+          "headline": "Up 3.6% beyond its peer group",
+          "detail": "Residual +3.62% is 3.1 standard deviations from its 60-day residual distribution.",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        },
+        {
+          "type": "SINCE_SEEN_MOVE",
+          "headline": "Up 6.9% since you last looked",
+          "detail": "Moved 6.92% over 7 days away against a 7-day expected band of ±3.10%.",
+          "fired_at": "2026-09-04T11:20:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        }
+      ],
+      "levels": {
+        "high_52w": 1731.5,
+        "low_52w": 1281.4,
+        "prev_high": 1640.2,
+        "prev_low": 1602.8
+      },
+      "sma_distance_pct": {
+        "20": 5.1,
+        "50": 7.8,
+        "200": 11.2
+      },
+      "peer": {
+        "method": "beta",
+        "cluster_id": null,
+        "size": 0,
+        "members": []
+      },
+      "catalyst_status": "none_found"
+    },
+    {
+      "symbol": "ITC.NS",
+      "name": "ITC",
+      "industry": "Fast Moving Consumer Goods",
+      "quote": {
+        "price": 402.1,
+        "prev_close": 417.16,
+        "day_high": 418.83,
+        "day_low": 400.49,
+        "volume": 26305780,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 61,
+        "confidence": "disputed",
+        "alt": {
+          "price": 398.35,
+          "source": "bse",
+          "as_of": "2026-09-04T11:19:00+05:30"
+        },
+        "divergence_pct": 0.94
+      },
+      "today_change_pct": -3.61,
+      "peer_change_pct": -0.18,
+      "residual_pct": -3.43,
+      "z_score": 2.44,
+      "raw_z_score": 2.38,
+      "rvol": 1.92,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -4.05,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "notable",
+      "is_changed": true,
+      "low_confidence": false,
+      "signals": [
+        {
+          "type": "EXCESS_MOVE",
+          "headline": "Down 3.4% beyond its peer group",
+          "detail": "Residual −3.43% is 2.4 standard deviations from its 60-day residual distribution.",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        },
+        {
+          "type": "LEVEL_BREAK",
+          "headline": "Broke below its 52-week low",
+          "detail": "Traded through 404.90 at 10:12, the lowest print since 2025-09-18.",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        }
+      ],
+      "levels": {
+        "high_52w": 528.5,
+        "low_52w": 401.2,
+        "prev_high": 419.4,
+        "prev_low": 404.9
+      },
+      "sma_distance_pct": {
+        "20": -4.8,
+        "50": -7.1,
+        "200": -13.9
+      },
+      "peer": {
+        "method": "beta",
+        "cluster_id": null,
+        "size": 0,
+        "members": []
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "BHARTIARTL.NS",
+      "name": "Bharti Airtel",
+      "industry": "Telecommunication",
+      "quote": {
+        "price": 1902.3,
+        "prev_close": 1969.66,
+        "day_high": 1977.54,
+        "day_low": 1894.69,
+        "volume": 21884050,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 5412,
+        "confidence": "stale",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": -3.42,
+      "peer_change_pct": -0.35,
+      "residual_pct": -3.07,
+      "z_score": 2.18,
+      "raw_z_score": 2.09,
+      "rvol": 4.63,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -5.18,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "notable",
+      "is_changed": true,
+      "low_confidence": false,
+      "signals": [
+        {
+          "type": "VOLUME_CONFIRMED",
+          "headline": "Trading on 4.6x normal volume",
+          "detail": "21.9M shares against a 20-day median of 4.73M — the heaviest tape in the watchlist today.",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        },
+        {
+          "type": "USER_RULE",
+          "headline": "Matched your rule: heavy volume with a peer-adjusted drop",
+          "detail": "residual_pct <= -2 and rvol >= 3",
+          "fired_at": "2026-09-04T09:47:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": "rule_7f2a"
+        }
+      ],
+      "levels": {
+        "high_52w": 2045,
+        "low_52w": 1402.6,
+        "prev_high": 1978.4,
+        "prev_low": 1955.1
+      },
+      "sma_distance_pct": {
+        "20": -3.2,
+        "50": -1.1,
+        "200": 6.4
+      },
+      "peer": {
+        "method": "beta",
+        "cluster_id": null,
+        "size": 0,
+        "members": []
+      },
+      "catalyst_status": "unavailable"
+    },
+    {
+      "symbol": "TMPV.NS",
+      "name": "Tata Motors Passenger Vehicles",
+      "industry": "Automobile & Auto Components",
+      "quote": {
+        "price": 402.55,
+        "prev_close": 391.21,
+        "day_high": 404.16,
+        "day_low": 389.65,
+        "volume": 3204890,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": 2.9,
+      "peer_change_pct": 0.35,
+      "residual_pct": 2.55,
+      "z_score": 2.02,
+      "raw_z_score": 1.87,
+      "rvol": 1.12,
+      "rvol_is_approximate": true,
+      "change_since_seen_pct": 4.41,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "notable",
+      "is_changed": true,
+      "low_confidence": true,
+      "signals": [
+        {
+          "type": "SINCE_SEEN_MOVE",
+          "headline": "Up 4.4% since you last looked",
+          "detail": "Moved 4.41% over 7 days away against a 7-day expected band of ±2.05%.",
+          "fired_at": "2026-09-04T11:20:00+05:30",
+          "trading_date": "2026-09-04",
+          "rule_id": null
+        }
+      ],
+      "levels": {
+        "high_52w": 489.7,
+        "low_52w": 331.2,
+        "prev_high": 394.8,
+        "prev_low": 388.15
+      },
+      "sma_distance_pct": {
+        "20": 1.9,
+        "50": -2.4,
+        "200": -6.8
+      },
+      "peer": {
+        "method": "cluster",
+        "cluster_id": "autos",
+        "size": 2,
+        "members": [
+          "TMPV.NS",
+          "MARUTI.NS"
+        ]
+      },
+      "catalyst_status": "pending"
+    },
+    {
+      "symbol": "HDFCBANK.NS",
+      "name": "HDFC Bank",
+      "industry": "Financial Services",
+      "quote": {
+        "price": 964.15,
+        "prev_close": 960.12,
+        "day_high": 968.01,
+        "day_low": 956.28,
+        "volume": 7412300,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": 0.42,
+      "peer_change_pct": 0.38,
+      "residual_pct": 0.04,
+      "z_score": 0.21,
+      "raw_z_score": 0.19,
+      "rvol": 0.94,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": 0.67,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 1018.4,
+        "low_52w": 812.7,
+        "prev_high": 962.9,
+        "prev_low": 955.2
+      },
+      "sma_distance_pct": {
+        "20": 1.2,
+        "50": 2.8,
+        "200": 6.1
+      },
+      "peer": {
+        "method": "cluster",
+        "cluster_id": "banks",
+        "size": 2,
+        "members": [
+          "HDFCBANK.NS",
+          "ICICIBANK.NS"
+        ]
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "ICICIBANK.NS",
+      "name": "ICICI Bank",
+      "industry": "Financial Services",
+      "quote": {
+        "price": 1401.3,
+        "prev_close": 1396.97,
+        "day_high": 1406.91,
+        "day_low": 1391.38,
+        "volume": 9884100,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": 0.31,
+      "peer_change_pct": 0.38,
+      "residual_pct": -0.07,
+      "z_score": -0.14,
+      "raw_z_score": 0.12,
+      "rvol": 1.05,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": 0.5,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 1479.6,
+        "low_52w": 1143.2,
+        "prev_high": 1404.8,
+        "prev_low": 1391
+      },
+      "sma_distance_pct": {
+        "20": 0.8,
+        "50": 3.4,
+        "200": 9.2
+      },
+      "peer": {
+        "method": "cluster",
+        "cluster_id": "banks",
+        "size": 2,
+        "members": [
+          "HDFCBANK.NS",
+          "ICICIBANK.NS"
+        ]
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "INFY.NS",
+      "name": "Infosys",
+      "industry": "Information Technology",
+      "quote": {
+        "price": 1498.9,
+        "prev_close": 1508.25,
+        "day_high": 1514.28,
+        "day_low": 1492.9,
+        "volume": 6204770,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": -0.62,
+      "peer_change_pct": -0.51,
+      "residual_pct": -0.11,
+      "z_score": 0.33,
+      "raw_z_score": 0.29,
+      "rvol": 1.11,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -0.99,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 1975.3,
+        "low_52w": 1402.8,
+        "prev_high": 1512.4,
+        "prev_low": 1489.6
+      },
+      "sma_distance_pct": {
+        "20": -1.4,
+        "50": -3.9,
+        "200": -8.2
+      },
+      "peer": {
+        "method": "cluster",
+        "cluster_id": "it",
+        "size": 2,
+        "members": [
+          "TCS.NS",
+          "INFY.NS"
+        ]
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "LT.NS",
+      "name": "Larsen & Toubro",
+      "industry": "Capital Goods",
+      "quote": {
+        "price": 3684.5,
+        "prev_close": 3677.88,
+        "day_high": 3699.24,
+        "day_low": 3663.17,
+        "volume": 2104620,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": 0.18,
+      "peer_change_pct": 0.05,
+      "residual_pct": 0.13,
+      "z_score": 0.24,
+      "raw_z_score": 0.22,
+      "rvol": 0.82,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": 0.29,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 3963.5,
+        "low_52w": 2965.4,
+        "prev_high": 3702,
+        "prev_low": 3661.2
+      },
+      "sma_distance_pct": {
+        "20": 2.1,
+        "50": 4.6,
+        "200": 8.8
+      },
+      "peer": {
+        "method": "beta",
+        "cluster_id": null,
+        "size": 0,
+        "members": []
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "MARUTI.NS",
+      "name": "Maruti Suzuki India",
+      "industry": "Automobile & Auto Components",
+      "quote": {
+        "price": 14320,
+        "prev_close": 14354.45,
+        "day_high": 14411.87,
+        "day_low": 14262.72,
+        "volume": 812400,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": -0.24,
+      "peer_change_pct": 0.35,
+      "residual_pct": -0.59,
+      "z_score": -0.71,
+      "raw_z_score": 0.64,
+      "rvol": 0.91,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -0.38,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 15412,
+        "low_52w": 10725.6,
+        "prev_high": 14405,
+        "prev_low": 14260.5
+      },
+      "sma_distance_pct": {
+        "20": 0.6,
+        "50": 5.2,
+        "200": 14.1
+      },
+      "peer": {
+        "method": "cluster",
+        "cluster_id": "autos",
+        "size": 2,
+        "members": [
+          "TMPV.NS",
+          "MARUTI.NS"
+        ]
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "RELIANCE.NS",
+      "name": "Reliance Industries",
+      "industry": "Oil Gas & Consumable Fuels",
+      "quote": {
+        "price": 1412.6,
+        "prev_close": 1414.16,
+        "day_high": 1419.82,
+        "day_low": 1406.95,
+        "volume": 8940200,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": -0.11,
+      "peer_change_pct": -0.05,
+      "residual_pct": -0.06,
+      "z_score": -0.09,
+      "raw_z_score": 0.08,
+      "rvol": 0.77,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -0.18,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 1608.9,
+        "low_52w": 1114.85,
+        "prev_high": 1419.7,
+        "prev_low": 1408.2
+      },
+      "sma_distance_pct": {
+        "20": -0.4,
+        "50": 1.8,
+        "200": 4.9
+      },
+      "peer": {
+        "method": "beta",
+        "cluster_id": null,
+        "size": 0,
+        "members": []
+      },
+      "catalyst_status": "not_fetched"
+    },
+    {
+      "symbol": "TCS.NS",
+      "name": "Tata Consultancy Services",
+      "industry": "Information Technology",
+      "quote": {
+        "price": 3072.4,
+        "prev_close": 3084.74,
+        "day_high": 3097.08,
+        "day_low": 3060.11,
+        "volume": 3112450,
+        "as_of": "2026-09-04T11:20:00+05:30",
+        "source": "yahoo",
+        "staleness_seconds": 42,
+        "confidence": "fresh",
+        "alt": null,
+        "divergence_pct": null
+      },
+      "today_change_pct": -0.4,
+      "peer_change_pct": -0.51,
+      "residual_pct": 0.11,
+      "z_score": 0.18,
+      "raw_z_score": 0.16,
+      "rvol": 0.88,
+      "rvol_is_approximate": false,
+      "change_since_seen_pct": -0.64,
+      "last_seen_at": "2026-08-28T09:30:00+05:30",
+      "attention": "quiet",
+      "is_changed": false,
+      "low_confidence": false,
+      "signals": [],
+      "levels": {
+        "high_52w": 4592.25,
+        "low_52w": 2989.1,
+        "prev_high": 3098.6,
+        "prev_low": 3061.4
+      },
+      "sma_distance_pct": {
+        "20": -2.2,
+        "50": -5.8,
+        "200": -14.6
+      },
+      "peer": {
+        "method": "cluster",
+        "cluster_id": "it",
+        "size": 2,
+        "members": [
+          "TCS.NS",
+          "INFY.NS"
+        ]
+      },
+      "catalyst_status": "not_fetched"
+    }
+  ],
+  "providers_degraded": false
+}
