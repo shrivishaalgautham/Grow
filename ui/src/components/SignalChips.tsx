@@ -9,6 +9,8 @@ const CHIP: Record<SignalType, { icon: IconName; classes: string }> = {
   SINCE_SEEN_MOVE: { icon: "history", classes: "bg-surface-container-high text-on-surface" },
   USER_RULE: { icon: "rule", classes: "bg-primary-container/20 text-on-primary-container" },
   GAP: { icon: "arrow_outward", classes: "bg-tertiary-fixed/30 text-tertiary" },
+  SMA_CROSSOVER: { icon: "auto_graph", classes: "bg-secondary-container text-on-secondary-fixed" },
+  RSI_EXTREME: { icon: "query_stats", classes: "bg-surface-container-high text-on-surface" },
 };
 
 export const SIGNAL_NAMES: Record<SignalType, string> = {
@@ -18,6 +20,8 @@ export const SIGNAL_NAMES: Record<SignalType, string> = {
   SINCE_SEEN_MOVE: "Since you looked",
   USER_RULE: "Your rule",
   GAP: "Gap",
+  SMA_CROSSOVER: "SMA crossover",
+  RSI_EXTREME: "RSI extreme",
 };
 
 export function SignalChip({ signal }: { signal: Signal }) {

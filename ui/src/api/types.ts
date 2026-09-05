@@ -7,7 +7,9 @@ export type SignalType =
   | "LEVEL_BREAK"
   | "SINCE_SEEN_MOVE"
   | "USER_RULE"
-  | "GAP";
+  | "GAP"
+  | "SMA_CROSSOVER"
+  | "RSI_EXTREME";
 export type Attention = "high" | "notable" | "quiet";
 export type PeerMethod = "cluster" | "beta";
 export type CatalystStatus =

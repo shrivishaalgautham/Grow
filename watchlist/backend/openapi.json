@@ -2823,7 +2823,9 @@
               "LEVEL_BREAK",
               "SINCE_SEEN_MOVE",
               "USER_RULE",
-              "GAP"
+              "GAP",
+              "SMA_CROSSOVER",
+              "RSI_EXTREME"
             ],
             "title": "Type"
           },

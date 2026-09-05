@@ -80,6 +80,7 @@ class Baseline(Base):
     sma_20: Mapped[float]
     sma_50: Mapped[float]
     sma_200: Mapped[float]
+    rsi_14: Mapped[float | None]
     high_52w: Mapped[float]
     low_52w: Mapped[float]
     prev_close: Mapped[float]

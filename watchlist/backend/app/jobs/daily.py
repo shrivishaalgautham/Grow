@@ -19,6 +19,7 @@ from app.engine.baselines import Baseline, compute_baseline, daily_returns
 from app.engine.peers import MIN_PEERS, cluster_symbols
 from app.engine.signals import SessionFacts, evaluate
 from app.jobs import store
+from app.models import Baseline as BaselineRow
 from app.models import PeerCluster
 from app.notify.dispatch import dispatch
 from app.providers.base import INDEX_SYMBOL, Bar, ProviderError
@@ -40,6 +41,8 @@ HISTORY_SESSIONS = 300
 CLUSTER_MAX_AGE = timedelta(days=7)
 BACKFILL_SESSIONS = 120
 QUOTE_TTL_S = 600
+RSI_OVERBOUGHT = 70.0
+RSI_OVERSOLD = 30.0
 
 
 @dataclass(frozen=True)
@@ -101,8 +104,10 @@ def compute_baselines(force_clusters: bool = False) -> int:
     with _transaction() as session:
         universe = _load_universe_bars(session)
         clusters = _clusters(session, universe, force_clusters)
+        previous = store.load_baselines(session, list(universe.bars))
         computed_at = clock.now()
         rows = []
+        events = []
         for symbol, bars in universe.bars.items():
             if len(bars) < 2:
                 log.warning(
@@ -111,11 +116,90 @@ def compute_baselines(force_clusters: bool = False) -> int:
                 continue
             peer_returns = _peer_series(symbol, universe.returns, clusters)
             baseline = compute_baseline(bars, universe.index_returns, peer_returns)
-            rows.append(_baseline_row(symbol, baseline, bars, clusters.get(symbol), computed_at))
+            row = _baseline_row(symbol, baseline, bars, clusters.get(symbol), computed_at)
+            rows.append(row)
+            events.extend(_crossing_events(previous.get(symbol), row, computed_at))
         store.upsert_baselines(session, rows)
+        store.insert_signal_events(session, events)
     clustered = sum(row["cluster_id"] is not None for row in rows)
-    log.info("baselines rows=%d clustered=%d", len(rows), clustered)
+    log.info("baselines rows=%d clustered=%d crossings=%d", len(rows), clustered, len(events))
     return len(rows)
+
+
+def _crossing_events(old: BaselineRow | None, row: dict, computed_at: datetime) -> list[dict]:
+    if old is None:
+        return []
+    trading_date = clock.trading_date(computed_at)
+    events = []
+    sma_cross = _sma_crossover(old.sma_20, old.sma_50, row["sma_20"], row["sma_50"])
+    if sma_cross is not None:
+        direction, magnitude = sma_cross
+        events.append(
+            _crossing_row(
+                row["symbol"],
+                "SMA_CROSSOVER",
+                trading_date,
+                computed_at,
+                magnitude,
+                headline=f"{direction.capitalize()} cross: 20-day SMA crossed the 50-day SMA",
+                detail=f"20-day average {row['sma_20']:.2f} vs 50-day average {row['sma_50']:.2f}.",
+            )
+        )
+    rsi_extreme = _rsi_crossing(old.rsi_14, row["rsi_14"])
+    if rsi_extreme is not None:
+        direction, magnitude = rsi_extreme
+        events.append(
+            _crossing_row(
+                row["symbol"],
+                "RSI_EXTREME",
+                trading_date,
+                computed_at,
+                magnitude,
+                headline=f"RSI moved into {direction} territory",
+                detail=f"14-day RSI is now {row['rsi_14']:.0f}.",
+            )
+        )
+    return events
+
+
+def _sma_crossover(
+    old_20: float | None, old_50: float | None, new_20: float, new_50: float
+) -> tuple[str, float] | None:
+    if old_20 is None or old_50 is None:
+        return None
+    was_above, is_above = old_20 > old_50, new_20 > new_50
+    if was_above == is_above:
+        return None
+    return ("golden", new_20 - new_50) if is_above else ("death", old_20 - old_50)
+
+
+def _rsi_crossing(old: float | None, new: float | None) -> tuple[str, float] | None:
+    if old is None or new is None:
+        return None
+    if old < RSI_OVERBOUGHT <= new:
+        return "overbought", new
+    if old > RSI_OVERSOLD >= new:
+        return "oversold", new
+    return None
+
+
+def _crossing_row(
+    symbol: str,
+    signal_type: str,
+    trading_date: date,
+    fired_at: datetime,
+    magnitude: float,
+    headline: str,
+    detail: str,
+) -> dict:
+    return {
+        "symbol": symbol,
+        "signal_type": signal_type,
+        "trading_date": trading_date,
+        "fired_at": fired_at,
+        "magnitude": abs(magnitude),
+        "payload": {"headline": headline, "detail": detail},
+    }
 
 
 def _load_universe_bars(session: Session) -> _Universe:
@@ -189,6 +273,7 @@ def _baseline_row(
         "sma_20": _or_full_history(b.sma_20, bars["close"].mean()),
         "sma_50": _or_full_history(b.sma_50, bars["close"].mean()),
         "sma_200": _or_full_history(b.sma_200, bars["close"].mean()),
+        "rsi_14": b.rsi_14,
         "high_52w": _or_full_history(b.high_52w, bars["high"].max()),
         "low_52w": _or_full_history(b.low_52w, bars["low"].min()),
         "prev_close": b.prev_close,

@@ -10,6 +10,7 @@ VOLUME_WINDOW = 20
 YEAR_SESSIONS = 252
 MIN_SESSIONS = 60
 MIN_RESIDUAL_SIGMA = 1e-4
+RSI_WINDOW = 14
 
 
 @dataclass(frozen=True)
@@ -23,6 +24,7 @@ class Baseline:
     sma_20: float | None
     sma_50: float | None
     sma_200: float | None
+    rsi_14: float | None
     high_52w: float | None
     low_52w: float | None
     prev_close: float
@@ -62,6 +64,7 @@ def compute_baseline(
         sma_20=_trailing_mean(bars["close"], 20),
         sma_50=_trailing_mean(bars["close"], 50),
         sma_200=_trailing_mean(bars["close"], 200),
+        rsi_14=_rsi(bars["close"]),
         high_52w=float(year_high.max()) if year_high is not None else None,
         low_52w=float(year_low.min()) if year_low is not None else None,
         prev_close=float(last["close"]),
@@ -107,3 +110,17 @@ def _year_window(values: pd.Series) -> pd.Series | None:
     if len(values) < YEAR_SESSIONS:
         return None
     return values.tail(YEAR_SESSIONS)
+
+
+def _rsi(close: pd.Series) -> float | None:
+    if len(close) < RSI_WINDOW + 1:
+        return None
+    delta = close.diff().dropna()
+    gains = delta.clip(lower=0)
+    losses = -delta.clip(upper=0)
+    avg_gain = gains.ewm(alpha=1 / RSI_WINDOW, min_periods=RSI_WINDOW, adjust=False).mean().iloc[-1]
+    avg_loss = losses.ewm(alpha=1 / RSI_WINDOW, min_periods=RSI_WINDOW, adjust=False).mean().iloc[-1]
+    if avg_loss == 0:
+        return 100.0 if avg_gain > 0 else 50.0
+    rs = avg_gain / avg_loss
+    return float(100 - 100 / (1 + rs))

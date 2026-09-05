@@ -22,7 +22,14 @@ MarketStatus = Literal["open", "closed", "pre_open"]
 QuoteSource = Literal["yahoo", "bse"]
 Confidence = Literal["fresh", "delayed", "stale", "disputed", "closed"]
 SignalType = Literal[
-    "EXCESS_MOVE", "VOLUME_CONFIRMED", "LEVEL_BREAK", "SINCE_SEEN_MOVE", "USER_RULE", "GAP"
+    "EXCESS_MOVE",
+    "VOLUME_CONFIRMED",
+    "LEVEL_BREAK",
+    "SINCE_SEEN_MOVE",
+    "USER_RULE",
+    "GAP",
+    "SMA_CROSSOVER",
+    "RSI_EXTREME",
 ]
 Attention = Literal["high", "notable", "quiet"]
 PeerMethod = Literal["cluster", "beta"]

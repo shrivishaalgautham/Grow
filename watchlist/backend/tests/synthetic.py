@@ -47,6 +47,7 @@ def make_baseline(**overrides) -> Baseline:
         sma_20=100.0,
         sma_50=100.0,
         sma_200=100.0,
+        rsi_14=50.0,
         high_52w=120.0,
         low_52w=80.0,
         prev_close=100.0,

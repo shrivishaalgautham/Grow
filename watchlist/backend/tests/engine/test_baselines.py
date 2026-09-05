@@ -96,3 +96,35 @@ def test_peer_returns_replace_beta_adjustment_in_residual_sigma(rng):
 
     assert baseline.residual_sigma < 1e-10
     assert baseline.confidence == "low"
+
+
+def test_rsi_is_near_100_after_a_pure_uptrend(rng):
+    bars = bars_from_returns(np.full(SESSIONS, 0.01))
+
+    baseline = compute_baseline(bars, index_returns(rng, SESSIONS))
+
+    assert baseline.rsi_14 == pytest.approx(100.0, abs=0.5)
+
+
+def test_rsi_is_near_zero_after_a_pure_downtrend(rng):
+    bars = bars_from_returns(np.full(SESSIONS, -0.01))
+
+    baseline = compute_baseline(bars, index_returns(rng, SESSIONS))
+
+    assert baseline.rsi_14 == pytest.approx(0.0, abs=0.5)
+
+
+def test_rsi_is_fifty_when_gains_and_losses_are_balanced(rng):
+    bars = bars_from_returns(np.tile([0.01, -0.01], SESSIONS // 2))
+
+    baseline = compute_baseline(bars, index_returns(rng, SESSIONS))
+
+    assert baseline.rsi_14 == pytest.approx(50.0, abs=3.0)
+
+
+def test_rsi_is_none_with_fewer_than_fifteen_sessions(rng):
+    bars = bars_from_returns(np.full(10, 0.01))
+
+    baseline = compute_baseline(bars, index_returns(rng, 10))
+
+    assert baseline.rsi_14 is None

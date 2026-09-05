@@ -275,6 +275,7 @@ def _engine_baseline(row: BaselineRow) -> Baseline:
         sma_20=row.sma_20,
         sma_50=row.sma_50,
         sma_200=row.sma_200,
+        rsi_14=row.rsi_14,
         high_52w=row.high_52w,
         low_52w=row.low_52w,
         prev_close=row.prev_close,
