@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import auth, evidence, notifications, rules, symbols, watchlist
+from app.api import auth, evidence, notifications, oauth, rules, symbols, watchlist
 from app.api import health as health_api
 from app.cache import cache
 from app.config import settings
@@ -70,6 +70,7 @@ def create_app() -> FastAPI:
     app.add_api_route("/api/health", health, methods=["GET"], response_model=HealthOut)
     for router in (
         auth.router,
+        oauth.router,
         watchlist.router,
         symbols.router,
         rules.router,

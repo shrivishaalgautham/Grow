@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { apiBaseUrl, isFixtureMode } from "@/api/client";
 import type { DigestOut } from "@/api/types";
 import { useHealth } from "@/hooks/useHealth";
 import { useMe } from "@/hooks/useMe";
@@ -120,9 +121,18 @@ export function AppHeader({ digest }: { digest?: DigestOut }) {
               <Icon name="person" size={18} className="text-on-primary" />
             </div>
             <span className="font-label-sm text-label-sm text-on-surface pr-space-xs hidden sm:inline">
-              {me.data?.display_name ?? "…"}
+              {me.data?.email ?? me.data?.display_name ?? "…"}
             </span>
           </div>
+          {me.data && !me.data.email && !isFixtureMode && (
+            <a
+              href={`${apiBaseUrl}/api/auth/google/start`}
+              className="hidden sm:flex items-center gap-space-xs bg-primary-container px-space-md py-space-xs rounded-lg shadow-sm hover:opacity-95 transition-opacity font-label-md text-label-md text-on-primary-fixed"
+            >
+              <Icon name="verified" size={18} />
+              <span>Sign in with Google</span>
+            </a>
+          )}
           <button
             type="button"
             onClick={() => setIsResumeOpen(true)}

@@ -8,6 +8,7 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 
 export const isFixtureMode = MODE === "fixture";
+export const apiBaseUrl = BASE_URL;
 
 async function liveRequest(
   method: string,

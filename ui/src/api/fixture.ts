@@ -367,6 +367,7 @@ export async function fixtureRequest(
       id: "fixture-user",
       display_name: "sample-a41c",
       is_sample: true,
+      email: null,
       last_reviewed_at: state.reviewedAt ?? BASE.last_reviewed_at,
       expires_at: new Date(Date.now() + 30 * 86_400_000).toISOString(),
     };

@@ -37,6 +37,11 @@ class Settings(BaseSettings):
     notify_min_gap_seconds: int = 1800
     gdelt_enabled: bool = True
     google_news_enabled: bool = True
+    google_api_key: str = ""
+    oidc_issuer: str = "https://accounts.google.com"
+    oidc_client_id: str = ""
+    oidc_client_secret: str = ""
+    oidc_redirect_uri: str = "http://localhost:8000/api/auth/google/callback"
 
     @field_validator("openrouter_models", "allowed_origins", mode="before")
     @classmethod

@@ -150,6 +150,7 @@ export interface MeOut {
   id: string;
   display_name: string;
   is_sample: boolean;
+  email: string | null;
   last_reviewed_at: IsoDateTime | null;
   expires_at: IsoDateTime;
 }

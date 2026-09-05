@@ -54,6 +54,8 @@ ErrorCode = Literal[
     "not_in_watchlist",
     "not_seeded",
     "invalid_request",
+    "invalid_oauth_state",
+    "oauth_failed",
 ]
 
 NUMERIC_BOUNDS: dict[str, tuple[float, float]] = {
@@ -239,6 +241,7 @@ class MeOut(BaseModel):
     id: str
     display_name: str
     is_sample: bool
+    email: str | None
     last_reviewed_at: datetime | None
     expires_at: datetime
 

@@ -1,6 +1,6 @@
 import hashlib
 import secrets
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy import select
@@ -33,13 +33,7 @@ def create_session(payload: SessionCreate, session: Session = Depends(get_sessio
     session.flush()
     if payload.start_with_sample:
         seed_sample_watchlist(session, user, now)
-    token = secrets.token_urlsafe(32)
-    auth = AuthSession(
-        token_hash=hashlib.sha256(token.encode()).hexdigest(),
-        user_id=user.id,
-        expires_at=now + timedelta(days=SESSION_DAYS),
-    )
-    session.add(auth)
+    token, auth = issue_session(session, user, now)
     session.commit()
     return SessionOut(token=token, expires_at=auth.expires_at, user=_user_out(user))
 
@@ -51,6 +45,7 @@ def me(user: User = Depends(current_user), session: Session = Depends(get_sessio
         id=str(user.id),
         display_name=user.display_name,
         is_sample=user.is_sample,
+        email=user.email,
         last_reviewed_at=user.last_reviewed_at,
         expires_at=auth.expires_at,
     )
@@ -67,3 +62,14 @@ def delete_session(
 
 def _user_out(user: User) -> UserOut:
     return UserOut(id=str(user.id), display_name=user.display_name, is_sample=user.is_sample)
+
+
+def issue_session(session: Session, user: User, now: datetime) -> tuple[str, AuthSession]:
+    token = secrets.token_urlsafe(32)
+    auth = AuthSession(
+        token_hash=hashlib.sha256(token.encode()).hexdigest(),
+        user_id=user.id,
+        expires_at=now + timedelta(days=SESSION_DAYS),
+    )
+    session.add(auth)
+    return token, auth

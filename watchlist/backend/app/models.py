@@ -27,6 +27,8 @@ class User(Base):
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     display_name: Mapped[str] = mapped_column(String(32))
     is_sample: Mapped[bool] = mapped_column(default=False)
+    email: Mapped[str | None] = mapped_column(String(254), unique=True)
+    google_sub: Mapped[str | None] = mapped_column(String(64), unique=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     last_reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 

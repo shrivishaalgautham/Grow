@@ -19,6 +19,7 @@ dependencies = [
     "scikit-learn",
     "python-dateutil",
     "curl-cffi>=0.16.3",
+    "joserfc>=1.0",
 ]
 
 [dependency-groups]
