@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/api/client";
+import { apiRequestOrDemo } from "@/api/client";
 import type { CatalystsOut } from "@/api/types";
 
 export function useCatalysts(symbol: string | null) {
   return useQuery({
     queryKey: ["catalysts", symbol],
     queryFn: () =>
-      apiRequest<CatalystsOut>(
+      apiRequestOrDemo<CatalystsOut>(
         "GET",
         `/symbols/${encodeURIComponent(symbol!)}/catalysts`,
       ),

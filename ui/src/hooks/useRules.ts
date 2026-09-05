@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/api/client";
+import { apiRequest, apiRequestOrDemo } from "@/api/client";
 import type { Rule, RuleActionInput, RuleCompileOut, RuleListItem, RuleOut } from "@/api/types";
 
 const rulesKey = ["rules"] as const;
@@ -18,7 +18,7 @@ export function useRules(enabled: boolean) {
 
   const compile = useMutation({
     mutationFn: (text: string) =>
-      apiRequest<RuleCompileOut>("POST", "/rules/compile", { text }),
+      apiRequestOrDemo<RuleCompileOut>("POST", "/rules/compile", { text }),
   });
 
   const create = useMutation({

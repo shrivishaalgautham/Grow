@@ -8,7 +8,13 @@ import { Icon } from "./Icon";
 
 const EMAIL_PATTERN = /^[^@\s]{1,64}@[^@\s]+\.[^@\s]{2,}$/;
 
-export function AlertsPanel({ enabled }: { enabled: boolean }) {
+export function AlertsPanel({
+  enabled,
+  onRequireSignIn,
+}: {
+  enabled: boolean;
+  onRequireSignIn?: () => void;
+}) {
   const [email, setEmail] = useState("");
   const { status, subscribe, remove } = useNotifications(enabled);
   const channel = status.data?.email ?? null;
@@ -16,6 +22,7 @@ export function AlertsPanel({ enabled }: { enabled: boolean }) {
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
+    if (onRequireSignIn) return onRequireSignIn();
     if (isValid) subscribe.mutate(email.trim(), { onSuccess: () => setEmail("") });
   }
 
@@ -61,7 +68,7 @@ export function AlertsPanel({ enabled }: { enabled: boolean }) {
           </div>
           <button
             type="button"
-            onClick={() => remove.mutate()}
+            onClick={onRequireSignIn ?? (() => remove.mutate())}
             disabled={remove.isPending}
             className="px-space-md py-space-xs bg-surface-container hover:bg-error-container hover:text-on-error-container text-on-surface font-label-md text-label-md rounded-lg transition-colors disabled:opacity-60 shrink-0"
           >
@@ -95,7 +102,7 @@ export function AlertsPanel({ enabled }: { enabled: boolean }) {
             />
             <button
               type="submit"
-              disabled={!isValid || subscribe.isPending}
+              disabled={subscribe.isPending || (!isValid && !onRequireSignIn)}
               className="px-space-xl py-space-sm bg-primary hover:bg-primary/90 text-on-primary font-label-lg text-label-lg rounded-lg shadow-sm transition-colors flex items-center justify-center gap-space-xs shrink-0 disabled:opacity-50"
             >
               <Icon name="send" size={18} />

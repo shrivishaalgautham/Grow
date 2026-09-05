@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/api/client";
+import { apiRequestOrDemo } from "@/api/client";
 import type { ExplanationOut } from "@/api/types";
 
 export function useExplanation(symbol: string | null) {
   return useQuery({
     queryKey: ["explanation", symbol],
     queryFn: () =>
-      apiRequest<ExplanationOut>("GET", `/symbols/${encodeURIComponent(symbol!)}/explanation`),
+      apiRequestOrDemo<ExplanationOut>("GET", `/symbols/${encodeURIComponent(symbol!)}/explanation`),
     enabled: symbol !== null,
     retry: false,
     refetchInterval: (query) =>

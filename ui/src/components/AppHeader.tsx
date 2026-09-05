@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { apiBaseUrl, isFixtureMode } from "@/api/client";
 import type { DigestOut } from "@/api/types";
 import { useHealth } from "@/hooks/useHealth";
 import { useMe } from "@/hooks/useMe";
@@ -45,10 +44,10 @@ function ProviderStrip({ digest }: { digest?: DigestOut }) {
 
 export function AppHeader({ digest }: { digest?: DigestOut }) {
   const router = useRouter();
-  const { token, end } = useSession();
+  const { token, ready, end, signInWithGoogle } = useSession();
   const me = useMe(Boolean(token));
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [isGoogleNoteOpen, setIsGoogleNoteOpen] = useState(false);
+  const isDemo = ready && !token;
 
   function endSession() {
     if (!window.confirm("End this session on this device? You will need to sign back in, or reopen your resume link, to continue.")) return;
@@ -83,68 +82,46 @@ export function AppHeader({ digest }: { digest?: DigestOut }) {
             )}
             <div className="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-full">
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <Icon name="person" size={18} className="text-on-primary" />
+                <Icon name={isDemo ? "visibility" : "person"} size={18} className="text-on-primary" />
               </div>
               <span className="font-label-sm text-label-sm text-on-surface pr-space-xs hidden sm:inline">
-                {me.data?.email ?? me.data?.display_name ?? "…"}
+                {isDemo ? "Viewing demo" : (me.data?.email ?? me.data?.display_name ?? "…")}
               </span>
             </div>
-            {me.data && !me.data.email && (isFixtureMode ? (
+            {(isDemo || (me.data && !me.data.email)) && (
               <button
                 type="button"
-                title="Google sign-in needs the live backend — set NEXT_PUBLIC_API_MODE=live"
-                onClick={() => setIsGoogleNoteOpen(true)}
-                className="hidden sm:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors"
-              >
-                <Icon name="verified" size={18} />
-                <span>Sign in with Google</span>
-              </button>
-            ) : (
-              <a
-                href={`${apiBaseUrl}/api/auth/google/start`}
+                onClick={signInWithGoogle}
                 className="hidden sm:flex items-center gap-space-xs bg-primary-container px-space-md py-space-xs rounded-lg shadow-sm hover:opacity-95 transition-opacity font-label-md text-label-md text-on-primary-fixed"
               >
                 <Icon name="verified" size={18} />
                 <span>Sign in with Google</span>
-              </a>
-            ))}
-            <button
-              type="button"
-              aria-label="Open on phone"
-              onClick={() => setIsResumeOpen(true)}
-              className="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:bg-surface-container-low transition-colors font-label-md text-label-md text-on-surface"
-            >
-              <Icon name="qr_code_2" size={18} className="text-primary" />
-              <span className="hidden sm:inline">Open on phone</span>
-            </button>
-            <button
-              type="button"
-              onClick={endSession}
-              disabled={end.isPending}
-              className="flex items-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container px-space-md py-space-xs rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant disabled:opacity-50"
-            >
-              <Icon name="logout" size={18} />
-              <span className="hidden md:inline">End session</span>
-            </button>
+              </button>
+            )}
+            {!isDemo && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Open on phone"
+                  onClick={() => setIsResumeOpen(true)}
+                  className="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:bg-surface-container-low transition-colors font-label-md text-label-md text-on-surface"
+                >
+                  <Icon name="qr_code_2" size={18} className="text-primary" />
+                  <span className="hidden sm:inline">Open on phone</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={endSession}
+                  disabled={end.isPending}
+                  className="flex items-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container px-space-md py-space-xs rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant disabled:opacity-50"
+                >
+                  <Icon name="logout" size={18} />
+                  <span className="hidden md:inline">End session</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
-        {isGoogleNoteOpen && (
-          <div role="status" className="w-full px-gutter-desktop py-space-xs bg-secondary-container text-on-secondary-fixed">
-            <div className="max-w-7xl mx-auto w-full flex items-center justify-between gap-space-md">
-              <span className="font-body-sm text-body-sm">
-                Google sign-in needs the live backend. This build is running on fixture data — set NEXT_PUBLIC_API_MODE=live to enable it.
-              </span>
-              <button
-                type="button"
-                onClick={() => setIsGoogleNoteOpen(false)}
-                aria-label="Dismiss sign-in notice"
-                className="font-label-sm text-label-sm text-secondary hover:text-on-surface shrink-0"
-              >
-                <Icon name="close" size={14} />
-              </button>
-            </div>
-          </div>
-        )}
       </header>
       {isResumeOpen && token && (
         <ResumeModal token={token} expiresAt={me.data?.expires_at ?? null} onClose={() => setIsResumeOpen(false)} />

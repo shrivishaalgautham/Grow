@@ -16,7 +16,13 @@ function conditionSummary(rule: Rule) {
   return `Scope: ${scope} • ${conditions}`;
 }
 
-export function RuleComposer({ enabled }: { enabled: boolean }) {
+export function RuleComposer({
+  enabled,
+  onRequireSignIn,
+}: {
+  enabled: boolean;
+  onRequireSignIn?: () => void;
+}) {
   const [text, setText] = useState("");
   const [wantsEmail, setWantsEmail] = useState(false);
   const [wantsWebhook, setWantsWebhook] = useState(false);
@@ -32,10 +38,12 @@ export function RuleComposer({ enabled }: { enabled: boolean }) {
 
   function preview(event: React.FormEvent) {
     event.preventDefault();
+    if (onRequireSignIn) return onRequireSignIn();
     if (text.trim()) compile.mutate(text.trim().slice(0, 200));
   }
 
   function save() {
+    if (onRequireSignIn) return onRequireSignIn();
     if (!compiled?.rule || isWebhookUrlMissing) return;
     const actions: RuleActionInput[] = [
       ...(wantsEmail ? [{ type: "email" } as const] : []),
@@ -264,7 +272,7 @@ export function RuleComposer({ enabled }: { enabled: boolean }) {
                 ) : (
                   <span className="hidden sm:inline-flex px-space-sm py-space-2xs bg-surface-container text-secondary font-label-sm text-label-sm rounded-full">No match today</span>
                 )}
-                <button type="button" onClick={() => remove.mutate(rule.id)} aria-label="Delete rule" className="text-secondary hover:text-tertiary transition-colors">
+                <button type="button" onClick={onRequireSignIn ?? (() => remove.mutate(rule.id))} aria-label="Delete rule" className="text-secondary hover:text-tertiary transition-colors">
                   <Icon name="delete" size={18} />
                 </button>
               </div>

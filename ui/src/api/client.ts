@@ -1,5 +1,5 @@
 import { ApiError } from "./errors";
-import { fixtureRequest } from "./fixture";
+import { demoRequest, fixtureRequest } from "./fixture";
 import { clearToken, readToken } from "./session";
 import type { ErrorOut } from "./types";
 
@@ -61,4 +61,13 @@ export async function apiRequest<T>(
     if (error instanceof ApiError && error.status === 401) clearToken();
     throw error;
   }
+}
+
+export function apiRequestOrDemo<T>(
+  method: string,
+  path: string,
+  body?: unknown,
+): Promise<T> {
+  if (readToken()) return apiRequest<T>(method, path, body);
+  return demoRequest(method, path, body) as Promise<T>;
 }

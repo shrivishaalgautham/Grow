@@ -2,7 +2,8 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/api/client";
+import { apiBaseUrl, apiRequest, isFixtureMode } from "@/api/client";
+import { simulateGoogleSignIn } from "@/api/fixture";
 import {
   clearToken,
   serverTokenSnapshot,
@@ -56,5 +57,17 @@ export function useSession() {
     [queryClient],
   );
 
-  return { token, ready, start, end, deleteAccount, adoptToken };
+  const signInWithGoogle = useCallback(() => {
+    if (!isFixtureMode) {
+      // Cross-origin redirect to the backend's OAuth entrypoint, not an internal route.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.href = `${apiBaseUrl}/api/auth/google/start`;
+      return;
+    }
+    const session = simulateGoogleSignIn();
+    queryClient.removeQueries();
+    storeToken(session.token, session.expires_at);
+  }, [queryClient]);
+
+  return { token, ready, start, end, deleteAccount, adoptToken, signInWithGoogle };
 }

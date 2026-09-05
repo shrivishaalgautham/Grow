@@ -13,8 +13,10 @@ import healthFixture from "@/fixtures/health.json";
 
 import { ApiError } from "./errors";
 import type {
+  BriefingOut,
   CatalystsOut,
   DigestOut,
+  ExplanationOut,
   HistoryOut,
   Item,
   Rule,
@@ -46,6 +48,7 @@ const SAMPLE_SYMBOLS = BASE.items.map((item) => item.symbol);
 const STATE_KEY = "swl.fixture";
 
 const DEFAULT_DISPLAY_NAME = "sample-a41c";
+const GOOGLE_DEMO_EMAIL = "demo.investor@gmail.com";
 
 interface FixtureState {
   watchlist: string[];
@@ -54,6 +57,7 @@ interface FixtureState {
   reviewedAt: string | null;
   isSample: boolean;
   displayName: string | null;
+  email: string | null;
   alertEmail: string | null;
 }
 
@@ -64,8 +68,26 @@ const initialState = (): FixtureState => ({
   reviewedAt: null,
   isSample: true,
   displayName: null,
+  email: null,
   alertEmail: null,
 });
+
+export function simulateGoogleSignIn(): SessionOut {
+  const displayName = GOOGLE_DEMO_EMAIL.split("@")[0];
+  saveState({
+    ...initialState(),
+    watchlist: SAMPLE_SYMBOLS,
+    isSample: false,
+    displayName,
+    email: GOOGLE_DEMO_EMAIL,
+  });
+  pendingCatalysts.clear();
+  return {
+    token: `fixture-${Math.random().toString(36).slice(2, 14)}`,
+    expires_at: new Date(Date.now() + 30 * 86_400_000).toISOString(),
+    user: { id: "fixture-user", display_name: displayName, is_sample: false },
+  };
+}
 
 function loadState(): FixtureState {
   if (typeof window === "undefined") return initialState();
@@ -254,6 +276,37 @@ function scaleHistory(symbol: string, state: FixtureState): HistoryOut {
   return history;
 }
 
+function searchSymbols(rawQuery: string): SymbolSearchOut[] {
+  const q = rawQuery.trim().toLowerCase();
+  if (!q) return [];
+  const pool = [
+    ...(searchFixture as SymbolSearchOut[]),
+    ...BASE.items.map(({ symbol, name, industry }) => ({ symbol, name, industry })),
+  ];
+  return pool
+    .filter(
+      (row) =>
+        row.symbol.toLowerCase().includes(q) || row.name.toLowerCase().includes(q),
+    )
+    .slice(0, 10);
+}
+
+function explain(symbol: string): ExplanationOut {
+  const item = BASE.items.find((candidate) => candidate.symbol === symbol);
+  if (!item || !item.is_changed) {
+    throw new ApiError(403, "not_surfaced", "Only stocks that changed are explained.");
+  }
+  return {
+    status: "ready",
+    text: `${symbol.replace(".NS", "")} moved ${item.today_change_pct}% while its peer group moved ${item.peer_change_pct}%, leaving ${item.residual_pct}% that is stock-specific. No public catalyst was found in the last three days of filings and headlines.`,
+    source: "template",
+    catalyst_status: item.catalyst_status === "found" ? "found" : "none_found",
+    items: [],
+    generated_at: new Date().toISOString(),
+    was_cached: false,
+  };
+}
+
 function catalystsFor(symbol: string, state: FixtureState): CatalystsOut {
   const item = BASE.items.find((candidate) => candidate.symbol === symbol);
   if (!item || !state.watchlist.includes(symbol)) {
@@ -328,6 +381,41 @@ function compileRule(text: string): {
   return { rule: { symbols, all: conditions }, preview, error: null };
 }
 
+const DEMO_STATE = initialState();
+
+export function demoDigest(): DigestOut {
+  return buildDigest(DEMO_STATE, "default");
+}
+
+export function demoBriefing(): BriefingOut {
+  return clone(briefingFixture as BriefingOut);
+}
+
+export async function demoRequest(
+  method: string,
+  path: string,
+  body: unknown,
+): Promise<unknown> {
+  const [pathname] = path.split("?");
+  const query = new URLSearchParams(path.split("?")[1] ?? "");
+
+  if (method === "GET" && pathname === "/symbols/search") {
+    return searchSymbols(query.get("q") ?? "");
+  }
+  if (method === "POST" && pathname === "/rules/compile") {
+    return compileRule((body as { text: string }).text);
+  }
+  if (method === "GET" && pathname.startsWith("/symbols/")) {
+    const [, , symbol, resource] = pathname.split("/");
+    if (resource === "history") return scaleHistory(symbol, DEMO_STATE);
+    if (resource === "peers") return peersFixture;
+    if (resource === "catalysts") return catalystsFor(symbol, DEMO_STATE);
+    if (resource === "explanation") return explain(symbol);
+  }
+
+  throw new ApiError(404, "invalid_request", `No demo data for ${method} ${path}`);
+}
+
 export async function fixtureRequest(
   method: string,
   path: string,
@@ -374,7 +462,7 @@ export async function fixtureRequest(
       id: "fixture-user",
       display_name: state.displayName ?? DEFAULT_DISPLAY_NAME,
       is_sample: state.isSample,
-      email: null,
+      email: state.email,
       last_reviewed_at: state.reviewedAt ?? BASE.last_reviewed_at,
       expires_at: new Date(Date.now() + 30 * 86_400_000).toISOString(),
     };
@@ -452,23 +540,7 @@ export async function fixtureRequest(
   }
 
   if (method === "GET" && pathname === "/symbols/search") {
-    const q = (query.get("q") ?? "").trim().toLowerCase();
-    if (!q) return [];
-    const pool = [
-      ...(searchFixture as SymbolSearchOut[]),
-      ...BASE.items.map(({ symbol, name, industry }) => ({
-        symbol,
-        name,
-        industry,
-      })),
-    ];
-    return pool
-      .filter(
-        (row) =>
-          row.symbol.toLowerCase().includes(q) ||
-          row.name.toLowerCase().includes(q),
-      )
-      .slice(0, 10);
+    return searchSymbols(query.get("q") ?? "");
   }
 
   if (method === "GET" && pathname.startsWith("/symbols/")) {
@@ -529,18 +601,7 @@ export async function fixtureRequest(
     return { status: "verified", address_masked: state.alertEmail ?? "y***@example.com" };
   }
   if (method === "GET" && pathname.startsWith("/symbols/") && pathname.endsWith("/explanation")) {
-    const symbol = pathname.split("/")[2];
-    const item = BASE.items.find((candidate) => candidate.symbol === symbol);
-    if (!item || !item.is_changed) throw new ApiError(403, "not_surfaced", "Only stocks that changed are explained.");
-    return {
-      status: "ready",
-      text: `${symbol.replace(".NS", "")} moved ${item.today_change_pct}% while its peer group moved ${item.peer_change_pct}%, leaving ${item.residual_pct}% that is stock-specific. No public catalyst was found in the last three days of filings and headlines.`,
-      source: "template",
-      catalyst_status: item.catalyst_status === "found" ? "found" : "none_found",
-      items: [],
-      generated_at: new Date().toISOString(),
-      was_cached: false,
-    };
+    return explain(pathname.split("/")[2]);
   }
 
   if (method === "GET" && pathname === "/evidence/noise-reduction") {
