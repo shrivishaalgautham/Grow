@@ -1,7 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
+import { useSession } from "@/hooks/useSession";
 import { formatDay } from "@/lib/format";
 import { Icon } from "./Icon";
 
@@ -16,6 +18,8 @@ export function ResumeModal({
 }) {
   const [isCopied, setIsCopied] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+  const { deleteAccount } = useSession();
   const url = `${window.location.origin}/?t=${token}`;
 
   useEffect(() => {
@@ -33,6 +37,11 @@ export function ResumeModal({
     setTimeout(() => setIsCopied(false), 2_000);
   }
 
+  function destroyAccount() {
+    if (!window.confirm("Delete your account and all its data? The watchlist, rules, and alert settings on the server are erased for every device. This cannot be undone.")) return;
+    deleteAccount.mutate(undefined, { onSettled: () => router.replace("/") });
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-margin-mobile">
       <button type="button" aria-label="Close" onClick={onClose} className="absolute inset-0 bg-on-surface/30 backdrop-blur-[3px]" />
@@ -40,7 +49,7 @@ export function ResumeModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="resume-title"
-        className="relative w-full max-w-3xl bg-surface-container-lowest rounded-xl p-space-xl md:p-space-2xl shadow-2xl border border-secondary-container/40 space-y-space-md"
+        className="relative w-full max-w-3xl max-h-[90dvh] overflow-y-auto bg-surface-container-lowest rounded-xl p-space-xl md:p-space-2xl shadow-2xl border border-secondary-container/40 space-y-space-md"
       >
         <div className="flex items-center justify-between border-b border-surface-container pb-space-sm">
           <div className="flex items-center gap-space-sm">
@@ -92,6 +101,19 @@ export function ResumeModal({
               </p>
             </div>
           </div>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm border-t border-surface-container pt-space-md">
+          <p className="font-body-sm text-body-sm text-secondary">
+            Ending the session only signs this device out. Your watchlist and rules stay on the server.
+          </p>
+          <button
+            type="button"
+            onClick={destroyAccount}
+            disabled={deleteAccount.isPending}
+            className="self-start sm:self-auto shrink-0 font-label-sm text-label-sm text-tertiary underline underline-offset-2 hover:text-on-surface transition-colors disabled:opacity-50"
+          >
+            {deleteAccount.isPending ? "Deleting…" : "Delete my account and all data"}
+          </button>
         </div>
       </section>
     </div>

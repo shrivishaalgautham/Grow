@@ -28,10 +28,10 @@ class ApiError(Exception):
         self.retry_after_seconds = retry_after_seconds
 
 
-def current_user(
+def current_session(
     authorization: str | None = Header(default=None),
     session: Session = Depends(get_session),
-) -> User:
+) -> AuthSession:
     scheme, _, token = (authorization or "").partition(" ")
     if scheme.lower() != "bearer" or not token.strip():
         raise ApiError(401, "unauthorized", "missing bearer token")
@@ -40,6 +40,10 @@ def current_user(
         raise ApiError(401, "unauthorized", "unknown session")
     if auth.expires_at < clock.now():
         raise ApiError(401, "session_expired", "session expired")
+    return auth
+
+
+def current_user(auth: AuthSession = Depends(current_session)) -> User:
     return auth.user
 
 

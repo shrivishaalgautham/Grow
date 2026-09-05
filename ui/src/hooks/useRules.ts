@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/api/client";
-import type { Rule, RuleCompileOut, RuleListItem, RuleOut } from "@/api/types";
+import type { Rule, RuleActionInput, RuleCompileOut, RuleListItem, RuleOut } from "@/api/types";
 
 const rulesKey = ["rules"] as const;
 
@@ -22,7 +22,7 @@ export function useRules(enabled: boolean) {
   });
 
   const create = useMutation({
-    mutationFn: (input: { nl_text: string; rule: Rule }) =>
+    mutationFn: (input: { nl_text: string; rule: Rule; actions?: RuleActionInput[] }) =>
       apiRequest<RuleOut>("POST", "/rules", input),
     onSuccess: refresh,
   });

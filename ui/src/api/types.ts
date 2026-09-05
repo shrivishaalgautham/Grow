@@ -243,11 +243,26 @@ export interface RuleCompileOut {
   error: string | null;
 }
 
+export interface EmailAction {
+  type: "email";
+}
+
+export interface WebhookAction {
+  type: "webhook";
+  url: string;
+  secret: string;
+}
+
+export type RuleAction = EmailAction | WebhookAction;
+
+export type RuleActionInput = EmailAction | Omit<WebhookAction, "secret">;
+
 export interface RuleOut {
   id: string;
   nl_text: string;
   rule: Rule;
   preview: string;
+  actions: RuleAction[];
   enabled: boolean;
   created_at: IsoDateTime;
 }
@@ -256,6 +271,7 @@ export interface RuleListItem {
   id: string;
   nl_text: string;
   preview: string;
+  actions: RuleAction[];
   enabled: boolean;
   created_at: IsoDateTime;
   matched_today: string[];

@@ -15,16 +15,13 @@ import type { SessionCreate, SessionOut } from "@/api/types";
 export function useSession() {
   const queryClient = useQueryClient();
 
-  const token = useSyncExternalStore(
+  const snapshot = useSyncExternalStore(
     subscribeToToken,
     tokenSnapshot,
     serverTokenSnapshot,
   );
-  const ready = useSyncExternalStore(
-    subscribeToToken,
-    () => true,
-    () => false,
-  );
+  const ready = snapshot !== undefined;
+  const token = snapshot ?? null;
 
   const start = useMutation({
     mutationFn: (input: SessionCreate) =>
@@ -43,6 +40,14 @@ export function useSession() {
     },
   });
 
+  const deleteAccount = useMutation({
+    mutationFn: () => apiRequest<null>("DELETE", "/auth/account"),
+    onSuccess: () => {
+      queryClient.removeQueries();
+      clearToken();
+    },
+  });
+
   const adoptToken = useCallback(
     (value: string) => {
       queryClient.removeQueries();
@@ -51,5 +56,5 @@ export function useSession() {
     [queryClient],
   );
 
-  return { token, ready, start, end, adoptToken };
+  return { token, ready, start, end, deleteAccount, adoptToken };
 }

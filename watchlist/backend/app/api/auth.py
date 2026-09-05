@@ -3,14 +3,13 @@ import secrets
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, Response
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import clock
 from app.api.ratelimit import global_ip_limit
 from app.api.sample import sample_display_name, seed_sample_watchlist
 from app.db import get_session
-from app.deps import current_user, rate_limit
+from app.deps import current_session, current_user, rate_limit
 from app.models import AuthSession, User
 from app.schemas import MeOut, SessionCreate, SessionOut, UserOut
 
@@ -39,8 +38,8 @@ def create_session(payload: SessionCreate, session: Session = Depends(get_sessio
 
 
 @router.get("/me", response_model=MeOut)
-def me(user: User = Depends(current_user), session: Session = Depends(get_session)) -> MeOut:
-    auth = session.scalars(select(AuthSession).where(AuthSession.user_id == user.id)).one()
+def me(auth: AuthSession = Depends(current_session)) -> MeOut:
+    user = auth.user
     return MeOut(
         id=str(user.id),
         display_name=user.display_name,
@@ -53,6 +52,15 @@ def me(user: User = Depends(current_user), session: Session = Depends(get_sessio
 
 @router.delete("/session", status_code=204)
 def delete_session(
+    auth: AuthSession = Depends(current_session), session: Session = Depends(get_session)
+) -> Response:
+    session.delete(auth)
+    session.commit()
+    return Response(status_code=204)
+
+
+@router.delete("/account", status_code=204)
+def delete_account(
     user: User = Depends(current_user), session: Session = Depends(get_session)
 ) -> Response:
     session.delete(user)

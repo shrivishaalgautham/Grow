@@ -30,6 +30,11 @@ async function liveRequest(
   const payload = await response.json().catch(() => null);
 
   if (!response.ok) {
+    const validation = (payload as { detail?: { msg?: string }[] } | null)?.detail;
+    if (Array.isArray(validation)) {
+      const message = validation.map((issue) => issue.msg).filter(Boolean).join("; ");
+      throw new ApiError(response.status, "invalid_request", message || "The request was rejected as invalid.");
+    }
     const detail = (payload as ErrorOut | null)?.error;
     throw new ApiError(
       response.status,

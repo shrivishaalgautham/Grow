@@ -23,11 +23,11 @@ function invalidate() {
 }
 
 export function subscribeToToken(listener: () => void) {
+  if (listeners.size === 0) window.addEventListener("storage", invalidate);
   listeners.add(listener);
-  window.addEventListener("storage", invalidate);
   return () => {
     listeners.delete(listener);
-    window.removeEventListener("storage", invalidate);
+    if (listeners.size === 0) window.removeEventListener("storage", invalidate);
   };
 }
 
@@ -39,7 +39,7 @@ export function tokenSnapshot(): string | null {
   return cached;
 }
 
-export const serverTokenSnapshot = () => null;
+export const serverTokenSnapshot = (): undefined => undefined;
 
 export function readToken(): string | null {
   return typeof window === "undefined" ? null : tokenSnapshot();

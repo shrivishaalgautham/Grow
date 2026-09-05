@@ -18,6 +18,7 @@ import type {
   HistoryOut,
   Item,
   Rule,
+  RuleActionInput,
   RuleListItem,
   SessionCreate,
   SessionOut,
@@ -44,12 +45,15 @@ const BASE = digestFixture as DigestOut;
 const SAMPLE_SYMBOLS = BASE.items.map((item) => item.symbol);
 const STATE_KEY = "swl.fixture";
 
+const DEFAULT_DISPLAY_NAME = "sample-a41c";
+
 interface FixtureState {
   watchlist: string[];
   seen: string[];
   rules: RuleListItem[];
   reviewedAt: string | null;
   isSample: boolean;
+  displayName: string | null;
   alertEmail: string | null;
 }
 
@@ -59,6 +63,7 @@ const initialState = (): FixtureState => ({
   rules: rulesFixture as RuleListItem[],
   reviewedAt: null,
   isSample: true,
+  displayName: null,
   alertEmail: null,
 });
 
@@ -67,7 +72,8 @@ function loadState(): FixtureState {
   const raw = window.localStorage.getItem(STATE_KEY);
   if (!raw) return initialState();
   try {
-    return JSON.parse(raw) as FixtureState;
+    const stored = { ...initialState(), ...(JSON.parse(raw) as Partial<FixtureState>) };
+    return { ...stored, rules: stored.rules.map((rule) => ({ ...rule, actions: rule.actions ?? [] })) };
   } catch {
     return initialState();
   }
@@ -348,6 +354,7 @@ export async function fixtureRequest(
       ...initialState(),
       watchlist: input.start_with_sample ? SAMPLE_SYMBOLS : [],
       isSample: Boolean(input.start_with_sample),
+      displayName: input.display_name ?? null,
     });
     pendingCatalysts.clear();
     const session: SessionOut = {
@@ -355,7 +362,7 @@ export async function fixtureRequest(
       expires_at: new Date(Date.now() + 30 * 86_400_000).toISOString(),
       user: {
         id: "fixture-user",
-        display_name: input.display_name ?? "sample-a41c",
+        display_name: input.display_name ?? DEFAULT_DISPLAY_NAME,
         is_sample: Boolean(input.start_with_sample),
       },
     };
@@ -365,15 +372,17 @@ export async function fixtureRequest(
   if (method === "GET" && pathname === "/auth/me") {
     return {
       id: "fixture-user",
-      display_name: "sample-a41c",
-      is_sample: true,
+      display_name: state.displayName ?? DEFAULT_DISPLAY_NAME,
+      is_sample: state.isSample,
       email: null,
       last_reviewed_at: state.reviewedAt ?? BASE.last_reviewed_at,
       expires_at: new Date(Date.now() + 30 * 86_400_000).toISOString(),
     };
   }
 
-  if (method === "DELETE" && pathname === "/auth/session") {
+  if (method === "DELETE" && pathname === "/auth/session") return null;
+
+  if (method === "DELETE" && pathname === "/auth/account") {
     window.localStorage.removeItem(STATE_KEY);
     return null;
   }
@@ -479,11 +488,16 @@ export async function fixtureRequest(
   if (method === "GET" && pathname === "/rules") return state.rules;
 
   if (method === "POST" && pathname === "/rules") {
-    const input = body as { nl_text: string; rule: Rule };
+    const input = body as { nl_text: string; rule: Rule; actions?: RuleActionInput[] };
     const created: RuleListItem = {
       id: `rule_${Math.random().toString(36).slice(2, 6)}`,
       nl_text: input.nl_text,
       preview: compileRule(input.nl_text).preview ?? input.nl_text,
+      actions: (input.actions ?? []).map((action) =>
+        action.type === "webhook"
+          ? { ...action, secret: `whsec_${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}` }
+          : action,
+      ),
       enabled: true,
       created_at: new Date().toISOString(),
       matched_today: [],
