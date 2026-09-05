@@ -8,6 +8,7 @@ from app.cache import cache
 from app.config import settings
 from app.jobs.daily import run_daily
 from app.jobs.refresh import refresh_tick
+from app.notify import rule_actions
 from app.notify.dispatch import dispatch
 
 log = logging.getLogger(__name__)
@@ -32,6 +33,7 @@ def notify_job() -> None:
     if settings.scheduler_market_hours_only and clock.market_status(now) != "open":
         return
     dispatch(now)
+    rule_actions.run(now)
 
 
 def start_scheduler(app: FastAPI) -> None:

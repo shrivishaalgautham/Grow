@@ -100,3 +100,89 @@ def test_matched_today_reports_symbols_the_rule_fires_on(client, seeded):
         any(s["type"] == "USER_RULE" and s["rule_id"] == listed[0]["id"] for s in item["signals"])
         for item in digest["items"]
     )
+
+
+def test_email_action_is_stored_and_returned(client, seeded):
+    headers, _ = start_session(client)
+
+    created = client.post(
+        "/api/rules",
+        json={"nl_text": "reliance 2x", "rule": RULE, "actions": [{"type": "email"}]},
+        headers=headers,
+    )
+
+    assert created.status_code == 201, created.text
+    assert created.json()["actions"] == [{"type": "email"}]
+
+
+def test_webhook_action_gets_a_server_generated_secret(client, seeded):
+    headers, _ = start_session(client)
+
+    created = client.post(
+        "/api/rules",
+        json={
+            "nl_text": "reliance 2x",
+            "rule": RULE,
+            "actions": [{"type": "webhook", "url": "https://example.com/hooks/watchlist"}],
+        },
+        headers=headers,
+    )
+
+    assert created.status_code == 201, created.text
+    action = created.json()["actions"][0]
+    assert action["type"] == "webhook"
+    assert action["url"] == "https://example.com/hooks/watchlist"
+    assert len(action["secret"]) >= 32
+
+    listed = client.get("/api/rules", headers=headers).json()
+    assert listed[0]["actions"][0]["secret"] == action["secret"]
+
+
+def test_webhook_action_pointed_at_localhost_is_rejected(client, seeded):
+    headers, _ = start_session(client)
+
+    response = client.post(
+        "/api/rules",
+        json={
+            "nl_text": "reliance 2x",
+            "rule": RULE,
+            "actions": [{"type": "webhook", "url": "http://localhost:9000/hook"}],
+        },
+        headers=headers,
+    )
+
+    assert response.status_code == 422
+
+
+def test_webhook_action_pointed_at_a_private_ip_is_rejected(client, seeded):
+    headers, _ = start_session(client)
+
+    response = client.post(
+        "/api/rules",
+        json={
+            "nl_text": "reliance 2x",
+            "rule": RULE,
+            "actions": [{"type": "webhook", "url": "http://192.168.1.5/hook"}],
+        },
+        headers=headers,
+    )
+
+    assert response.status_code == 422
+
+
+def test_client_supplied_webhook_secret_is_ignored(client, seeded):
+    headers, _ = start_session(client)
+
+    created = client.post(
+        "/api/rules",
+        json={
+            "nl_text": "reliance 2x",
+            "rule": RULE,
+            "actions": [
+                {"type": "webhook", "url": "https://example.com/hook", "secret": "attacker-chosen"}
+            ],
+        },
+        headers=headers,
+    )
+
+    assert created.json()["actions"][0]["secret"] != "attacker-chosen"

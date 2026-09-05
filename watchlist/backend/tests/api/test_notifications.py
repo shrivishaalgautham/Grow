@@ -6,7 +6,7 @@ import pytest
 from app import clock
 from app.notify import dispatch as dispatch_job
 from app.notify import email
-from tests.api.support import EVENT_SYMBOL, start_session
+from tests.api.support import EVENT_SYMBOL, NoCloseSession, start_session
 
 LINK = re.compile(r"\?verify=([A-Za-z0-9_-]+)")
 
@@ -20,19 +20,8 @@ def outbox():
 
 @pytest.fixture
 def dispatch_db(db, monkeypatch):
-    monkeypatch.setattr(dispatch_job.db, "SessionLocal", lambda: _NoClose(db))
+    monkeypatch.setattr(dispatch_job.db, "SessionLocal", lambda: NoCloseSession(db))
     return db
-
-
-class _NoClose:
-    def __init__(self, session):
-        self.session = session
-
-    def __enter__(self):
-        return self.session
-
-    def __exit__(self, *exc):
-        return False
 
 
 def subscribe_and_verify(client, headers, outbox, address="trader@example.com") -> str:

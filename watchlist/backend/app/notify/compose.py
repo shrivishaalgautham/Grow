@@ -54,5 +54,21 @@ def alert_message(
     return subject, "\n".join(lines)
 
 
+def rule_alert_message(
+    rule_preview: str, item: Item, signal: Signal, unsubscribe_token: str
+) -> tuple[str, str]:
+    symbol = _base(item.symbol)
+    subject = f"Rule matched: {symbol}"
+    text = (
+        f"Your rule matched: {rule_preview}\n\n"
+        f"{symbol}  ₹{item.quote.price:,.2f}  today {item.today_change_pct:+.1f}%\n"
+        f"{signal.headline}: {signal.detail}\n\n"
+        f"Open the watchlist: {settings.app_base_url}/watchlist\n\n"
+        "Stop these emails: "
+        f"{settings.api_base_url}/api/notifications/unsubscribe?token={unsubscribe_token}"
+    )
+    return subject, text
+
+
 def _base(symbol: str) -> str:
     return symbol.split(".")[0]

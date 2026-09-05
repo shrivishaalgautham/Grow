@@ -1620,6 +1620,20 @@
         ],
         "title": "DigestOut"
       },
+      "EmailAction": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "email",
+            "title": "Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "EmailAction"
+      },
       "EmailChannelOut": {
         "properties": {
           "address_masked": {
@@ -2613,6 +2627,28 @@
           },
           "rule": {
             "$ref": "#/components/schemas/Rule"
+          },
+          "actions": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EmailAction"
+                },
+                {
+                  "$ref": "#/components/schemas/WebhookAction"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "email": "#/components/schemas/EmailAction",
+                  "webhook": "#/components/schemas/WebhookAction"
+                }
+              }
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Actions"
           }
         },
         "type": "object",
@@ -2635,6 +2671,27 @@
           "preview": {
             "type": "string",
             "title": "Preview"
+          },
+          "actions": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EmailAction"
+                },
+                {
+                  "$ref": "#/components/schemas/WebhookAction"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "email": "#/components/schemas/EmailAction",
+                  "webhook": "#/components/schemas/WebhookAction"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Actions"
           },
           "enabled": {
             "type": "boolean",
@@ -2680,6 +2737,27 @@
           "preview": {
             "type": "string",
             "title": "Preview"
+          },
+          "actions": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EmailAction"
+                },
+                {
+                  "$ref": "#/components/schemas/WebhookAction"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "email": "#/components/schemas/EmailAction",
+                  "webhook": "#/components/schemas/WebhookAction"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Actions"
           },
           "enabled": {
             "type": "boolean",
@@ -3094,6 +3172,38 @@
           "address_masked"
         ],
         "title": "VerifyOut"
+      },
+      "WebhookAction": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "webhook",
+            "title": "Type"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 8,
+            "title": "Url"
+          },
+          "secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "url"
+        ],
+        "title": "WebhookAction"
       }
     }
   }

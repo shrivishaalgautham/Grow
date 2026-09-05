@@ -1,6 +1,8 @@
+import secrets
 import uuid
 
 from fastapi import APIRouter, Depends, Response
+from pydantic import TypeAdapter
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
@@ -12,9 +14,10 @@ from app.deps import ApiError, current_user
 from app.engine.digest import build_digest
 from app.engine.rules_eval import render_plain_english
 from app.models import Symbol, User, UserRule
-from app.schemas import Rule, RuleCompileIn, RuleCompileOut, RuleCreateIn, RuleListItem, RuleOut
+from app.schemas import Rule, RuleAction, RuleCompileIn, RuleCompileOut, RuleCreateIn, RuleListItem, RuleOut
 
 MAX_RULES_PER_USER = 10
+_ACTIONS_ADAPTER = TypeAdapter(list[RuleAction])
 
 router = APIRouter(prefix="/rules", tags=["rules"], dependencies=[Depends(global_ip_limit)])
 
@@ -49,6 +52,7 @@ def create_rule(
         nl_text=payload.nl_text,
         compiled=payload.rule.model_dump(),
         preview=render_plain_english(payload.rule),
+        actions=[_prepare_action(action).model_dump() for action in payload.actions],
         created_at=clock.now(),
     )
     session.add(row)
@@ -69,6 +73,7 @@ def list_rules(
             id=str(row.id),
             nl_text=row.nl_text,
             preview=row.preview,
+            actions=_ACTIONS_ADAPTER.validate_python(row.actions),
             enabled=row.enabled,
             created_at=row.created_at,
             matched_today=sorted(matched.get(str(row.id), set())),
@@ -125,12 +130,19 @@ def _matched_today(session: Session, user: User) -> dict[str, set[str]]:
     return matched
 
 
+def _prepare_action(action: RuleAction) -> RuleAction:
+    if action.type == "webhook":
+        return action.model_copy(update={"secret": secrets.token_urlsafe(32)})
+    return action
+
+
 def _rule_out(row: UserRule) -> RuleOut:
     return RuleOut(
         id=str(row.id),
         nl_text=row.nl_text,
         rule=Rule.model_validate(row.compiled),
         preview=row.preview,
+        actions=_ACTIONS_ADAPTER.validate_python(row.actions),
         enabled=row.enabled,
         created_at=row.created_at,
     )

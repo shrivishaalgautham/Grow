@@ -59,6 +59,17 @@ def start_session(client: TestClient, **payload) -> tuple[dict[str, str], dict]:
     return {"Authorization": f"Bearer {body['token']}"}, body
 
 
+class NoCloseSession:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def __enter__(self) -> Session:
+        return self.session
+
+    def __exit__(self, *exc: object) -> bool:
+        return False
+
+
 def _insert_bars(session: Session, symbol: str, frame: pd.DataFrame) -> None:
     session.execute(
         insert(DailyBar),

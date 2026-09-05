@@ -169,8 +169,19 @@ class UserRule(Base):
     nl_text: Mapped[str] = mapped_column(String(200))
     compiled: Mapped[dict[str, Any]] = mapped_column(JSONB)
     preview: Mapped[str] = mapped_column(String(400))
+    actions: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
     enabled: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class RuleActionLog(Base):
+    __tablename__ = "rule_action_log"
+
+    rule_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("user_rules.id", ondelete="CASCADE"), primary_key=True
+    )
+    event_key: Mapped[str] = mapped_column(String(160), primary_key=True)
+    sent_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
 
 class BriefingCache(Base):

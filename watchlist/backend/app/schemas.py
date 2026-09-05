@@ -1,8 +1,10 @@
+import ipaddress
 import math
 import re
 import unicodedata
 from datetime import date, datetime
 from typing import Annotated, Literal
+from urllib.parse import urlparse
 
 from pydantic import (
     BaseModel,
@@ -346,10 +348,13 @@ class CatalystsOut(BaseModel):
     items: list[CatalystItem]
 
 
+ExplanationSource = Literal["llm", "llm_grounded", "template"]
+
+
 class ExplanationOut(BaseModel):
     status: Literal["ready", "pending"]
     text: str | None = Field(default=None, max_length=600)
-    source: BriefingSource | None
+    source: ExplanationSource | None
     catalyst_status: CatalystStatus
     items: list[CatalystItem]
     generated_at: datetime | None
@@ -401,9 +406,43 @@ class RuleCompileOut(BaseModel):
     error: str | None = Field(default=None, max_length=200)
 
 
+_BLOCKED_WEBHOOK_HOSTS = {"localhost", "0.0.0.0"}
+
+
+class EmailAction(BaseModel):
+    type: Literal["email"]
+
+
+class WebhookAction(BaseModel):
+    type: Literal["webhook"]
+    url: str = Field(min_length=8, max_length=500)
+    secret: str | None = None
+
+    @field_validator("url")
+    @classmethod
+    def reject_local_targets(cls, value: str) -> str:
+        parsed = urlparse(value)
+        if parsed.scheme not in ("http", "https") or not parsed.hostname:
+            raise ValueError("webhook url must be http(s) with a hostname")
+        host = parsed.hostname.lower()
+        if host in _BLOCKED_WEBHOOK_HOSTS or host.endswith(".local"):
+            raise ValueError("webhook url must not target a local address")
+        try:
+            addr = ipaddress.ip_address(host)
+        except ValueError:
+            return value
+        if addr.is_private or addr.is_loopback or addr.is_link_local or addr.is_reserved:
+            raise ValueError("webhook url must not target a private address")
+        return value
+
+
+RuleAction = Annotated[EmailAction | WebhookAction, Field(discriminator="type")]
+
+
 class RuleCreateIn(BaseModel):
     nl_text: str = Field(min_length=1, max_length=200)
     rule: Rule
+    actions: list[RuleAction] = Field(default_factory=list, max_length=5)
 
 
 class RuleOut(BaseModel):
@@ -411,6 +450,7 @@ class RuleOut(BaseModel):
     nl_text: str
     rule: Rule
     preview: str
+    actions: list[RuleAction] = Field(default_factory=list)
     enabled: bool
     created_at: datetime
 
@@ -419,6 +459,7 @@ class RuleListItem(BaseModel):
     id: str
     nl_text: str
     preview: str
+    actions: list[RuleAction] = Field(default_factory=list)
     enabled: bool
     created_at: datetime
     matched_today: list[str]
