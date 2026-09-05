@@ -110,7 +110,7 @@ export default function EvidencePage() {
                   type="button"
                   onClick={() => setDays(window)}
                   aria-pressed={days === window}
-                  className={`px-space-md py-space-xs rounded-lg font-label-md text-label-md transition-all flex items-center gap-space-2xs ${days === window ? "bg-surface-container-lowest text-primary font-bold shadow-sm" : "text-on-surface-variant hover:text-on-surface"}`}
+                  className={`min-h-10 px-space-md py-space-xs rounded-lg font-label-md text-label-md transition-all flex items-center justify-center gap-space-2xs ${days === window ? "bg-surface-container-lowest text-primary font-bold shadow-sm" : "text-on-surface-variant hover:text-on-surface"}`}
                 >
                   <span>{window} days</span>
                   {days === window && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
@@ -160,7 +160,7 @@ export default function EvidencePage() {
                       A fixed percentage alert pings you for every market-wide swing. This engine subtracts what the stock&rsquo;s behavioural peers explain, normalises by the stock&rsquo;s own volatility, and applies a 0.75% floor, so what is left is the stock&rsquo;s own move.
                     </p>
                   </div>
-                  <div className="flex lg:flex-col gap-space-md shrink-0">
+                  <div className="flex flex-wrap lg:flex-col gap-space-md shrink-0">
                     <div className="bg-surface-container-low rounded-xl p-space-md min-w-[170px]">
                       <span className="font-label-sm text-label-sm text-secondary uppercase block">Alert cut rate</span>
                       <span className="font-metric-display text-metric-display text-primary font-bold tracking-tight tabular">{cutRate !== null ? `−${cutRate.toFixed(1)}%` : "—"}</span>
@@ -283,7 +283,7 @@ export default function EvidencePage() {
                     <Icon name="info" size={16} className="text-primary" />
                     <span>A naive 2% rule tagged 0 of these {data.caught_extra.length} moves. Top 20 by z-score are shown.</span>
                   </div>
-                  <button type="button" onClick={() => downloadCsv(data)} className="font-label-sm text-label-sm text-primary font-bold hover:underline">Download as CSV →</button>
+                  <button type="button" onClick={() => downloadCsv(data)} className="inline-flex min-h-10 items-center font-label-sm text-label-sm text-primary font-bold hover:underline">Download as CSV →</button>
                 </div>
               </div>
 

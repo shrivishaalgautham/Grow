@@ -72,7 +72,7 @@ export function DigestHero({
             <div className="pt-space-xs">
               <Link
                 href="/evidence"
-                className="inline-flex items-center gap-space-xs px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors"
+                className="inline-flex min-h-10 items-center gap-space-xs px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors"
               >
                 <Icon name="troubleshoot" size={18} className="text-primary" />
                 <span>See why it is {digest.changed_count} and not every 2% move</span>

@@ -104,16 +104,17 @@ export function AppHeader({ digest }: { digest?: DigestOut }) {
                   type="button"
                   aria-label="Open on phone"
                   onClick={() => setIsResumeOpen(true)}
-                  className="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:bg-surface-container-low transition-colors font-label-md text-label-md text-on-surface"
+                  className="flex min-h-10 items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:bg-surface-container-low transition-colors font-label-md text-label-md text-on-surface"
                 >
                   <Icon name="qr_code_2" size={18} className="text-primary" />
                   <span className="hidden sm:inline">Open on phone</span>
                 </button>
                 <button
                   type="button"
+                  aria-label="End session"
                   onClick={endSession}
                   disabled={end.isPending}
-                  className="flex items-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container px-space-md py-space-xs rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant disabled:opacity-50"
+                  className="flex min-h-10 items-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container px-space-md py-space-xs rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant disabled:opacity-50"
                 >
                   <Icon name="logout" size={18} />
                   <span className="hidden md:inline">End session</span>

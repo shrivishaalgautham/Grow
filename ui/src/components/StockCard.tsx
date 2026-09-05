@@ -69,7 +69,7 @@ export function StockCard({
             ) : (
               <>
                 <div className="font-headline-md text-headline-md text-on-surface font-bold tabular">{formatInr(item.quote.price)}</div>
-                <div className={`font-metric-tabular text-metric-tabular font-bold flex items-center justify-end gap-space-2xs ${isUp ? "text-primary" : "text-tertiary"}`}>
+                <div className={`font-metric-tabular text-metric-tabular font-bold flex items-center justify-end gap-space-2xs whitespace-nowrap ${isUp ? "text-primary" : "text-tertiary"}`}>
                   <Icon name={isUp ? "arrow_drop_up" : "arrow_drop_down"} size={16} />
                   {formatSignedPercent(item.today_change_pct)} today
                 </div>
@@ -117,14 +117,14 @@ export function StockCard({
               }`}
         </div>
         <div className="flex items-center gap-space-sm self-end sm:self-auto">
-          <button type="button" onClick={onOpen} className="px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors">
+          <button type="button" onClick={onOpen} className="min-h-10 px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors">
             Details
           </button>
           <button
             type="button"
             onClick={onSeen}
             disabled={isSeenPending}
-            className="px-space-md py-space-xs bg-surface-container-highest hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-lg transition-colors flex items-center gap-space-2xs disabled:opacity-60"
+            className="min-h-10 px-space-md py-space-xs bg-surface-container-highest hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-lg transition-colors flex items-center justify-center gap-space-2xs disabled:opacity-60"
           >
             <Icon name="check" size={16} className="text-primary" />
             <span>Got it</span>

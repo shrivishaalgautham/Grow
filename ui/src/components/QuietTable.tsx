@@ -48,7 +48,7 @@ export function QuietTable({
                 <button
                   type="button"
                   onClick={() => onOpen(item.symbol)}
-                  className="font-headline-sm text-headline-sm text-on-surface hover:underline"
+                  className="inline-flex min-h-10 min-w-10 items-center font-headline-sm text-headline-sm text-on-surface hover:underline"
                 >
                   {stripSuffix(item.symbol)}
                 </button>
@@ -78,14 +78,14 @@ export function QuietTable({
               <button
                 type="button"
                 onClick={() => onOpen(item.symbol)}
-                className="px-space-md py-space-2xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm rounded-lg transition-colors"
+                className="min-h-10 px-space-md py-space-2xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm rounded-lg transition-colors"
               >
                 Details
               </button>
               <button
                 type="button"
                 onClick={() => onRemove(item.symbol)}
-                className="px-space-md py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm rounded-lg transition-colors"
+                className="min-h-10 px-space-md py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm rounded-lg transition-colors"
               >
                 Remove
               </button>
