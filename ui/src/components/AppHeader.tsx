@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { apiBaseUrl, isFixtureMode } from "@/api/client";
 import type { DigestOut } from "@/api/types";
@@ -11,23 +11,6 @@ import { useSession } from "@/hooks/useSession";
 import { formatClock, formatRelative } from "@/lib/format";
 import { Icon } from "./Icon";
 import { ResumeModal } from "./ResumeModal";
-
-function NavLink({ href, children }: { href: string; children: string }) {
-  const isActive = usePathname() === href;
-  return (
-    <Link
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-      className={`px-space-md py-space-xs rounded transition-colors ${
-        isActive
-          ? "bg-surface-container text-on-surface font-headline-sm text-headline-sm"
-          : "font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface"
-      }`}
-    >
-      {children}
-    </Link>
-  );
-}
 
 function ProviderStrip({ digest }: { digest?: DigestOut }) {
   const [isDismissed, setIsDismissed] = useState(false);
@@ -92,20 +75,14 @@ export function AppHeader({ digest }: { digest?: DigestOut }) {
     <header className="sticky top-0 z-40 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
       <ProviderStrip digest={digest} />
       <div className="h-16 max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between gap-space-md">
-        <div className="flex items-center gap-space-xl">
-          <Link href="/watchlist" className="flex items-center gap-space-sm">
-            <span className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-fixed">
-              <Icon name="candlestick_chart" size={20} />
-            </span>
-            <span className="font-headline-sm text-headline-sm text-on-surface hidden sm:inline">
-              Smart Market Watchlist
-            </span>
-          </Link>
-          <nav className="flex items-center gap-space-xs bg-surface-container-low p-space-2xs rounded-lg">
-            <NavLink href="/watchlist">Watchlist</NavLink>
-            <NavLink href="/evidence">Evidence</NavLink>
-          </nav>
-        </div>
+        <Link href="/watchlist" className="flex items-center gap-space-sm">
+          <span className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-fixed">
+            <Icon name="candlestick_chart" size={20} />
+          </span>
+          <span className="font-headline-sm text-headline-sm text-on-surface hidden sm:inline">
+            Smart Market Watchlist
+          </span>
+        </Link>
         <div className="flex items-center gap-space-md">
           {digest && (
             <div className="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full">
