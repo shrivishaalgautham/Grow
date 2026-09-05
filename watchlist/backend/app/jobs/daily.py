@@ -432,13 +432,40 @@ def run_daily() -> None:
     dispatch(clock.now())
 
 
-def seed(args: argparse.Namespace) -> None:
-    symbols = load_universe()
-    if not args.skip_fetch:
-        fetch_history(args.symbols or symbols, args.range_)
-    compute_baselines(force_clusters=args.force_clusters)
-    backfill_signal_events(args.backfill_sessions)
+def seed(
+    *,
+    range_: str = "1y",
+    symbols: list[str] | None = None,
+    backfill_sessions: int = BACKFILL_SESSIONS,
+    force_clusters: bool = False,
+    skip_fetch: bool = False,
+) -> None:
+    universe = load_universe()
+    if not skip_fetch:
+        fetch_history(symbols or universe, range_)
+    compute_baselines(force_clusters=force_clusters)
+    backfill_signal_events(backfill_sessions)
     write_eod_quotes()
+
+
+BOOTSTRAP_LOCK_KEY = "bootstrap:seed:lock"
+BOOTSTRAP_LOCK_TTL_S = 3600
+
+
+def ensure_seeded() -> None:
+    with db.SessionLocal() as session:
+        if clock.latest_bar_date(session) is not None:
+            return
+    if not cache.set_nx(BOOTSTRAP_LOCK_KEY, "1", BOOTSTRAP_LOCK_TTL_S):
+        log.info("bootstrap_seed skipped=lock_held")
+        return
+    log.info("bootstrap_seed start=true")
+    try:
+        seed()
+    except Exception:
+        log.exception("bootstrap_seed_failed")
+    else:
+        log.info("bootstrap_seed complete=true")
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
@@ -456,7 +483,13 @@ def main(argv: Sequence[str] | None = None) -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
     args = parse_args(argv)
     if args.seed:
-        seed(args)
+        seed(
+            range_=args.range_,
+            symbols=args.symbols,
+            backfill_sessions=args.backfill_sessions,
+            force_clusters=args.force_clusters,
+            skip_fetch=args.skip_fetch,
+        )
     else:
         run_daily()
 

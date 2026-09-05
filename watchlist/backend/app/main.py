@@ -11,6 +11,7 @@ from app.api import health as health_api
 from app.cache import cache
 from app.config import settings
 from app.deps import ApiError
+from app.jobs.daily import ensure_seeded
 from app.jobs.scheduler import start_scheduler, stop_scheduler
 from app.schemas import ErrorBody, ErrorOut, HealthOut
 
@@ -31,6 +32,8 @@ def configure_logging() -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     log.info("startup cache_mode=%s cache_ok=%s", cache.mode, cache.ping())
+    if not settings.replay_date:
+        ensure_seeded()
     start_scheduler(app)
     yield
     stop_scheduler()
