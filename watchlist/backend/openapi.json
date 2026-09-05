@@ -1786,6 +1786,7 @@
                 "type": "string",
                 "enum": [
                   "llm",
+                  "llm_grounded",
                   "template"
                 ]
               },

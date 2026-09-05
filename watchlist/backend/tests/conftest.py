@@ -10,4 +10,5 @@ from app.config import settings  # noqa: E402
 settings.redis_url = ""
 settings.yahoo_impersonate = ""
 settings.openrouter_api_key = ""
+settings.google_api_key = ""
 settings.email_transport = "console"

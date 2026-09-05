@@ -2,9 +2,9 @@ import json
 import logging
 from datetime import date, datetime
 
-from app.ai import client
+from app.ai import client, gemini
 from app.ai.briefing import item_facts, validate
-from app.ai.prompts import EXPLAIN_SYSTEM
+from app.ai.prompts import EXPLAIN_SYSTEM, GEMINI_EXPLAIN_SYSTEM
 from app.api.ratelimit import llm_budget
 from app.cache import cache
 from app.deps import ApiError
@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 
 CACHE_TTL_S = 1200
 MAX_TOKENS = 700
+GEMINI_MAX_TOKENS = 500
 MAX_HEADLINES = 3
 
 
@@ -47,18 +48,39 @@ def explain(
 
 def _compose(user: User, facts: dict) -> tuple[str, str]:
     fallback = template(facts["items"][0])
-    if not client.is_configured() or not _budget_allows(user):
+    if not _budget_allows(user):
         return fallback, "template"
-    completion = client.complete(
-        "explain", EXPLAIN_SYSTEM, json.dumps(facts, ensure_ascii=False), MAX_TOKENS
+    grounded = _try_gemini(facts)
+    if grounded is not None:
+        return grounded
+    if client.is_configured():
+        completion = client.complete(
+            "explain", EXPLAIN_SYSTEM, json.dumps(facts, ensure_ascii=False), MAX_TOKENS
+        )
+        if completion is not None:
+            rejection = validate(completion.text, facts)
+            if rejection is None:
+                return completion.text, "llm"
+            log.info("explain rejected model=%s reason=%s", completion.model, rejection)
+    return fallback, "template"
+
+
+def _try_gemini(facts: dict) -> tuple[str, str] | None:
+    if not gemini.is_configured():
+        return None
+    prompt = (
+        f"Facts:\n{json.dumps(facts, ensure_ascii=False)}\n\n"
+        "Search the web for recent news that plausibly explains this stock's move today, "
+        "then write the explanation."
     )
-    if completion is None:
-        return fallback, "template"
-    rejection = validate(completion.text, facts)
+    result = gemini.ground(GEMINI_EXPLAIN_SYSTEM, prompt, GEMINI_MAX_TOKENS)
+    if result is None:
+        return None
+    rejection = gemini.validate(result.text)
     if rejection is not None:
-        log.info("explain rejected model=%s reason=%s", completion.model, rejection)
-        return fallback, "template"
-    return completion.text, "llm"
+        log.info("explain_grounded rejected reason=%s", rejection)
+        return None
+    return result.text, "llm_grounded"
 
 
 def _budget_allows(user: User) -> bool:

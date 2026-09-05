@@ -104,3 +104,61 @@ def test_unavailable_sources_are_said_so_in_the_template(client, seeded, router)
 
     assert body["catalyst_status"] == "unavailable"
     assert "could not be checked" in body["text"]
+
+
+def test_grounded_gemini_output_is_served_when_configured(client, seeded, router, monkeypatch):
+    mock_feeds(router)
+    monkeypatch.setattr(explain.gemini, "is_configured", lambda: True)
+    monkeypatch.setattr(
+        explain.gemini,
+        "ground",
+        lambda system, prompt, max_tokens: explain.gemini.GroundedResult(
+            text="ADANIENT's move coincided with a filing reported by a major outlet.",
+            source_titles=["example.com"],
+        ),
+    )
+    headers, _ = start_session(client, start_with_sample=True)
+    client.get(f"/api/symbols/{EVENT_SYMBOL}/explanation", headers=headers)
+
+    body = client.get(f"/api/symbols/{EVENT_SYMBOL}/explanation", headers=headers).json()
+
+    assert body["source"] == "llm_grounded"
+    assert body["text"] == "ADANIENT's move coincided with a filing reported by a major outlet."
+
+
+def test_grounded_output_with_a_banned_word_falls_back_past_gemini(
+    client, seeded, router, monkeypatch
+):
+    mock_feeds(router)
+    monkeypatch.setattr(explain.gemini, "is_configured", lambda: True)
+    monkeypatch.setattr(
+        explain.gemini,
+        "ground",
+        lambda system, prompt, max_tokens: explain.gemini.GroundedResult(
+            text="This looks like a strong buy opportunity.", source_titles=[]
+        ),
+    )
+    headers, _ = start_session(client, start_with_sample=True)
+    client.get(f"/api/symbols/{EVENT_SYMBOL}/explanation", headers=headers)
+
+    body = client.get(f"/api/symbols/{EVENT_SYMBOL}/explanation", headers=headers).json()
+
+    assert body["source"] == "template"
+
+
+def test_gemini_unavailable_falls_back_to_openrouter(client, seeded, router, monkeypatch):
+    mock_feeds(router)
+    monkeypatch.setattr(explain.gemini, "is_configured", lambda: True)
+    monkeypatch.setattr(explain.gemini, "ground", lambda system, prompt, max_tokens: None)
+    monkeypatch.setattr(explain.client, "is_configured", lambda: True)
+    monkeypatch.setattr(
+        explain.client,
+        "complete",
+        lambda *args: Completion("ADANIENT moved on peer-relative terms.", "m"),
+    )
+    headers, _ = start_session(client, start_with_sample=True)
+    client.get(f"/api/symbols/{EVENT_SYMBOL}/explanation", headers=headers)
+
+    body = client.get(f"/api/symbols/{EVENT_SYMBOL}/explanation", headers=headers).json()
+
+    assert body["source"] == "llm"

@@ -1,10 +1,17 @@
 "use client";
 
 import { ApiError } from "@/api/errors";
+import type { ExplanationSource } from "@/api/types";
 import { useCatalysts } from "@/hooks/useCatalysts";
 import { useExplanation } from "@/hooks/useExplanation";
 import { formatRelative } from "@/lib/format";
 import { Icon } from "./Icon";
+
+const EXPLANATION_SOURCE_LABEL: Record<ExplanationSource, string> = {
+  llm_grounded: "Written by a model, grounded in a live web search",
+  llm: "Written by a model from the facts and headlines",
+  template: "Assembled from the facts",
+};
 
 const SOURCE_LABEL: Record<string, string> = {
   nse: "NSE announcement",
@@ -50,7 +57,7 @@ export function CatalystPanel({ symbol }: { symbol: string }) {
             </span>
             {explanation.data?.status === "ready" && (
               <span className="font-label-sm text-label-sm text-secondary">
-                {explanation.data.source === "llm" ? "Written by a model from the facts and headlines" : "Assembled from the facts"}
+                {explanation.data.source ? EXPLANATION_SOURCE_LABEL[explanation.data.source] : ""}
                 {explanation.data.was_cached ? " • cached" : ""}
               </span>
             )}

@@ -14,7 +14,15 @@ from app.deps import ApiError, current_user
 from app.engine.digest import build_digest
 from app.engine.rules_eval import render_plain_english
 from app.models import Symbol, User, UserRule
-from app.schemas import Rule, RuleAction, RuleCompileIn, RuleCompileOut, RuleCreateIn, RuleListItem, RuleOut
+from app.schemas import (
+    Rule,
+    RuleAction,
+    RuleCompileIn,
+    RuleCompileOut,
+    RuleCreateIn,
+    RuleListItem,
+    RuleOut,
+)
 
 MAX_RULES_PER_USER = 10
 _ACTIONS_ADAPTER = TypeAdapter(list[RuleAction])

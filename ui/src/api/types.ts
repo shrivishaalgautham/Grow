@@ -19,6 +19,7 @@ export type CatalystStatus =
   | "none_found"
   | "unavailable";
 export type BriefingSource = "llm" | "template";
+export type ExplanationSource = "llm" | "llm_grounded" | "template";
 export type LevelName = "52w_high" | "52w_low" | "prev_high" | "prev_low";
 export type RuleField =
   | "residual_pct"
@@ -321,7 +322,7 @@ export interface ErrorOut {
 export interface ExplanationOut {
   status: "ready" | "pending";
   text: string | null;
-  source: BriefingSource | null;
+  source: ExplanationSource | null;
   catalyst_status: CatalystStatus;
   items: CatalystItem[];
   generated_at: IsoDateTime | null;

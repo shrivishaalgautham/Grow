@@ -118,8 +118,9 @@ def _rsi(close: pd.Series) -> float | None:
     delta = close.diff().dropna()
     gains = delta.clip(lower=0)
     losses = -delta.clip(upper=0)
-    avg_gain = gains.ewm(alpha=1 / RSI_WINDOW, min_periods=RSI_WINDOW, adjust=False).mean().iloc[-1]
-    avg_loss = losses.ewm(alpha=1 / RSI_WINDOW, min_periods=RSI_WINDOW, adjust=False).mean().iloc[-1]
+    smoothing = {"alpha": 1 / RSI_WINDOW, "min_periods": RSI_WINDOW, "adjust": False}
+    avg_gain = gains.ewm(**smoothing).mean().iloc[-1]
+    avg_loss = losses.ewm(**smoothing).mean().iloc[-1]
     if avg_loss == 0:
         return 100.0 if avg_gain > 0 else 50.0
     rs = avg_gain / avg_loss
