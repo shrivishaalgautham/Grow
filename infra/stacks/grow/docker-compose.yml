@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ${DOCKERHUB_USER}/grow-backend:${BACKEND_IMAGE_TAG}
+    image: ${DOCKERHUB_USER}/smart-market-watchlist-backend:${BACKEND_IMAGE_TAG}
     container_name: grow-backend
     env_file:
       - .env
@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
 
   ui:
-    image: ${DOCKERHUB_USER}/grow-ui:${UI_IMAGE_TAG}
+    image: ${DOCKERHUB_USER}/smart-market-watchlist-frontend:${UI_IMAGE_TAG}
     container_name: grow-ui
     networks:
       edge:

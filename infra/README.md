@@ -131,13 +131,19 @@ then open `https://localhost:9443` and finish Portainer's first-run setup
 
 ### 6. Build and push the images
 
-This VM never builds anything — build on your own machine (or CI) and
-push to Docker Hub:
+This VM never builds anything. `.github/workflows/docker-publish.yml`
+builds and pushes both images to Docker Hub automatically on every push
+to `main` that touches `watchlist/backend/` or `ui/` (needs the repo's
+`DOCKERHUB_USERNAME`/`DOCKERHUB_TOKEN` secrets, and `NEXT_PUBLIC_API_MODE`/
+`NEXT_PUBLIC_API_BASE_URL` repo variables set to `live` and this app's
+real domain — see that workflow file) — that's the normal path.
+
+To build and push manually instead:
 
 ```bash
 cd watchlist/backend
-docker build -t <dockerhub-user>/grow-backend:sha-$(git rev-parse HEAD) .
-docker push <dockerhub-user>/grow-backend:sha-$(git rev-parse HEAD)
+docker build -t <dockerhub-user>/smart-market-watchlist-backend:sha-$(git rev-parse HEAD) .
+docker push <dockerhub-user>/smart-market-watchlist-backend:sha-$(git rev-parse HEAD)
 ```
 
 **The UI image is different — two build-args are baked in at build time,
@@ -148,8 +154,8 @@ cd ui
 docker build \
   --build-arg NEXT_PUBLIC_API_MODE=live \
   --build-arg NEXT_PUBLIC_API_BASE_URL=https://kaaviya-groww-hackathon.duckdns.org \
-  -t <dockerhub-user>/grow-ui:sha-$(git rev-parse HEAD) .
-docker push <dockerhub-user>/grow-ui:sha-$(git rev-parse HEAD)
+  -t <dockerhub-user>/smart-market-watchlist-frontend:sha-$(git rev-parse HEAD) .
+docker push <dockerhub-user>/smart-market-watchlist-frontend:sha-$(git rev-parse HEAD)
 ```
 
 Miss `NEXT_PUBLIC_API_MODE=live` and the UI silently ships in **fixture
