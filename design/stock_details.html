@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#b91a24", "primary": "#006c4f", "surface-bright": "#f8f9ff", "on-secondary-fixed": "#131b2e", "on-error-container": "#93000a", "inverse-surface": "#213145", "on-primary-fixed": "#002116", "primary-container": "#00d09c", "surface-variant": "#d3e4fe", "outline-variant": "#bacac1", "primary-fixed-dim": "#2fe0aa", "tertiary-fixed": "#ffdad7", "outline": "#6b7b72", "on-primary-fixed-variant": "#00513b", "background": "#f8f9ff", "surface-container": "#e5eeff", "error": "#ba1a1a", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#3f465c", "on-surface": "#0b1c30", "on-secondary-container": "#5c647a", "on-background": "#0b1c30", "secondary-fixed-dim": "#bec6e0", "on-tertiary-fixed-variant": "#930013", "surface-container-high": "#dce9ff", "primary-fixed": "#59fdc5", "secondary-container": "#dae2fd", "surface-tint": "#006c4f", "on-primary": "#ffffff", "surface-dim": "#cbdbf5", "on-primary-container": "#00533c", "surface-container-low": "#eff4ff", "on-tertiary-container": "#960014", "on-surface-variant": "#3c4a43", "tertiary-container": "#ff9d96", "secondary-fixed": "#dae2fd", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-highest": "#d3e4fe", "secondary": "#565e74", "on-error": "#ffffff", "error-container": "#ffdad6", "tertiary-fixed-dim": "#ffb3ad", "on-tertiary-fixed": "#410004", "surface": "#f8f9ff", "inverse-on-surface": "#eaf1ff", "inverse-primary": "#2fe0aa" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-mobile": "1rem", "gutter-desktop": "1.5rem", "space-xl": "1.5rem", "space-xs": "0.25rem", "space-base": "1rem", "margin-tablet": "2rem", "space-sm": "0.5rem", "margin-desktop": "3rem", "gutter-mobile": "1rem", "space-2xl": "2rem", "space-md": "0.75rem", "space-3xl": "3rem", "space-2xs": "0.125rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-md": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "metric-tabular": ["Inter"], "label-lg": ["Inter"], "body-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "metric-display": ["Inter"], "body-md": ["Inter"] }, "fontSize": { "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "metric-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "metric-display": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }] } } } }</script>
+</head>
+
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col">
+    <header
+        class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+        <div class="w-full flex flex-col" id="global-banners-container">
+            <div class="w-full bg-secondary-container px-gutter-desktop py-space-xs flex items-center justify-between">
+                <div class="max-w-7xl mx-auto w-full flex items-center justify-between text-on-secondary-fixed">
+                    <div class="flex items-center gap-space-sm"><span
+                            class="material-symbols-outlined text-[16px] text-primary">bolt</span><span
+                            class="font-label-sm text-label-sm uppercase tracking-wider">Provider Latency
+                            Normal</span><span class="hidden sm:inline font-body-sm text-body-sm text-secondary">•
+                            NSE/BSE Feeds Connected (42ms)</span></div>
+                    <div class="flex items-center gap-space-md"><span
+                            class="font-label-sm text-label-sm text-secondary hidden md:inline">API Quota: 94%
+                            Remaining</span><button
+                            class="font-label-sm text-label-sm text-secondary hover:text-on-surface" type="button"><span
+                                class="material-symbols-outlined text-[14px]">close</span></button></div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="h-16 max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between gap-space-md">
+            <div class="flex items-center gap-space-xl">
+                <div class="flex items-center gap-space-sm cursor-pointer"><img alt="Smart Market Watchlist Logo"
+                        class="h-8 w-auto object-contain"
+                        src="https://lh3.googleusercontent.com/aida/AEtjO1V82IDGAcYAdBP2haHdF9LrjYibXovAbvnZBXsM_-9g7whBohRtdh2pSbhHwPEeJmNJG9Yf1MGOPqTPD6cbKblWuztjcTPD4nzQ5UxtM31ebX_1JiWQq-ZDXSYH_TJJf0IZ3kFAYfhWtiLDcLBd_wJq8pUsYp_q7umviurEraVH8FguNirZmQunqLqBjAk3m2N7cE-A6-6xDWYWeKPbtJVJhZ-lqXcuwvOm0Ylan9TSN4wcjdzt2I07AXo" /><span
+                        class="font-headline-sm text-headline-sm text-on-surface hidden sm:inline">MarketPulse</span>
+                </div>
+                <nav class="flex items-center gap-space-xs bg-surface-container-low p-space-2xs rounded-lg"
+                    data-active-classes="bg-surface-container text-on-surface font-headline-sm"><a aria-current="page"
+                        class="px-space-md py-space-xs rounded transition-colors bg-surface-container text-on-surface font-headline-sm"
+                        data-path="watchlist" href="#">Watchlist</a><a
+                        class="px-space-md py-space-xs rounded font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors"
+                        data-path="evidence" href="#">Evidence</a></nav>
+            </div>
+            <div class="flex items-center gap-space-md">
+                <div
+                    class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span
+                        class="font-label-sm text-label-sm text-on-surface font-bold">Market Open</span><span
+                        class="font-body-sm text-body-sm text-on-surface-variant">15:30 IST</span>
+                </div>
+                <div
+                    class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-full">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span
+                            class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span
+                        class="font-label-sm text-label-sm text-on-surface pr-space-xs hidden sm:inline">sample-user-alpha</span>
+                </div><button
+                    class="hidden sm:flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:bg-surface-container-low transition-colors font-label-md text-label-md text-on-surface"
+                    type="button"><span
+                        class="material-symbols-outlined text-[18px] text-primary">qr_code_2</span><span>Open on
+                        phone</span></button><button
+                    class="flex items-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container px-space-md py-space-xs rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant"
+                    type="button"><span class="material-symbols-outlined text-[18px]">logout</span><span
+                        class="hidden md:inline">End session</span></button>
+            </div>
+        </div>
+    </header>
+    <main
+        class="w-full pt-16 bg-surface flex-1 max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
+        <div class="flex flex-col w-full relative">
+            <!-- Dimmed & Soft Blurred Watchlist Background Mock (Contextual Backing) -->
+            <div class="w-full opacity-40 blur-[1.5px] pointer-events-none select-none pb-12 transition-all">
+                <div class="flex items-center justify-between py-space-md mb-space-base">
+                    <div class="flex items-center gap-space-md">
+                        <span class="font-headline-md text-headline-md text-on-surface">Auto &amp; Mobility
+                            Basket</span>
+                        <span
+                            class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-space-sm py-space-2xs rounded-full">8
+                            Tickers</span>
+                    </div>
+                    <div class="flex gap-space-sm">
+                        <div class="h-9 w-48 bg-surface-container rounded-lg"></div>
+                        <div class="h-9 w-24 bg-surface-container rounded-lg"></div>
+                    </div>
+                </div>
+                <!-- Ghost Table Mock -->
+                <div class="w-full bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+                    <div
+                        class="h-12 bg-surface-container-low flex items-center px-space-lg text-on-surface-variant font-label-md text-label-md">
+                        <div class="w-1/4">Ticker</div>
+                        <div class="w-1/4 text-right">LTP (₹)</div>
+                        <div class="w-1/4 text-right">Chg %</div>
+                        <div class="w-1/4 text-right">Volume Exp.</div>
+                    </div>
+                    <div class="p-space-lg space-y-space-md">
+                        <div class="h-10 bg-surface-container-low rounded-lg"></div>
+                        <div class="h-10 bg-surface-container-low rounded-lg"></div>
+                        <div class="h-10 bg-surface-container-low rounded-lg"></div>
+                        <div class="h-10 bg-surface-container-low rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal / Drawer Backdrop Overlay -->
+            <div class="fixed inset-0 z-40 bg-on-surface/30 backdrop-blur-[3px] transition-opacity"
+                id="drawer-backdrop"></div>
+            <!-- Right-Anchored Stock Inspection Drawer -->
+            <aside aria-label="Stock Detail Drawer: TATAMOTORS"
+                class="fixed top-0 right-0 z-50 h-screen w-full sm:w-[680px] lg:w-[740px] bg-surface-container-lowest shadow-2xl flex flex-col overflow-hidden transition-transform duration-300 ease-out"
+                id="stock-drawer" role="dialog">
+                <!-- 1. Drawer Header -->
+                <div
+                    class="flex-shrink-0 bg-surface-container-lowest px-space-xl pt-space-xl pb-space-md border-b-0 shadow-sm relative">
+                    <div class="flex items-start justify-between gap-space-md mb-space-sm">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-space-sm flex-wrap">
+                                <span
+                                    class="font-headline-lg text-headline-lg text-on-surface tracking-tight">TATAMOTORS</span>
+                                <span
+                                    class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-space-xs py-space-2xs rounded">NSE</span>
+                                <span class="font-body-sm text-body-sm text-secondary truncate">Tata Motors Ltd •
+                                    Commercial &amp; Passenger Vehicles</span>
+                            </div>
+                            <div class="flex items-baseline gap-space-md mt-space-xs">
+                                <span
+                                    class="font-metric-display text-metric-display text-on-surface tabular-nums">₹984.50</span>
+                                <div
+                                    class="flex items-center gap-space-2xs text-primary font-metric-tabular text-metric-tabular">
+                                    <span class="material-symbols-outlined text-[18px]">arrow_drop_up</span>
+                                    <span>+4.12% (+₹39.00 today)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Close & Quick Action Group -->
+                        <div class="flex items-center gap-space-xs flex-shrink-0">
+                            <button
+                                class="hidden sm:inline-flex items-center gap-space-xs bg-surface-container-low hover:bg-surface-container-high px-space-md py-space-xs rounded-lg font-label-md text-label-md text-on-surface transition-colors"
+                                id="btn-quick-review" type="button">
+                                <span class="material-symbols-outlined text-[16px] text-primary">done_all</span>
+                                <span>Got it</span>
+                            </button>
+                            <button
+                                class="w-9 h-9 rounded-lg bg-surface-container-low hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors"
+                                id="drawer-close-btn" title="Close drawer (Esc)" type="button">
+                                <span class="material-symbols-outlined text-[20px]">close</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Freshness Badge -->
+                    <div class="flex items-center gap-space-sm flex-wrap pt-space-xs">
+                        <div
+                            class="inline-flex items-center gap-space-xs bg-secondary-container/60 px-space-sm py-space-2xs rounded-full">
+                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            <span class="font-label-sm text-label-sm text-on-secondary-fixed">Fresh • Live 15:28:40 IST
+                                (NSE)</span>
+                            <span class="text-secondary font-body-sm text-body-sm">• Confidence: 100%</span>
+                        </div>
+                        <span class="text-secondary font-label-sm text-label-sm hidden md:inline">Order flow latency:
+                            18ms</span>
+                    </div>
+                </div>
+                <!-- Scrollable Drawer Body -->
+                <div class="flex-1 overflow-y-auto px-space-xl py-space-lg space-y-space-xl">
+                    <!-- 2. Decomposition Hero: 3-Column Pill Comparison -->
+                    <div class="bg-surface-container-low p-space-md rounded-xl">
+                        <div class="flex items-center justify-between mb-space-sm">
+                            <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Return
+                                Decomposition</span>
+                            <span class="font-body-sm text-body-sm text-secondary">Relative vs Auto Sector
+                                Cluster</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+                            <!-- Total Day Return -->
+                            <div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+                                <span class="font-label-sm text-label-sm text-secondary block mb-space-2xs">Total Return
+                                    Today</span>
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span class="font-headline-md text-headline-md text-primary">+4.12%</span>
+                                    <span class="font-body-sm text-body-sm text-secondary tabular-nums">(Gross)</span>
+                                </div>
+                                <div
+                                    class="w-full bg-surface-container-high h-1.5 rounded-full mt-space-sm overflow-hidden">
+                                    <div class="bg-primary h-full rounded-full" style="width: 82%;"></div>
+                                </div>
+                            </div>
+                            <!-- Peer Basket Effect -->
+                            <div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
+                                <span class="font-label-sm text-label-sm text-secondary block mb-space-2xs">Peers
+                                    Cluster (8 Tickers)</span>
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span class="font-headline-md text-headline-md text-on-surface">+0.65%</span>
+                                    <span
+                                        class="font-body-sm text-body-sm text-secondary tabular-nums">(Systemic)</span>
+                                </div>
+                                <div
+                                    class="w-full bg-surface-container-high h-1.5 rounded-full mt-space-sm overflow-hidden">
+                                    <div class="bg-secondary h-full rounded-full" style="width: 25%;"></div>
+                                </div>
+                            </div>
+                            <!-- Stock-Specific Residual -->
+                            <div
+                                class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm relative overflow-hidden">
+                                <div
+                                    class="absolute top-0 right-0 w-12 h-12 bg-primary/10 rounded-bl-full pointer-events-none">
+                                </div>
+                                <span
+                                    class="font-label-sm text-label-sm text-primary block mb-space-2xs font-semibold">Stock
+                                    Specific Residual</span>
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span class="font-headline-md text-headline-md text-primary font-bold">+3.47%</span>
+                                    <span class="font-label-sm text-label-sm text-primary font-medium">(Alpha)</span>
+                                </div>
+                                <div
+                                    class="w-full bg-surface-container-high h-1.5 rounded-full mt-space-sm overflow-hidden">
+                                    <div class="bg-primary-container h-full rounded-full" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 3. 90-Sessions Interactive Financial Chart -->
+                    <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+                            <div>
+                                <div class="flex items-center gap-space-xs">
+                                    <span class="font-headline-sm text-headline-sm text-on-surface">90-Sessions Dual
+                                        Trajectory</span>
+                                    <span class="material-symbols-outlined text-[16px] text-secondary"
+                                        title="Shows 90 calendar day close series alongside isolated stock-specific residual volume bursts">info</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-secondary">Closing price trend against moving
+                                    averages &amp; daily residual moves</p>
+                            </div>
+                            <!-- Interactive Legend -->
+                            <div
+                                class="flex flex-wrap items-center gap-space-md text-secondary font-label-sm text-label-sm">
+                                <div class="flex items-center gap-space-2xs">
+                                    <span class="w-3 h-0.5 bg-primary inline-block"></span>
+                                    <span>Price Trend</span>
+                                </div>
+                                <div class="flex items-center gap-space-2xs">
+                                    <span class="w-2.5 h-2 bg-secondary-fixed-dim/90 inline-block rounded-xs"></span>
+                                    <span>Residual Bar</span>
+                                </div>
+                                <div class="flex items-center gap-space-2xs">
+                                    <span class="w-3 border-t border-dashed border-primary"></span>
+                                    <span>20-DMA (₹940)</span>
+                                </div>
+                                <div class="flex items-center gap-space-2xs">
+                                    <span class="w-3 border-t border-dashed border-secondary"></span>
+                                    <span>50-DMA (₹912)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inline SVG Visualization (Precise Coordinate System) -->
+                        <div class="relative w-full overflow-hidden bg-surface-container-low/40 rounded-lg p-space-sm">
+                            <svg aria-label="90-day technical stock chart"
+                                class="w-full h-56 select-none overflow-visible" viewbox="0 0 620 230">
+                                <!-- Grid Lines & Level Reference Markers -->
+                                <g class="opacity-30">
+                                    <!-- 52W High (₹1065.90) -->
+                                    <line class="text-tertiary" stroke="currentColor" stroke-dasharray="3 3" x1="45"
+                                        x2="600" y1="18" y2="18"></line>
+                                    <text class="fill-current text-tertiary font-label-sm" font-size="9.5"
+                                        text-anchor="end" x="40" y="22">₹1,065.90 (52W H)</text>
+                                    <!-- 20-DMA (₹940) -->
+                                    <line class="text-primary" stroke="currentColor" stroke-dasharray="4 2" x1="45"
+                                        x2="600" y1="85" y2="85"></line>
+                                    <text class="fill-current text-primary font-label-sm" font-size="9.5"
+                                        text-anchor="end" x="40" y="89">₹940 (20-DMA)</text>
+                                    <!-- 50-DMA (₹912) -->
+                                    <line class="text-secondary" stroke="currentColor" stroke-dasharray="4 2" x1="45"
+                                        x2="600" y1="115" y2="115"></line>
+                                    <text class="fill-current text-secondary font-label-sm" font-size="9.5"
+                                        text-anchor="end" x="40" y="119">₹912 (50-DMA)</text>
+                                    <!-- Prev Day High (₹952.00) -->
+                                    <line class="text-secondary" stroke="currentColor" stroke-dasharray="2 2" x1="45"
+                                        x2="600" y1="72" y2="72"></line>
+                                    <text class="fill-current text-secondary font-label-sm" font-size="9.5"
+                                        text-anchor="end" x="40" y="76">₹952 (PDH)</text>
+                                    <!-- Baseline / 52W Low (₹621.75) -->
+                                    <line class="text-secondary-fixed-dim" stroke="currentColor" x1="45" x2="600"
+                                        y1="185" y2="185"></line>
+                                    <text class="fill-current text-secondary font-label-sm" font-size="9.5"
+                                        text-anchor="end" x="40" y="189">₹621.75 (52W L)</text>
+                                </g>
+                                <!-- Residual Percentage Overlay Bars (90 sessions downsampled) -->
+                                <g class="fill-current text-secondary-fixed-dim/70">
+                                    <rect height="20" rx="1" width="4" x="60" y="145"></rect>
+                                    <rect height="25" rx="1" width="4" x="80" y="140"></rect>
+                                    <rect height="33" rx="1" width="4" x="100" y="132"></rect>
+                                    <rect height="15" rx="1" width="4" x="120" y="150"></rect>
+                                    <rect height="37" rx="1" width="4" x="140" y="128"></rect>
+                                    <rect height="29" rx="1" width="4" x="160" y="136"></rect>
+                                    <rect height="23" rx="1" width="4" x="180" y="142"></rect>
+                                    <rect height="45" rx="1" width="4" x="200" y="120"></rect>
+                                    <rect height="35" rx="1" width="4" x="220" y="130"></rect>
+                                    <rect height="55" rx="1" width="4" x="240" y="110"></rect>
+                                    <rect height="40" rx="1" width="4" x="260" y="125"></rect>
+                                    <rect height="47" rx="1" width="4" x="280" y="118"></rect>
+                                    <rect height="31" rx="1" width="4" x="300" y="134"></rect>
+                                    <rect height="43" rx="1" width="4" x="320" y="122"></rect>
+                                    <rect height="60" rx="1" width="4" x="340" y="105"></rect>
+                                    <rect height="53" rx="1" width="4" x="360" y="112"></rect>
+                                    <rect height="67" rx="1" width="4" x="380" y="98"></rect>
+                                    <rect height="61" rx="1" width="4" x="400" y="104"></rect>
+                                    <rect height="50" rx="1" width="4" x="420" y="115"></rect>
+                                    <rect height="73" rx="1" width="4" x="440" y="92"></rect>
+                                    <rect height="77" rx="1" width="4" x="460" y="88"></rect>
+                                    <rect height="69" rx="1" width="4" x="480" y="96"></rect>
+                                    <rect height="81" rx="1" width="4" x="500" y="84"></rect>
+                                    <rect height="86" rx="1" width="4" x="520" y="79"></rect>
+                                    <rect height="83" rx="1" width="4" x="540" y="82"></rect>
+                                    <rect height="100" rx="1" width="4" x="560" y="65"></rect>
+                                    <!-- Today's Giant Residual Bar -->
+                                    <rect class="text-primary-container fill-current" height="117" rx="1.5" width="6"
+                                        x="580" y="48"></rect>
+                                </g>
+                                <!-- 50-DMA Smooth Line -->
+                                <path class="text-secondary" d="M 50 160 Q 180 148 300 130 T 586 115" fill="none"
+                                    stroke="currentColor" stroke-dasharray="3 3" stroke-width="1.75"></path>
+                                <!-- 20-DMA Smooth Line -->
+                                <path class="text-primary-fixed-dim" d="M 50 145 Q 180 135 320 110 T 586 85" fill="none"
+                                    stroke="currentColor" stroke-dasharray="4 3" stroke-width="2"></path>
+                                <!-- 90-Day Close Price Trend Line -->
+                                <path class="text-primary"
+                                    d="M 50 168 C 110 164, 140 142, 190 146 C 240 150, 270 120, 320 115 C 370 110, 410 130, 460 98 C 500 72, 530 84, 550 78 L 586 52"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="3"></path>
+                                <!-- Current Price Pulsing Head -->
+                                <circle class="fill-primary-container" cx="586" cy="52" r="5"></circle>
+                                <circle class="fill-primary/20 animate-ping" cx="586" cy="52" r="9"></circle>
+                                <!-- Interactive Tooltip Overlay (Anchored to Latest Session) -->
+                                <g transform="translate(480, 28)">
+                                    <rect class="fill-inverse-surface shadow-md" height="34" rx="6" width="112" x="0"
+                                        y="0"></rect>
+                                    <text class="fill-inverse-on-surface font-label-sm" font-size="9" font-weight="600"
+                                        x="8" y="14">SESSION T-0 (TODAY)</text>
+                                    <text class="fill-primary-fixed font-metric-tabular" font-size="10.5"
+                                        font-weight="700" x="8" y="27">₹984.50 • +4.12%</text>
+                                </g>
+                                <!-- Horizontal Time Axis Dates -->
+                                <text class="fill-secondary font-label-sm" font-size="9" x="50" y="210">90 Days
+                                    Ago</text>
+                                <text class="fill-secondary font-label-sm" font-size="9" text-anchor="middle" x="320"
+                                    y="210">45 Sessions</text>
+                                <text class="fill-primary font-label-sm font-semibold" font-size="9" text-anchor="end"
+                                    x="586" y="210">Today (NSE)</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- 4. 'Where It Sits' Metrics Grid -->
+                    <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-space-md">
+                        <span class="font-headline-sm text-headline-sm text-on-surface block">Technical Position &amp;
+                            Ranges</span>
+                        <!-- DMA Quick Metrics -->
+                        <div class="grid grid-cols-3 gap-space-sm text-center">
+                            <div class="bg-surface-container-low p-space-sm rounded-lg">
+                                <span class="font-label-sm text-label-sm text-secondary block">vs 20-DMA (₹940)</span>
+                                <span class="font-headline-sm text-headline-sm text-primary">+4.73%</span>
+                                <span class="font-body-sm text-body-sm text-secondary block">Above short band</span>
+                            </div>
+                            <div class="bg-surface-container-low p-space-sm rounded-lg">
+                                <span class="font-label-sm text-label-sm text-secondary block">vs 50-DMA (₹912)</span>
+                                <span class="font-headline-sm text-headline-sm text-primary">+7.95%</span>
+                                <span class="font-body-sm text-body-sm text-secondary block">Above medium band</span>
+                            </div>
+                            <div class="bg-surface-container-low p-space-sm rounded-lg">
+                                <span class="font-label-sm text-label-sm text-secondary block">vs 200-DMA (₹831)</span>
+                                <span class="font-headline-sm text-headline-sm text-primary">+18.40%</span>
+                                <span class="font-body-sm text-body-sm text-secondary block">Macro bull trend</span>
+                            </div>
+                        </div>
+                        <!-- Sliders: Day's Range & 52-Week Range -->
+                        <div class="space-y-space-md pt-space-xs">
+                            <!-- Day Range Slider -->
+                            <div>
+                                <div
+                                    class="flex items-center justify-between text-secondary font-body-sm text-body-sm mb-space-2xs">
+                                    <div><span class="text-on-surface-variant font-medium">Day Low:</span> ₹948.00</div>
+                                    <div class="font-label-md text-label-md text-primary font-bold">LTP: ₹984.50</div>
+                                    <div><span class="text-on-surface-variant font-medium">Day High:</span> ₹989.50
+                                    </div>
+                                </div>
+                                <div class="relative w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                                    <div class="absolute top-0 bottom-0 left-0 bg-primary-container rounded-full"
+                                        style="width: 88%;"></div>
+                                    <div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full shadow"
+                                        style="left: 87%;"></div>
+                                </div>
+                            </div>
+                            <!-- 52-Week Range Slider -->
+                            <div>
+                                <div
+                                    class="flex items-center justify-between text-secondary font-body-sm text-body-sm mb-space-2xs">
+                                    <div><span class="text-on-surface-variant font-medium">52W Low:</span> ₹621.75</div>
+                                    <div class="font-label-sm text-label-sm text-secondary">7.6% room to all-time high
+                                    </div>
+                                    <div><span class="text-on-surface-variant font-medium">52W High:</span> ₹1,065.90
+                                    </div>
+                                </div>
+                                <div class="relative w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                                    <div class="absolute top-0 bottom-0 left-0 bg-secondary rounded-full"
+                                        style="width: 81%;"></div>
+                                    <div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-on-surface rounded-full shadow"
+                                        style="left: 81%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 5. 'Why It Surfaced' Signal List -->
+                    <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+                        <div class="flex items-center justify-between mb-space-md">
+                            <div class="flex items-center gap-space-xs">
+                                <span class="font-headline-sm text-headline-sm text-on-surface">Why It Surfaced
+                                    Today</span>
+                                <span class="material-symbols-outlined text-[18px] text-primary">auto_graph</span>
+                            </div>
+                            <span class="font-label-sm text-label-sm text-secondary">3 algorithmic triggers met</span>
+                        </div>
+                        <div class="space-y-space-sm">
+                            <!-- Signal 1: EXCESS_MOVE -->
+                            <div
+                                class="flex items-start gap-space-md p-space-md rounded-lg bg-surface-container-low/70">
+                                <span
+                                    class="px-space-sm py-space-2xs rounded-full font-label-sm text-label-sm uppercase tracking-wide bg-secondary-container text-primary font-bold flex-shrink-0">
+                                    EXCESS_MOVE
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="font-label-md text-label-md text-on-surface">Unusually large
+                                        stock-specific move</p>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                                        +3.47% excess return isolated against 8 peer basket (<span
+                                            class="font-metric-tabular">z = 3.42</span> standard deviations).
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Signal 2: VOLUME_CONFIRMED -->
+                            <div
+                                class="flex items-start gap-space-md p-space-md rounded-lg bg-surface-container-low/70">
+                                <span
+                                    class="px-space-sm py-space-2xs rounded-full font-label-sm text-label-sm uppercase tracking-wide bg-primary/10 text-primary font-bold flex-shrink-0">
+                                    VOLUME_CONFIRMED
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="font-label-md text-label-md text-on-surface">Volume expansion validated
+                                    </p>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                                        Relative volume expansion: <span class="font-metric-tabular">RVOL 2.4x</span>
+                                        against historical 30-day baseline average.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Signal 3: LEVEL_BREAK -->
+                            <div
+                                class="flex items-start gap-space-md p-space-md rounded-lg bg-surface-container-low/70">
+                                <span
+                                    class="px-space-sm py-space-2xs rounded-full font-label-sm text-label-sm uppercase tracking-wide bg-surface-container-highest text-on-secondary-fixed font-bold flex-shrink-0">
+                                    LEVEL_BREAK
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="font-label-md text-label-md text-on-surface">Structural Resistance Breach
+                                    </p>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                                        Decisively broke the 20-day consolidated high resistance of <span
+                                            class="font-metric-tabular">₹952.00</span> on heavy tick volume.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 6. 'Peer Group' Section -->
+                    <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+                        <div class="mb-space-md">
+                            <div class="flex items-center justify-between">
+                                <span class="font-headline-sm text-headline-sm text-on-surface">Peer Group
+                                    Context</span>
+                                <span class="font-label-sm text-label-sm text-secondary">Basket Mean: +0.65%</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                                These 8 stocks have moved together for 6 months; today the group moved +0.65%.
+                            </p>
+                        </div>
+                        <!-- Horizontal Relative Bars -->
+                        <div class="space-y-space-sm font-label-md text-label-md">
+                            <!-- TATAMOTORS (Active Item) -->
+                            <div class="p-space-sm rounded-lg bg-primary/5">
+                                <div class="flex items-center justify-between mb-space-2xs">
+                                    <div class="flex items-center gap-space-xs font-bold text-on-surface">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                        <span>TATAMOTORS</span>
+                                        <span class="font-label-sm text-label-sm text-primary font-normal">(This
+                                            Stock)</span>
+                                    </div>
+                                    <span class="font-metric-tabular text-primary font-bold">+4.12%</span>
+                                </div>
+                                <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full rounded-full" style="width: 86%;"></div>
+                                </div>
+                            </div>
+                            <!-- M&M -->
+                            <div>
+                                <div class="flex items-center justify-between mb-space-2xs text-secondary">
+                                    <span>M&amp;M</span>
+                                    <span class="font-metric-tabular text-primary">+1.10%</span>
+                                </div>
+                                <div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-primary/60 h-full rounded-full" style="width: 38%;"></div>
+                                </div>
+                            </div>
+                            <!-- MARUTI -->
+                            <div>
+                                <div class="flex items-center justify-between mb-space-2xs text-secondary">
+                                    <span>MARUTI</span>
+                                    <span class="font-metric-tabular text-primary">+0.45%</span>
+                                </div>
+                                <div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-primary/50 h-full rounded-full" style="width: 22%;"></div>
+                                </div>
+                            </div>
+                            <!-- BAJAJ-AUTO -->
+                            <div>
+                                <div class="flex items-center justify-between mb-space-2xs text-secondary">
+                                    <span>BAJAJ-AUTO</span>
+                                    <span class="font-metric-tabular text-primary">+0.20%</span>
+                                </div>
+                                <div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-primary/40 h-full rounded-full" style="width: 14%;"></div>
+                                </div>
+                            </div>
+                            <!-- ASHOKLEY -->
+                            <div>
+                                <div class="flex items-center justify-between mb-space-2xs text-secondary">
+                                    <span>ASHOKLEY</span>
+                                    <span class="font-metric-tabular text-error">-0.30%</span>
+                                </div>
+                                <div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-error/50 h-full rounded-full" style="width: 18%;"></div>
+                                </div>
+                            </div>
+                            <!-- EICHERMOT -->
+                            <div>
+                                <div class="flex items-center justify-between mb-space-2xs text-secondary">
+                                    <span>EICHERMOT</span>
+                                    <span class="font-metric-tabular text-error">-0.40%</span>
+                                </div>
+                                <div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-error/60 h-full rounded-full" style="width: 24%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 7. 'Catalysts' Intelligence Panel -->
+                    <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-space-md">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs">
+                                <span class="font-headline-sm text-headline-sm text-on-surface">Catalyst
+                                    Intelligence</span>
+                                <span
+                                    class="px-space-xs py-space-2xs bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm rounded uppercase font-bold">
+                                    Status: Found
+                                </span>
+                            </div>
+                            <span class="font-body-sm text-body-sm text-secondary">AI Scraped • Verified</span>
+                        </div>
+                        <!-- News Catalyst Card -->
+                        <a class="block group p-space-md bg-surface-container-low hover:bg-surface-container transition-colors rounded-lg"
+                            href="#">
+                            <div class="flex items-start justify-between gap-space-md">
+                                <div class="min-w-0">
+                                    <h4
+                                        class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors leading-snug">
+                                        Tata Motors Commercial Vehicle dispatch up 14% MoM; EV passenger segment margin
+                                        expands.
+                                    </h4>
+                                    <div
+                                        class="flex items-center gap-space-xs mt-space-xs font-body-sm text-body-sm text-secondary">
+                                        <span>Economic Times</span>
+                                        <span>•</span>
+                                        <span>Published 2h ago</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors text-[20px] flex-shrink-0">
+                                    open_in_new
+                                </span>
+                            </div>
+                        </a>
+                        <!-- Reassurance Note / Protocol Transparency -->
+                        <div
+                            class="flex items-center gap-space-xs p-space-sm bg-surface-container-low/60 rounded-lg text-secondary font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+                            <span>
+                                <strong>Explicit reassurance:</strong> When no public news exists, we state <em>“No
+                                    public catalyst found”</em> so you know it was a pure flow/structural move.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 8. Drawer Sticky Footer -->
+                <div
+                    class="flex-shrink-0 bg-surface-container-lowest px-space-xl py-space-md border-t border-transparent shadow-[0_-4px_16px_rgba(15,23,42,0.04)] flex items-center justify-between gap-space-md">
+                    <div class="flex items-center gap-space-sm">
+                        <button
+                            class="inline-flex items-center justify-center gap-space-xs bg-primary-container text-on-primary-container hover:brightness-105 active:scale-[0.98] font-label-lg text-label-lg px-space-xl py-space-md rounded-lg shadow-sm transition-all"
+                            id="btn-mark-reviewed" type="button">
+                            <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                            <span>Got it (Mark Reviewed)</span>
+                        </button>
+                        <button
+                            class="inline-flex items-center justify-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container font-label-lg text-label-lg text-on-surface-variant px-space-md py-space-md rounded-lg transition-colors"
+                            id="btn-remove-watchlist" type="button">
+                            <span class="material-symbols-outlined text-[18px]">playlist_remove</span>
+                            <span>Remove from Watchlist</span>
+                        </button>
+                    </div>
+                    <span class="hidden sm:inline font-label-sm text-label-sm text-secondary">
+                        Press <kbd class="px-1.5 py-0.5 bg-surface-container-high rounded text-on-surface">Esc</kbd> to
+                        close
+                    </span>
+                </div>
+            </aside>
+            <!-- Micro-interactions Script -->
+            <script>
+                    (function () {
+                        const drawer = document.getElementById('stock-drawer');
+                        const backdrop = document.getElementById('drawer-backdrop');
+                        const closeBtn = document.getElementById('drawer-close-btn');
+                        const quickBtn = document.getElementById('btn-quick-review');
+                        const markReviewedBtn = document.getElementById('btn-mark-reviewed');
+                        const removeBtn = document.getElementById('btn-remove-watchlist');
+
+                        function closeDrawer() {
+                            if (!drawer) return;
+                            drawer.style.transform = 'translateX(100%)';
+                            if (backdrop) backdrop.style.opacity = '0';
+                            setTimeout(() => {
+                                if (backdrop) backdrop.style.display = 'none';
+                            }, 300);
+                        }
+
+                        function handleReviewed() {
+                            const originalText = markReviewedBtn.innerHTML;
+                            markReviewedBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">done</span><span>Reviewed &amp; Logged</span>';
+                            markReviewedBtn.classList.replace('bg-primary-container', 'bg-surface-container-high');
+                            setTimeout(closeDrawer, 450);
+                        }
+
+                        if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+                        if (backdrop) backdrop.addEventListener('click', closeDrawer);
+                        if (quickBtn) quickBtn.addEventListener('click', handleReviewed);
+                        if (markReviewedBtn) markReviewedBtn.addEventListener('click', handleReviewed);
+
+                        if (removeBtn) {
+                            removeBtn.addEventListener('click', () => {
+                                removeBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span><span>Removed</span>';
+                                setTimeout(closeDrawer, 400);
+                            });
+                        }
+
+                        window.addEventListener('keydown', (e) => {
+                            if (e.key === 'Escape') closeDrawer();
+                        });
+                    })();
+            </script>
+        </div>
+    </main>
+    <footer class="w-full bg-surface-container-lowest mt-auto shadow-[0_-1px_8px_rgba(0,0,0,0.02)]">
+        <div
+            class="max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-space-lg"><span>© 2025 MarketPulse Securities. High agency execution
+                    shell.</span></div>
+            <div class="flex items-center gap-space-xl font-label-sm text-label-sm"><span>Telemetry Latency:
+                    0.18ms</span><span>Data verified with SEBI regulated nodes</span></div>
+        </div>
+    </footer>
+</body>
+
+</html>

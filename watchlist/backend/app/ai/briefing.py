@@ -71,12 +71,13 @@ def facts_from_digest(digest: DigestOut) -> dict:
         "changed_count": digest.changed_count,
         "total_count": digest.total_count,
         "market_status": digest.market_status,
-        "items": [_item_facts(item, statuses.get(item.symbol)) for item in changed],
+        "items": [item_facts(item, statuses.get(item.symbol)) for item in changed],
     }
 
 
-def _item_facts(item: Item, catalyst_status: str | None) -> dict:
-    found = catalysts.cached(item.symbol, item.signals[0].trading_date) if item.signals else None
+def item_facts(item: Item, catalyst_status: str | None) -> dict:
+    latest = max((s.trading_date for s in item.signals), default=None)
+    found = catalysts.cached(item.symbol, latest) if latest else None
     headlines = [
         {
             "headline": untrusted(c.headline),

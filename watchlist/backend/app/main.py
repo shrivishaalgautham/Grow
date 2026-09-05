@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import auth, evidence, rules, symbols, watchlist
+from app.api import auth, evidence, notifications, rules, symbols, watchlist
 from app.api import health as health_api
 from app.cache import cache
 from app.config import settings
@@ -74,6 +74,7 @@ def create_app() -> FastAPI:
         symbols.router,
         rules.router,
         evidence.router,
+        notifications.router,
         health_api.router,
     ):
         app.include_router(router, prefix="/api")

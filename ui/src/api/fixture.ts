@@ -50,6 +50,7 @@ interface FixtureState {
   rules: RuleListItem[];
   reviewedAt: string | null;
   isSample: boolean;
+  alertEmail: string | null;
 }
 
 const initialState = (): FixtureState => ({
@@ -58,6 +59,7 @@ const initialState = (): FixtureState => ({
   rules: rulesFixture as RuleListItem[],
   reviewedAt: null,
   isSample: true,
+  alertEmail: null,
 });
 
 function loadState(): FixtureState {
@@ -493,6 +495,37 @@ export async function fixtureRequest(
     const id = pathname.split("/").pop();
     saveState({ ...state, rules: state.rules.filter((r) => r.id !== id) });
     return null;
+  }
+
+  if (method === "GET" && pathname === "/notifications") {
+    return { email: state.alertEmail ? { address_masked: state.alertEmail, status: "verified", verify_expires_at: null, last_notified_at: null } : null };
+  }
+  if (method === "POST" && pathname === "/notifications/email") {
+    const address = (body as { email: string }).email;
+    const masked = `${address[0]}***@${address.split("@")[1]}`;
+    saveState({ ...state, alertEmail: masked });
+    return { address_masked: masked, status: "verified", verify_expires_at: null, last_notified_at: null };
+  }
+  if (method === "DELETE" && pathname === "/notifications/email") {
+    saveState({ ...state, alertEmail: null });
+    return null;
+  }
+  if (method === "POST" && pathname === "/notifications/email/verify") {
+    return { status: "verified", address_masked: state.alertEmail ?? "y***@example.com" };
+  }
+  if (method === "GET" && pathname.startsWith("/symbols/") && pathname.endsWith("/explanation")) {
+    const symbol = pathname.split("/")[2];
+    const item = BASE.items.find((candidate) => candidate.symbol === symbol);
+    if (!item || !item.is_changed) throw new ApiError(403, "not_surfaced", "Only stocks that changed are explained.");
+    return {
+      status: "ready",
+      text: `${symbol.replace(".NS", "")} moved ${item.today_change_pct}% while its peer group moved ${item.peer_change_pct}%, leaving ${item.residual_pct}% that is stock-specific. No public catalyst was found in the last three days of filings and headlines.`,
+      source: "template",
+      catalyst_status: item.catalyst_status === "found" ? "found" : "none_found",
+      items: [],
+      generated_at: new Date().toISOString(),
+      was_cached: false,
+    };
   }
 
   if (method === "GET" && pathname === "/evidence/noise-reduction") {

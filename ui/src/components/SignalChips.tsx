@@ -1,22 +1,16 @@
-import type { Signal, SignalType } from "@/api/types";
+import type { CatalystStatus, Signal, SignalType } from "@/api/types";
+import { Icon } from "./Icon";
+import type { IconName } from "./icons";
 
-const TONES: Record<SignalType, string> = {
-  EXCESS_MOVE: "border-high/40 bg-high/10 text-high",
-  VOLUME_CONFIRMED: "border-notable/40 bg-notable/10 text-notable",
-  LEVEL_BREAK: "border-line-strong bg-raised text-ink",
-  SINCE_SEEN_MOVE: "border-line-strong bg-raised text-muted",
-  USER_RULE: "border-rule/40 bg-rule/10 text-rule",
+const CHIP: Record<SignalType, { icon: IconName; classes: string }> = {
+  EXCESS_MOVE: { icon: "trending_up", classes: "bg-primary/10 text-primary" },
+  VOLUME_CONFIRMED: { icon: "bar_chart", classes: "bg-primary/10 text-primary" },
+  LEVEL_BREAK: { icon: "show_chart", classes: "bg-secondary-container text-on-secondary-fixed" },
+  SINCE_SEEN_MOVE: { icon: "history", classes: "bg-surface-container-high text-on-surface" },
+  USER_RULE: { icon: "rule", classes: "bg-primary-container/20 text-on-primary-container" },
 };
 
-const DOTS: Record<SignalType, string> = {
-  EXCESS_MOVE: "bg-high",
-  VOLUME_CONFIRMED: "bg-notable",
-  LEVEL_BREAK: "bg-ink",
-  SINCE_SEEN_MOVE: "bg-faint",
-  USER_RULE: "bg-rule",
-};
-
-const NAMES: Record<SignalType, string> = {
+export const SIGNAL_NAMES: Record<SignalType, string> = {
   EXCESS_MOVE: "Excess move",
   VOLUME_CONFIRMED: "Volume confirmed",
   LEVEL_BREAK: "Level break",
@@ -24,42 +18,34 @@ const NAMES: Record<SignalType, string> = {
   USER_RULE: "Your rule",
 };
 
-export function SignalChips({ signals }: { signals: Signal[] }) {
-  if (signals.length === 0) return null;
-
+export function SignalChip({ signal }: { signal: Signal }) {
+  const chip = CHIP[signal.type];
   return (
-    <ul className="flex flex-wrap gap-1.5">
-      {signals.map((signal) => (
-        <li key={`${signal.type}-${signal.fired_at}`}>
-          <span
-            className={`inline-block rounded border px-2 py-0.5 text-[11px] font-medium ${TONES[signal.type]}`}
-            title={signal.detail}
-          >
-            {NAMES[signal.type]}
-          </span>
-        </li>
-      ))}
-    </ul>
+    <div
+      title={signal.detail}
+      className={`inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full font-label-sm text-label-sm font-semibold ${chip.classes}`}
+    >
+      <Icon name={chip.icon} size={15} />
+      <span>{signal.type}</span>
+      <span className="text-on-surface-variant font-normal hidden sm:inline">• {signal.headline}</span>
+    </div>
   );
 }
 
-export function SignalList({ signals }: { signals: Signal[] }) {
+const CATALYST_CHIP: Partial<Record<CatalystStatus, { icon: IconName; classes: string; text: string }>> = {
+  found: { icon: "feed", classes: "bg-surface-container-high text-on-surface", text: "Catalyst found" },
+  none_found: { icon: "search_off", classes: "bg-tertiary-fixed/40 text-on-tertiary-fixed", text: "No public catalyst found" },
+  pending: { icon: "progress_activity", classes: "bg-surface-container text-secondary", text: "Looking for a catalyst…" },
+  unavailable: { icon: "cloud_off", classes: "bg-surface-container text-secondary", text: "Catalyst source unavailable" },
+};
+
+export function CatalystChip({ status, headline }: { status: CatalystStatus; headline?: string }) {
+  const chip = CATALYST_CHIP[status];
+  if (!chip) return null;
   return (
-    <ul className="space-y-2.5">
-      {signals.map((signal) => (
-        <li key={`${signal.type}-${signal.fired_at}`} className="flex gap-3">
-          <span
-            className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${DOTS[signal.type]}`}
-            aria-hidden
-          />
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-ink">{signal.headline}</p>
-            <p className="mt-0.5 text-[13px] leading-relaxed text-muted">
-              {signal.detail}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div className={`inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full font-label-sm text-label-sm font-bold ${chip.classes}`}>
+      <Icon name={chip.icon} size={15} className={status === "none_found" ? "text-tertiary" : "text-primary"} />
+      <span className="truncate max-w-[36ch]">{status === "found" && headline ? `Catalyst found: ${headline}` : chip.text}</span>
+    </div>
   );
 }

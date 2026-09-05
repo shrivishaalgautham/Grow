@@ -20,6 +20,7 @@ from app.engine.peers import MIN_PEERS, cluster_symbols
 from app.engine.signals import SessionFacts, evaluate
 from app.jobs import store
 from app.models import PeerCluster
+from app.notify.dispatch import dispatch
 from app.providers.base import INDEX_SYMBOL, Bar, ProviderError
 from app.providers.yahoo import Yahoo
 
@@ -341,6 +342,7 @@ def run_daily() -> None:
     compute_baselines()
     backfill_signal_events()
     write_eod_quotes()
+    dispatch(clock.now())
 
 
 def seed(args: argparse.Namespace) -> None:

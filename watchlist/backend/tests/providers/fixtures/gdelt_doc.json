@@ -1,0 +1,22 @@
+{
+  "articles": [
+    {
+      "url": "https://www.example-news.in/adani-capex",
+      "url_mobile": "",
+      "title": "Adani Enterprises reallocates capex toward data centres",
+      "seendate": "20260903T101500Z",
+      "socialimage": "",
+      "domain": "example-news.in",
+      "language": "English",
+      "sourcecountry": "India"
+    },
+    {
+      "url": "https://www.example-news.in/broken",
+      "title": "",
+      "seendate": "20260903T091500Z",
+      "domain": "example-news.in",
+      "language": "English",
+      "sourcecountry": "India"
+    }
+  ]
+}

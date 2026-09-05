@@ -8,6 +8,7 @@ from app.cache import cache
 from app.config import settings
 from app.jobs.daily import run_daily
 from app.jobs.refresh import refresh_tick
+from app.notify.dispatch import dispatch
 
 log = logging.getLogger(__name__)
 
@@ -26,6 +27,13 @@ def refresh_job() -> None:
     refresh_tick(now)
 
 
+def notify_job() -> None:
+    now = clock.now()
+    if settings.scheduler_market_hours_only and clock.market_status(now) != "open":
+        return
+    dispatch(now)
+
+
 def start_scheduler(app: FastAPI) -> None:
     global _scheduler
     if settings.replay_date:
@@ -37,6 +45,14 @@ def start_scheduler(app: FastAPI) -> None:
         "interval",
         seconds=settings.refresh_hot_seconds,
         id="refresh",
+        max_instances=1,
+        coalesce=True,
+    )
+    scheduler.add_job(
+        notify_job,
+        "interval",
+        seconds=settings.notify_interval_seconds,
+        id="notify",
         max_instances=1,
         coalesce=True,
     )

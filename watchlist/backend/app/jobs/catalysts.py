@@ -4,7 +4,8 @@ from datetime import date, datetime, timedelta
 
 from app.cache import cache
 from app.clock import IST
-from app.providers import nse_announcements, yahoo_rss
+from app.config import settings
+from app.providers import gdelt, google_news, nse_announcements, yahoo_rss
 from app.providers.base import Catalyst
 from app.schemas import CatalystItem, CatalystsOut
 
@@ -41,9 +42,13 @@ def try_begin(symbol: str, trading_date: date) -> bool:
     return cache.set_nx(f"{cache_key(symbol, trading_date)}:lock", "1", LOCK_TTL_S)
 
 
-def fetch_and_cache(symbol: str, trading_date: date, now: datetime) -> CatalystsOut:
+def fetch_and_cache(symbol: str, company: str, trading_date: date, now: datetime) -> CatalystsOut:
     since = trading_date - LOOKBACK
     feeds = [yahoo_rss.fetch(symbol), nse_announcements.fetch(symbol.split(".")[0], since)]
+    if settings.google_news_enabled:
+        feeds.append(google_news.fetch(company))
+    if settings.gdelt_enabled:
+        feeds.append(gdelt.fetch(company))
     reachable = [feed for feed in feeds if feed is not None]
     items = _recent([c for feed in reachable for c in feed], since)
     if not reachable:

@@ -177,3 +177,32 @@ class BriefingCache(Base):
     text: Mapped[str] = mapped_column(String(600))
     source: Mapped[str] = mapped_column(String(16))
     generated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class NotificationChannel(Base):
+    __tablename__ = "notification_channels"
+    __table_args__ = (
+        UniqueConstraint("user_id", "kind", name="uq_notification_channels_user_kind"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    kind: Mapped[str] = mapped_column(String(16), default="email")
+    target: Mapped[str] = mapped_column(String(254))
+    verify_token_hash: Mapped[str | None] = mapped_column(String(64))
+    verify_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    unsubscribe_token: Mapped[str] = mapped_column(String(64), unique=True)
+    verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    enabled: Mapped[bool] = mapped_column(default=True)
+    last_notified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class NotificationLog(Base):
+    __tablename__ = "notification_log"
+
+    channel_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("notification_channels.id", ondelete="CASCADE"), primary_key=True
+    )
+    event_key: Mapped[str] = mapped_column(String(160), primary_key=True)
+    sent_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

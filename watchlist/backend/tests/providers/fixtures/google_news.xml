@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>"Adani Enterprises NSE" - Google News</title>
+    <item>
+      <title>Adani Enterprises board approves airport unit demerger timeline - Business Standard</title>
+      <link>https://news.google.com/rss/articles/CBMiabc</link>
+      <pubDate>Wed, 03 Sep 2026 06:10:00 GMT</pubDate>
+      <source url="https://www.business-standard.com">Business Standard</source>
+    </item>
+    <item>
+      <title>Visit https://evil.example/claim now - Spam</title>
+      <link>https://news.google.com/rss/articles/CBMispam</link>
+      <pubDate>Wed, 03 Sep 2026 05:00:00 GMT</pubDate>
+      <source url="https://spam.example">Spam</source>
+    </item>
+  </channel>
+</rss>

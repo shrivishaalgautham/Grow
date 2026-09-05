@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#b91a24", "primary": "#006c4f", "surface-bright": "#f8f9ff", "on-secondary-fixed": "#131b2e", "on-error-container": "#93000a", "inverse-surface": "#213145", "on-primary-fixed": "#002116", "primary-container": "#00d09c", "surface-variant": "#d3e4fe", "outline-variant": "#bacac1", "primary-fixed-dim": "#2fe0aa", "tertiary-fixed": "#ffdad7", "outline": "#6b7b72", "on-primary-fixed-variant": "#00513b", "background": "#f8f9ff", "surface-container": "#e5eeff", "error": "#ba1a1a", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#3f465c", "on-surface": "#0b1c30", "on-secondary-container": "#5c647a", "on-background": "#0b1c30", "secondary-fixed-dim": "#bec6e0", "on-tertiary-fixed-variant": "#930013", "surface-container-high": "#dce9ff", "primary-fixed": "#59fdc5", "secondary-container": "#dae2fd", "surface-tint": "#006c4f", "on-primary": "#ffffff", "surface-dim": "#cbdbf5", "on-primary-container": "#00533c", "surface-container-low": "#eff4ff", "on-tertiary-container": "#960014", "on-surface-variant": "#3c4a43", "tertiary-container": "#ff9d96", "secondary-fixed": "#dae2fd", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-highest": "#d3e4fe", "secondary": "#565e74", "on-error": "#ffffff", "error-container": "#ffdad6", "tertiary-fixed-dim": "#ffb3ad", "on-tertiary-fixed": "#410004", "surface": "#f8f9ff", "inverse-on-surface": "#eaf1ff", "inverse-primary": "#2fe0aa" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-mobile": "1rem", "gutter-desktop": "1.5rem", "space-xl": "1.5rem", "space-xs": "0.25rem", "space-base": "1rem", "margin-tablet": "2rem", "space-sm": "0.5rem", "margin-desktop": "3rem", "gutter-mobile": "1rem", "space-2xl": "2rem", "space-md": "0.75rem", "space-3xl": "3rem", "space-2xs": "0.125rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-md": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "metric-tabular": ["Inter"], "label-lg": ["Inter"], "body-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "metric-display": ["Inter"], "body-md": ["Inter"] }, "fontSize": { "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "metric-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "metric-display": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }] } } } }</script>
+</head>
+
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col">
+    <header
+        class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+        <div class="w-full flex flex-col" id="global-banners-container">
+            <div class="w-full bg-secondary-container px-gutter-desktop py-space-xs flex items-center justify-between">
+                <div class="max-w-7xl mx-auto w-full flex items-center justify-between text-on-secondary-fixed">
+                    <div class="flex items-center gap-space-sm"><span
+                            class="material-symbols-outlined text-[16px] text-primary">bolt</span><span
+                            class="font-label-sm text-label-sm uppercase tracking-wider">Provider Latency
+                            Normal</span><span class="hidden sm:inline font-body-sm text-body-sm text-secondary">•
+                            NSE/BSE Feeds Connected (42ms)</span></div>
+                    <div class="flex items-center gap-space-md"><span
+                            class="font-label-sm text-label-sm text-secondary hidden md:inline">API Quota: 94%
+                            Remaining</span><button
+                            class="font-label-sm text-label-sm text-secondary hover:text-on-surface" type="button"><span
+                                class="material-symbols-outlined text-[14px]">close</span></button></div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="h-16 max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between gap-space-md">
+            <div class="flex items-center gap-space-xl">
+                <div class="flex items-center gap-space-sm cursor-pointer"><img alt="Smart Market Watchlist Logo"
+                        class="h-8 w-auto object-contain"
+                        src="https://lh3.googleusercontent.com/aida/AEtjO1V82IDGAcYAdBP2haHdF9LrjYibXovAbvnZBXsM_-9g7whBohRtdh2pSbhHwPEeJmNJG9Yf1MGOPqTPD6cbKblWuztjcTPD4nzQ5UxtM31ebX_1JiWQq-ZDXSYH_TJJf0IZ3kFAYfhWtiLDcLBd_wJq8pUsYp_q7umviurEraVH8FguNirZmQunqLqBjAk3m2N7cE-A6-6xDWYWeKPbtJVJhZ-lqXcuwvOm0Ylan9TSN4wcjdzt2I07AXo" /><span
+                        class="font-headline-sm text-headline-sm text-on-surface hidden sm:inline">MarketPulse</span>
+                </div>
+                <nav class="flex items-center gap-space-xs bg-surface-container-low p-space-2xs rounded-lg"
+                    data-active-classes="bg-surface-container text-on-surface font-headline-sm"><a aria-current="page"
+                        class="px-space-md py-space-xs rounded transition-colors bg-surface-container text-on-surface font-headline-sm"
+                        data-path="watchlist" href="#">Watchlist</a><a
+                        class="px-space-md py-space-xs rounded font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors"
+                        data-path="evidence" href="#">Evidence</a></nav>
+            </div>
+            <div class="flex items-center gap-space-md">
+                <div
+                    class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span
+                        class="font-label-sm text-label-sm text-on-surface font-bold">Market Open</span><span
+                        class="font-body-sm text-body-sm text-on-surface-variant">15:30 IST</span></div>
+                <div
+                    class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-full">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span
+                            class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span
+                        class="font-label-sm text-label-sm text-on-surface pr-space-xs hidden sm:inline">sample-user-alpha</span>
+                </div><button
+                    class="hidden sm:flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:bg-surface-container-low transition-colors font-label-md text-label-md text-on-surface"
+                    type="button"><span
+                        class="material-symbols-outlined text-[18px] text-primary">qr_code_2</span><span>Open on
+                        phone</span></button><button
+                    class="flex items-center gap-space-xs bg-surface-container-low hover:bg-error-container hover:text-on-error-container px-space-md py-space-xs rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant"
+                    type="button"><span class="material-symbols-outlined text-[18px]">logout</span><span
+                        class="hidden md:inline">End session</span></button>
+            </div>
+        </div>
+    </header>
+    <main
+        class="w-full pt-16 bg-surface flex-1 max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
+        <div class="flex flex-col w-full pb-space-3xl space-y-space-xl">
+            <!-- 1. BANNERS STACK -->
+            <section class="flex flex-col gap-space-xs">
+                <!-- Banner 1: Market Closed Notice -->
+                <div
+                    class="bg-surface-container-low px-space-md py-space-sm rounded-xl flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                        <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                        <span class="font-label-md text-label-md text-on-surface">Market closed — last traded 15:30
+                            IST</span>
+                        <span class="text-secondary font-body-sm text-body-sm hidden md:inline">• Official settlement
+                            session concluded</span>
+                    </div>
+                    <span
+                        class="font-label-sm text-label-sm text-secondary tracking-wider uppercase bg-surface-container px-space-sm py-space-2xs rounded">EOD
+                        Archive</span>
+                </div>
+                <!-- Banner 2: Providers Degraded Alert -->
+                <div
+                    class="bg-tertiary-fixed/40 px-space-md py-space-sm rounded-xl flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                        <span class="material-symbols-outlined text-[18px] text-tertiary">warning</span>
+                        <span class="font-label-md text-label-md text-on-surface">NSE feed latency degraded; BSE backup
+                            active</span>
+                        <span class="text-on-surface-variant font-body-sm text-body-sm hidden sm:inline">• Execution
+                            routed via secondary gateway automatically</span>
+                    </div>
+                    <span
+                        class="font-label-sm text-label-sm text-on-tertiary-container font-semibold bg-tertiary-container/30 px-space-sm py-space-2xs rounded">Failover
+                        Armed</span>
+                </div>
+                <!-- Banner 3: Replay Rehearsal Indicator -->
+                <div
+                    class="bg-surface-container-high px-space-md py-space-sm rounded-xl flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                        <span class="material-symbols-outlined text-[18px] text-primary">history_toggle_off</span>
+                        <span class="font-label-md text-label-md text-on-surface">Clock pinned to 2024-10-24 for
+                            rehearsal</span>
+                        <span class="text-secondary font-body-sm text-body-sm hidden lg:inline">• Historical backtesting
+                            telemetry replay active</span>
+                    </div>
+                    <div class="flex items-center gap-space-sm">
+                        <button class="font-label-sm text-label-sm text-primary hover:underline font-bold"
+                            type="button">Exit Replay</button>
+                    </div>
+                </div>
+            </section>
+            <!-- 2. DIGEST HERO CARD -->
+            <section
+                class="bg-surface-container-lowest rounded-xl p-space-xl md:p-space-2xl shadow-sm relative overflow-hidden">
+                <div
+                    class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-primary-container/10 pointer-events-none blur-3xl">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-start justify-between gap-space-lg relative z-10">
+                    <div class="max-w-3xl space-y-space-sm">
+                        <div class="flex items-center gap-space-xs">
+                            <span class="material-symbols-outlined text-primary text-[20px]">auto_awesome</span>
+                            <span
+                                class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Automated
+                                Daily Briefing</span>
+                        </div>
+                        <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+                            You were away 3 days — 4 of 12 stocks did something.
+                        </h1>
+                        <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+                            <span>Bars through 2024-10-24</span>
+                            <span>•</span>
+                            <span>Written by model (cached 5m)</span>
+                        </div>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant pt-space-xs leading-relaxed">
+                            Broad indices consolidated with Nifty flat (-0.08%), yet Tata Motors and Trent broke key
+                            technical resistances on 2.4x average volume. Adani Ports decoupled downwards following
+                            earnings commentary.
+                        </p>
+                        <div class="pt-space-xs">
+                            <a class="inline-flex items-center gap-space-2xs font-label-lg text-label-lg text-primary hover:text-on-primary-container transition-colors"
+                                href="#">
+                                <span>Why you're seeing 4 and not 43 (Evidence)</span>
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col sm:flex-row md:flex-col items-stretch sm:items-center md:items-end gap-space-sm self-start md:self-auto shrink-0">
+                        <button
+                            class="px-space-xl py-space-sm bg-primary-container hover:bg-primary-fixed-dim text-on-primary-fixed font-label-lg text-label-lg rounded-lg shadow-sm transition-all duration-150 flex items-center justify-center gap-space-xs"
+                            type="button">
+                            <span class="material-symbols-outlined text-[18px]">done_all</span>
+                            <span>Mark all reviewed</span>
+                        </button>
+                        <span class="font-label-sm text-label-sm text-secondary text-center md:text-right">Clears 4
+                            unread alerts</span>
+                    </div>
+                </div>
+            </section>
+            <!-- 3. ADD A STOCK COMBOBOX -->
+            <section class="relative">
+                <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+                    <div class="relative flex items-center">
+                        <span
+                            class="material-symbols-outlined absolute left-space-md text-secondary text-[22px]">search</span>
+                        <input
+                            class="w-full pl-12 pr-28 py-space-md bg-surface-container-low focus:bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-md placeholder:text-secondary outline-none ring-2 ring-primary/20 transition-all"
+                            id="stock-search-input" placeholder="Search NSE/BSE symbol (e.g., RELIANCE, TCS, INFY)..."
+                            type="text" value="TREN" />
+                        <div class="absolute right-space-md flex items-center gap-space-xs">
+                            <kbd
+                                class="hidden sm:inline-block px-space-xs py-space-2xs bg-surface-container rounded text-secondary font-label-sm text-label-sm">⌘K</kbd>
+                            <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                        </div>
+                    </div>
+                    <!-- Search Dropdown Preview Popover -->
+                    <div
+                        class="mt-space-sm bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden p-space-sm space-y-space-xs">
+                        <div
+                            class="flex items-center justify-between px-space-sm py-space-2xs font-label-sm text-label-sm text-secondary uppercase tracking-wider">
+                            <span>Search Results &amp; Universe Check</span>
+                            <span>Symbol Search Limit 50</span>
+                        </div>
+                        <!-- Result 1: TRENT -->
+                        <div
+                            class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer">
+                            <div class="flex items-center gap-space-md">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center font-headline-sm text-headline-sm text-primary">
+                                    TR
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-space-xs">
+                                        <span class="font-headline-sm text-headline-sm text-on-surface">TRENT</span>
+                                        <span
+                                            class="font-label-sm text-label-sm px-space-xs py-space-2xs bg-secondary-container text-on-secondary-fixed rounded">Retail</span>
+                                    </div>
+                                    <span class="font-body-sm text-body-sm text-secondary">Trent Limited • NSE</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-space-md">
+                                <div class="text-right">
+                                    <div class="font-metric-tabular text-metric-tabular text-on-surface">₹7,920.00</div>
+                                    <div class="font-label-sm text-label-sm text-primary font-bold">+5.34%</div>
+                                </div>
+                                <button
+                                    class="px-space-md py-space-xs bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors"
+                                    type="button">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Result 2: RELIANCE (Disabled: Already in Watchlist) -->
+                        <div
+                            class="flex items-center justify-between p-space-sm rounded-lg opacity-60 bg-surface-container-lowest cursor-not-allowed">
+                            <div class="flex items-center gap-space-md">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center font-headline-sm text-headline-sm text-secondary">
+                                    RI
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-space-xs">
+                                        <span class="font-headline-sm text-headline-sm text-on-surface">RELIANCE</span>
+                                        <span
+                                            class="font-label-sm text-label-sm px-space-xs py-space-2xs bg-surface-container text-secondary rounded">Conglomerate</span>
+                                    </div>
+                                    <span class="font-body-sm text-body-sm text-secondary">Reliance Industries Ltd •
+                                        NSE</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-space-md">
+                                <span
+                                    class="font-label-sm text-label-sm bg-surface-container px-space-sm py-space-xs rounded text-secondary font-semibold">
+                                    Already in watchlist
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Result 3: ZOMATO (With Warning Preview) -->
+                        <div
+                            class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+                            <div class="flex items-center gap-space-md">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center font-headline-sm text-headline-sm text-on-surface">
+                                    ZO
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-space-xs">
+                                        <span class="font-headline-sm text-headline-sm text-on-surface">ZOMATO</span>
+                                        <span
+                                            class="font-label-sm text-label-sm px-space-xs py-space-2xs bg-secondary-container text-on-secondary-fixed rounded">Tech</span>
+                                    </div>
+                                    <span class="font-body-sm text-body-sm text-secondary">Zomato Ltd • BSE / NSE</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-space-md">
+                                <div class="text-right">
+                                    <div class="font-metric-tabular text-metric-tabular text-on-surface">₹264.80</div>
+                                    <div class="font-label-sm text-label-sm text-primary font-bold">+1.22%</div>
+                                </div>
+                                <button
+                                    class="px-space-md py-space-xs bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-label-md text-label-md transition-colors"
+                                    type="button">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                        <!-- System Limit Indicator Previews -->
+                        <div
+                            class="mt-space-xs pt-space-xs flex flex-wrap items-center justify-between gap-space-sm px-space-sm bg-surface-container-low/70 rounded-lg py-space-xs">
+                            <div
+                                class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+                                <span class="material-symbols-outlined text-[16px] text-tertiary">error_outline</span>
+                                <span>Capacity Notice: 12 of 50 slots filled (cap 50)</span>
+                            </div>
+                            <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+                                <span class="material-symbols-outlined text-[16px]">info</span>
+                                <span>Universe: NSE 500 + Active F&amp;O eligible tickers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 4. CHANGED CARDS GRID -->
+            <section class="space-y-space-md">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-space-sm">
+                        <h2 class="font-headline-md text-headline-md text-on-surface">Changed Today</h2>
+                        <span
+                            class="px-space-sm py-space-2xs bg-primary/10 text-primary font-label-sm text-label-sm rounded-full font-bold">3
+                            Stocks with Signals</span>
+                    </div>
+                    <div class="font-label-sm text-label-sm text-secondary">
+                        Sorted by absolute residual alpha
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-space-lg">
+                    <!-- Card 1: TATAMOTORS -->
+                    <article
+                        class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm hover:shadow-md transition-all duration-200">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-md">
+                            <div class="flex items-center gap-space-md">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center font-headline-md text-headline-md text-primary font-bold">
+                                    TM
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-space-sm">
+                                        <h3 class="font-headline-md text-headline-md text-on-surface">TATAMOTORS</h3>
+                                        <span
+                                            class="px-space-sm py-space-2xs rounded-full bg-primary-container/20 text-on-primary-container font-label-sm text-label-sm font-bold">
+                                            Worth a look • High
+                                        </span>
+                                    </div>
+                                    <p class="font-body-sm text-body-sm text-secondary">Tata Motors Passenger Vehicles
+                                        Ltd • Auto OEM</p>
+                                </div>
+                            </div>
+                            <!-- Price & Freshness Tag -->
+                            <div class="flex items-end lg:items-end justify-between lg:justify-end gap-space-xl">
+                                <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+                                    <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                                    <span>Fresh • Live 15:28 IST (NSE)</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-headline-md text-headline-md text-on-surface font-bold">₹984.50
+                                    </div>
+                                    <div
+                                        class="font-metric-tabular text-metric-tabular text-primary font-bold flex items-center justify-end gap-space-2xs">
+                                        <span class="material-symbols-outlined text-[16px]">arrow_drop_up</span>
+                                        +4.12% today
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- THE THREE-COLUMN DECOMPOSITION (Groww Signature Component) -->
+                        <div class="my-space-md p-space-md bg-surface-container-low rounded-xl">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md text-center">
+                                <!-- Col 1: Total Move -->
+                                <div class="p-space-sm bg-surface-container-lowest rounded-lg">
+                                    <div class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">
+                                        Today's Return</div>
+                                    <div class="font-headline-sm text-headline-sm text-primary font-bold mt-space-2xs">
+                                        +4.12%</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Gross intraday mark</div>
+                                </div>
+                                <!-- Col 2: Peers Move -->
+                                <div class="p-space-sm bg-surface-container-lowest rounded-lg">
+                                    <div class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">
+                                        Peers (8 Auto Peers)</div>
+                                    <div
+                                        class="font-headline-sm text-headline-sm text-on-surface font-bold mt-space-2xs">
+                                        +0.65%</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Beta-weighted sector basket
+                                    </div>
+                                </div>
+                                <!-- Col 3: Stock-Specific Move -->
+                                <div class="p-space-sm bg-surface-container-lowest rounded-lg">
+                                    <div
+                                        class="font-label-sm text-label-sm text-primary uppercase tracking-wider font-bold">
+                                        Stock-Specific (Alpha)</div>
+                                    <div class="font-headline-sm text-headline-sm text-primary font-bold mt-space-2xs">
+                                        +3.47%</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Decoupled excess move</div>
+                                </div>
+                            </div>
+                            <!-- Visual Share Bar -->
+                            <div class="mt-space-md space-y-space-xs">
+                                <div class="flex items-center justify-between font-label-sm text-label-sm">
+                                    <span class="text-secondary">Stock-Specific Alpha Share</span>
+                                    <span class="font-bold text-primary">84.2% idiosyncratic drive</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden flex">
+                                    <div class="h-full bg-secondary" style="width: 15.8%"
+                                        title="Peers correlation: 15.8%"></div>
+                                    <div class="h-full bg-primary-container" style="width: 84.2%"
+                                        title="Pure alpha move: 84.2%"></div>
+                                </div>
+                                <div
+                                    class="flex items-center justify-between text-secondary font-label-sm text-label-sm pt-space-2xs">
+                                    <span class="flex items-center gap-space-2xs"><span
+                                            class="w-2 h-2 rounded-full bg-secondary inline-block"></span> Market/Peer
+                                        beta component</span>
+                                    <span class="flex items-center gap-space-2xs"><span
+                                            class="w-2 h-2 rounded-full bg-primary-container inline-block"></span> Tata
+                                        Motors unique component</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Signal Chips & Catalyst -->
+                        <div class="flex flex-wrap items-center gap-space-sm py-space-xs">
+                            <!-- EXCESS_MOVE Chip -->
+                            <div
+                                class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                <span>EXCESS_MOVE</span>
+                                <span class="text-on-surface-variant font-normal">• Residual +3.47% exceeds 2.8σ
+                                    threshold</span>
+                            </div>
+                            <!-- Catalyst Chip -->
+                            <div
+                                class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-bold">
+                                <span class="material-symbols-outlined text-[15px] text-primary">feed</span>
+                                <span>Catalyst found: Q2 Revenue up 18% YoY</span>
+                            </div>
+                        </div>
+                        <!-- Footnote & Actions -->
+                        <div
+                            class="mt-space-md pt-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+                            <div class="font-body-sm text-body-sm text-secondary font-mono">
+                                z 3.4 • RVOL 2.4x • Vol 14.2M • +5.2% since seen
+                            </div>
+                            <div class="flex items-center gap-space-sm self-end sm:self-auto">
+                                <button
+                                    class="px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors"
+                                    type="button">
+                                    Details
+                                </button>
+                                <button
+                                    class="px-space-md py-space-xs bg-surface-container-highest hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-lg transition-colors flex items-center gap-space-2xs"
+                                    type="button">
+                                    <span class="material-symbols-outlined text-[16px] text-primary">check</span>
+                                    <span>Got it</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Card 2: ADANIPORTS -->
+                    <article
+                        class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm hover:shadow-md transition-all duration-200">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-md">
+                            <div class="flex items-center gap-space-md">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 flex items-center justify-center font-headline-md text-headline-md text-tertiary font-bold">
+                                    AP
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-space-sm">
+                                        <h3 class="font-headline-md text-headline-md text-on-surface">ADANIPORTS</h3>
+                                        <span
+                                            class="px-space-sm py-space-2xs rounded-full bg-surface-container text-secondary font-label-sm text-label-sm font-bold">
+                                            Notable
+                                        </span>
+                                    </div>
+                                    <p class="font-body-sm text-body-sm text-secondary">Adani Ports &amp; Special
+                                        Economic Zone • Infrastructure</p>
+                                </div>
+                            </div>
+                            <!-- Price & Freshness Tag -->
+                            <div class="flex items-end lg:items-end justify-between lg:justify-end gap-space-xl">
+                                <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm">
+                                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                    <span>Delayed 18m • BSE Feed</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-headline-md text-headline-md text-on-surface font-bold">₹1,342.10
+                                    </div>
+                                    <div
+                                        class="font-metric-tabular text-metric-tabular text-tertiary font-bold flex items-center justify-end gap-space-2xs">
+                                        <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+                                        -3.10% today
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Decomposition Row -->
+                        <div class="my-space-md p-space-md bg-surface-container-low rounded-xl">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md text-center">
+                                <div class="p-space-sm bg-surface-container-lowest rounded-lg">
+                                    <div class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">
+                                        Today's Return</div>
+                                    <div class="font-headline-sm text-headline-sm text-tertiary font-bold mt-space-2xs">
+                                        -3.10%</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Infra sector baseline</div>
+                                </div>
+                                <div class="p-space-sm bg-surface-container-lowest rounded-lg">
+                                    <div class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">
+                                        Peers (12 Infra Peers)</div>
+                                    <div
+                                        class="font-headline-sm text-headline-sm text-on-surface font-bold mt-space-2xs">
+                                        -0.15%</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Sector flat/holding</div>
+                                </div>
+                                <div class="p-space-sm bg-surface-container-lowest rounded-lg">
+                                    <div
+                                        class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider font-bold">
+                                        Stock-Specific (Alpha)</div>
+                                    <div class="font-headline-sm text-headline-sm text-tertiary font-bold mt-space-2xs">
+                                        -2.95%</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Severe negative divergence
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Range Bar Position -->
+                            <div class="mt-space-md space-y-space-xs">
+                                <div class="flex items-center justify-between font-label-sm text-label-sm">
+                                    <span class="text-secondary">Intraday Range: Day Low ₹1,338.00</span>
+                                    <span class="text-secondary">Day High ₹1,392.00</span>
+                                </div>
+                                <div class="relative w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                                    <div class="absolute left-0 top-0 bottom-0 bg-tertiary" style="width: 8%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Signal Chips & Catalyst Headline Weight -->
+                        <div class="flex flex-wrap items-center gap-space-sm py-space-xs">
+                            <!-- VOLUME_CONFIRMED -->
+                            <div
+                                class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">
+                                <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                                <span>VOLUME_CONFIRMED</span>
+                            </div>
+                            <!-- LEVEL_BREAK -->
+                            <div
+                                class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm font-semibold">
+                                <span class="material-symbols-outlined text-[15px]">show_chart</span>
+                                <span>LEVEL_BREAK (Broke 50 DMA)</span>
+                            </div>
+                            <!-- Catalyst Chip: Headline-Weight -->
+                            <div
+                                class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-tertiary-fixed/40 text-on-tertiary-fixed font-label-sm text-label-sm font-bold">
+                                <span class="material-symbols-outlined text-[15px] text-tertiary">search_off</span>
+                                <span>No public catalyst found</span>
+                            </div>
+                        </div>
+                        <!-- Footnote & Actions -->
+                        <div
+                            class="mt-space-md pt-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+                            <div class="font-body-sm text-body-sm text-secondary font-mono">
+                                z -2.6 • RVOL 3.1x • Stale (18m delay) • Volume 8.7M
+                            </div>
+                            <div class="flex items-center gap-space-sm self-end sm:self-auto">
+                                <button
+                                    class="px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors"
+                                    type="button">
+                                    Details
+                                </button>
+                                <button
+                                    class="px-space-md py-space-xs bg-surface-container-highest hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-lg transition-colors flex items-center gap-space-2xs"
+                                    type="button">
+                                    <span class="material-symbols-outlined text-[16px] text-primary">check</span>
+                                    <span>Got it</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Card 3: INFY (Disputed Price Notice State) -->
+                    <article class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-md">
+                            <div class="flex items-center gap-space-md">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center font-headline-md text-headline-md text-secondary font-bold">
+                                    IN
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-space-sm">
+                                        <h3 class="font-headline-md text-headline-md text-on-surface">INFY</h3>
+                                        <span
+                                            class="px-space-sm py-space-2xs rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold flex items-center gap-space-2xs">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                            Disputed Price Telemetry
+                                        </span>
+                                    </div>
+                                    <p class="font-body-sm text-body-sm text-secondary">Infosys Limited • IT Services
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-headline-md text-headline-md text-on-surface">₹1,892.00 / ₹1,884.20
+                                </div>
+                                <div class="font-label-sm text-label-sm text-tertiary font-semibold">Spread Divergence:
+                                    0.41%</div>
+                            </div>
+                        </div>
+                        <!-- Disputed Price Callout Box -->
+                        <div class="p-space-md bg-error-container/25 rounded-xl flex items-start gap-space-md">
+                            <span
+                                class="material-symbols-outlined text-error text-[22px] shrink-0 mt-space-2xs">sync_problem</span>
+                            <div class="space-y-space-2xs">
+                                <div class="font-label-md text-label-md text-on-error-container font-bold">
+                                    Disputed price: NSE ₹1,892.00 vs BSE ₹1,884.20 (0.41% divergence).
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    No signals fire on disputed prices. Automated alpha calculations halted to prevent
+                                    spurious breakout signals until cross-exchange book synchronization falls below the
+                                    0.05% threshold.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-space-md pt-space-sm flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-secondary">Exchange mismatch flagged 15:24
+                                IST</span>
+                            <button
+                                class="px-space-md py-space-xs bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors"
+                                type="button">
+                                Audit Feeds
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <!-- 5. QUIET TABLE (Unchanged Stocks) -->
+            <section class="space-y-space-sm pt-space-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md text-on-surface">Quiet Watchlist Items</h2>
+                        <p class="font-body-sm text-body-sm text-secondary">8 stocks moved less than their own noise</p>
+                    </div>
+                    <button class="font-label-sm text-label-sm text-primary font-bold hover:underline" type="button">
+                        Toggle Noise Threshold (1.2σ)
+                    </button>
+                </div>
+                <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr
+                                    class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                                    <th class="py-space-sm px-space-md">Symbol</th>
+                                    <th class="py-space-sm px-space-md">Company Name</th>
+                                    <th class="py-space-sm px-space-md text-right">Price</th>
+                                    <th class="py-space-sm px-space-md text-right">Today %</th>
+                                    <th class="py-space-sm px-space-md text-right">Residual %</th>
+                                    <th class="py-space-sm px-space-md text-center">Freshness</th>
+                                    <th class="py-space-sm px-space-md text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y-0 text-on-surface font-body-md text-body-md">
+                                <!-- Row 1: TCS -->
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="py-space-md px-space-md font-headline-sm text-headline-sm">TCS</td>
+                                    <td class="py-space-md px-space-md text-secondary text-body-sm font-body-sm">Tata
+                                        Consultancy Services Ltd</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular">
+                                        ₹4,120.00</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-primary">
+                                        +0.20%</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-secondary">
+                                        +0.05%</td>
+                                    <td class="py-space-md px-space-md text-center">
+                                        <span
+                                            class="inline-flex items-center gap-space-2xs font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-space-2xs rounded-full">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Live
+                                        </span>
+                                    </td>
+                                    <td class="py-space-md px-space-md text-right">
+                                        <div class="inline-flex items-center gap-space-xs">
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-on-surface font-label-sm text-label-sm"
+                                                type="button">Details</button>
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm"
+                                                type="button">Remove</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 2: HDFCBANK -->
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="py-space-md px-space-md font-headline-sm text-headline-sm">HDFCBANK</td>
+                                    <td class="py-space-md px-space-md text-secondary text-body-sm font-body-sm">HDFC
+                                        Bank Limited</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular">
+                                        ₹1,680.00</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-tertiary">
+                                        -0.10%</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-secondary">
+                                        -0.08%</td>
+                                    <td class="py-space-md px-space-md text-center">
+                                        <span
+                                            class="inline-flex items-center gap-space-2xs font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-space-2xs rounded-full">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Live
+                                        </span>
+                                    </td>
+                                    <td class="py-space-md px-space-md text-right">
+                                        <div class="inline-flex items-center gap-space-xs">
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-on-surface font-label-sm text-label-sm"
+                                                type="button">Details</button>
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm"
+                                                type="button">Remove</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 3: ITC -->
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="py-space-md px-space-md font-headline-sm text-headline-sm">ITC</td>
+                                    <td class="py-space-md px-space-md text-secondary text-body-sm font-body-sm">ITC
+                                        Limited FMCG</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular">
+                                        ₹482.40</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-primary">
+                                        +0.15%</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-secondary">
+                                        +0.02%</td>
+                                    <td class="py-space-md px-space-md text-center">
+                                        <span
+                                            class="inline-flex items-center gap-space-2xs font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-space-2xs rounded-full">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Live
+                                        </span>
+                                    </td>
+                                    <td class="py-space-md px-space-md text-right">
+                                        <div class="inline-flex items-center gap-space-xs">
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-on-surface font-label-sm text-label-sm"
+                                                type="button">Details</button>
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm"
+                                                type="button">Remove</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 4: BHARTIARTL -->
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="py-space-md px-space-md font-headline-sm text-headline-sm">BHARTIARTL
+                                    </td>
+                                    <td class="py-space-md px-space-md text-secondary text-body-sm font-body-sm">Bharti
+                                        Airtel Limited Telecom</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular">
+                                        ₹1,698.30</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-primary">
+                                        +0.32%</td>
+                                    <td
+                                        class="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-secondary">
+                                        +0.09%</td>
+                                    <td class="py-space-md px-space-md text-center">
+                                        <span
+                                            class="inline-flex items-center gap-space-2xs font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-space-2xs rounded-full">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Live
+                                        </span>
+                                    </td>
+                                    <td class="py-space-md px-space-md text-right">
+                                        <div class="inline-flex items-center gap-space-xs">
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-on-surface font-label-sm text-label-sm"
+                                                type="button">Details</button>
+                                            <button
+                                                class="px-space-sm py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm"
+                                                type="button">Remove</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        class="px-space-md py-space-sm bg-surface-container-low flex items-center justify-between text-secondary font-label-sm text-label-sm">
+                        <span>Displaying 4 of 8 quiet positions</span>
+                        <button class="font-bold text-on-surface hover:underline" type="button">View remaining 4 stocks
+                            ↓</button>
+                    </div>
+                </div>
+            </section>
+            <!-- 6. RULES BLOCK (SCREEN 2B) -->
+            <section
+                class="bg-surface-container-lowest rounded-xl p-space-xl md:p-space-2xl shadow-sm space-y-space-lg">
+                <div class="flex items-center justify-between">
+                    <div class="space-y-space-2xs">
+                        <div
+                            class="flex items-center gap-space-xs text-primary font-label-sm text-label-sm uppercase tracking-wider font-bold">
+                            <span class="material-symbols-outlined text-[18px]">psychology</span>
+                            <span>Natural Language Heuristics</span>
+                        </div>
+                        <h2 class="font-headline-md text-headline-md text-on-surface">Algorithmic Watchlist Rules</h2>
+                        <p class="font-body-sm text-body-sm text-secondary">Define triggers using plain English.
+                            Compiler converts directly to AST execution trees.</p>
+                    </div>
+                    <span
+                        class="px-space-sm py-space-2xs bg-surface-container text-secondary font-label-sm text-label-sm rounded">Engine
+                        v2.4 Active</span>
+                </div>
+                <!-- NLP Rule Input Form -->
+                <div class="space-y-space-sm">
+                    <div class="flex flex-col sm:flex-row gap-space-sm">
+                        <div class="relative flex-1">
+                            <input
+                                class="w-full px-space-md py-space-sm bg-surface-container-low text-on-surface rounded-lg font-body-md text-body-md outline-none ring-2 ring-primary/20"
+                                id="rule-nlp-input" type="text"
+                                value="drops more than 2% against its peers on 3x volume" />
+                        </div>
+                        <button
+                            class="px-space-xl py-space-sm bg-primary hover:bg-primary/90 text-on-primary font-label-lg text-label-lg rounded-lg shadow-sm transition-colors flex items-center justify-center gap-space-xs shrink-0"
+                            type="button">
+                            <span class="material-symbols-outlined text-[18px]">rule</span>
+                            <span>Preview Rule</span>
+                        </button>
+                    </div>
+                    <!-- Compiled Preview Confirmation Gate (Server Gate Showcase) -->
+                    <div class="p-space-md bg-surface-container-low rounded-xl space-y-space-md">
+                        <div class="flex items-start justify-between gap-space-md">
+                            <div class="space-y-space-xs">
+                                <div
+                                    class="font-label-sm text-label-sm uppercase text-primary font-bold tracking-wider flex items-center gap-space-2xs">
+                                    <span class="material-symbols-outlined text-[16px]">verified</span>
+                                    <span>Compiled Server Verification Preview</span>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface font-semibold">
+                                    “Alert if stock drops ≥ 2.0% residual against cluster peers AND RVOL ≥ 3.0x”
+                                </p>
+                                <p class="font-body-sm text-body-sm text-secondary">
+                                    Telemetry pipeline: Peer regression basket (PCA K=8) • Threshold: -2.0000% • Volume
+                                    multiplier: 3.00x on 20D baseline.
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-space-sm shrink-0">
+                                <button
+                                    class="px-space-md py-space-xs bg-primary-container text-on-primary-fixed hover:bg-primary-fixed-dim font-label-md text-label-md rounded-lg font-bold transition-colors"
+                                    type="button">
+                                    Save Rule
+                                </button>
+                                <button
+                                    class="px-space-md py-space-xs bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-lg transition-colors"
+                                    type="button">
+                                    Discard
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Collapsible JSON DSL Disclosure -->
+                        <details class="group text-secondary font-mono text-body-sm">
+                            <summary
+                                class="cursor-pointer font-label-sm text-label-sm text-primary hover:underline flex items-center gap-space-2xs list-none">
+                                <span
+                                    class="material-symbols-outlined text-[16px] group-open:rotate-90 transition-transform">chevron_right</span>
+                                <span>Inspect Compiled JSON AST DSL</span>
+                            </summary>
+                            <pre
+                                class="mt-space-sm p-space-sm bg-surface-container-lowest rounded-lg overflow-x-auto text-[12px] text-on-surface-variant font-mono leading-relaxed">{
+  "rule_id": "usr_rule_78912",
+  "condition": "AND",
+  "operands": [
+    {
+      "metric": "RESIDUAL_RETURN",
+      "operator": "LTE",
+      "threshold": -0.02,
+      "benchmark": "PEER_CLUSTER_DYNAMIC"
+    },
+    {
+      "metric": "RELATIVE_VOLUME",
+      "operator": "GTE",
+      "threshold": 3.0,
+      "lookback_bars": 20
+    }
+  ],
+  "action": "FLAG_EXCESS_MOVE"
+}</pre>
+                        </details>
+                    </div>
+                </div>
+                <!-- Active Rules List -->
+                <div class="space-y-space-sm pt-space-xs">
+                    <div class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Active Portfolio
+                        Rules (3)</div>
+                    <div class="space-y-space-xs">
+                        <!-- Rule 1 -->
+                        <div
+                            class="p-space-md bg-surface-container-low rounded-lg flex items-center justify-between gap-space-md">
+                            <div class="flex items-center gap-space-md min-w-0">
+                                <span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+                                <div class="min-w-0">
+                                    <div class="font-label-md text-label-md text-on-surface truncate">Residual move &gt;
+                                        2.5σ relative to sector basket</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Runs continuously every
+                                        1-minute bar</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-space-md shrink-0">
+                                <span
+                                    class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs bg-primary-container/20 text-on-primary-container font-label-sm text-label-sm font-bold rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    Matched today: TATAMOTORS
+                                </span>
+                                <button class="text-secondary hover:text-tertiary transition-colors" type="button">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Rule 2 -->
+                        <div
+                            class="p-space-md bg-surface-container-low rounded-lg flex items-center justify-between gap-space-md">
+                            <div class="flex items-center gap-space-md min-w-0">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">tune</span>
+                                <div class="min-w-0">
+                                    <div class="font-label-md text-label-md text-on-surface truncate">Volume &gt; 3.0x
+                                        20D average on Level 50 DMA break</div>
+                                    <div class="font-body-sm text-body-sm text-secondary">Breakout validation heuristic
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-space-md shrink-0">
+                                <span
+                                    class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm font-bold rounded-full">
+                                    Matched today: ADANIPORTS
+                                </span>
+                                <button class="text-secondary hover:text-tertiary transition-colors" type="button">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 7. MODAL SHOWCASE: 'OPEN ON PHONE' RESUME MODAL -->
+            <section
+                class="bg-surface-container-lowest rounded-xl p-space-xl md:p-space-2xl shadow-sm border border-secondary-container/40 space-y-space-md">
+                <div class="flex items-center justify-between border-b pb-space-sm">
+                    <div class="flex items-center gap-space-sm">
+                        <span class="material-symbols-outlined text-primary text-[24px]">devices</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Resume Session on Mobile</h3>
+                    </div>
+                    <span
+                        class="font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-space-2xs rounded">Desktop
+                        to Mobile Handoff</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-space-xl items-center pt-space-xs">
+                    <!-- QR Code Visual -->
+                    <div
+                        class="flex flex-col items-center justify-center p-space-lg bg-surface-container-low rounded-xl text-center space-y-space-sm">
+                        <!-- SVG Generated Crisp QR Code Vector Placeholder -->
+                        <svg class="w-36 h-36 bg-surface-container-lowest p-2 rounded-lg shadow-sm" fill="none"
+                            viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect fill="#ffffff" height="100" width="100"></rect>
+                            <!-- Top Left Marker -->
+                            <rect fill="#006c4f" height="24" rx="3" width="24" x="10" y="10"></rect>
+                            <rect fill="#ffffff" height="14" rx="1" width="14" x="15" y="15"></rect>
+                            <rect fill="#006c4f" height="8" rx="1" width="8" x="18" y="18"></rect>
+                            <!-- Top Right Marker -->
+                            <rect fill="#006c4f" height="24" rx="3" width="24" x="66" y="10"></rect>
+                            <rect fill="#ffffff" height="14" rx="1" width="14" x="71" y="15"></rect>
+                            <rect fill="#006c4f" height="8" rx="1" width="8" x="74" y="18"></rect>
+                            <!-- Bottom Left Marker -->
+                            <rect fill="#006c4f" height="24" rx="3" width="24" x="10" y="66"></rect>
+                            <rect fill="#ffffff" height="14" rx="1" width="14" x="15" y="71"></rect>
+                            <rect fill="#006c4f" height="8" rx="1" width="8" x="18" y="74"></rect>
+                            <!-- Data blocks -->
+                            <rect fill="#0b1c30" height="6" width="6" x="42" y="14"></rect>
+                            <rect fill="#0b1c30" height="6" width="6" x="52" y="14"></rect>
+                            <rect fill="#0b1c30" height="6" width="6" x="42" y="24"></rect>
+                            <rect fill="#006c4f" height="8" width="8" x="48" y="32"></rect>
+                            <rect fill="#0b1c30" height="6" width="8" x="14" y="44"></rect>
+                            <rect fill="#0b1c30" height="6" width="6" x="28" y="48"></rect>
+                            <rect fill="#0b1c30" height="8" width="6" x="42" y="46"></rect>
+                            <rect fill="#0b1c30" height="6" width="8" x="66" y="44"></rect>
+                            <rect fill="#006c4f" height="8" width="6" x="80" y="48"></rect>
+                            <rect fill="#0b1c30" height="6" width="8" x="44" y="66"></rect>
+                            <rect fill="#0b1c30" height="6" width="6" x="58" y="68"></rect>
+                            <rect fill="#0b1c30" height="6" width="8" x="72" y="66"></rect>
+                            <rect fill="#0b1c30" height="8" width="6" x="84" y="76"></rect>
+                            <rect fill="#006c4f" height="6" width="8" x="46" y="80"></rect>
+                            <rect fill="#0b1c30" height="6" width="6" x="62" y="82"></rect>
+                        </svg>
+                        <span class="font-label-sm text-label-sm text-secondary">Scan using iOS Camera or Android
+                            Lens</span>
+                    </div>
+                    <!-- Handoff Link & Instructions -->
+                    <div class="md:col-span-2 space-y-space-md">
+                        <div class="space-y-space-2xs">
+                            <h4 class="font-headline-sm text-headline-sm text-on-surface">Encrypted State Handshake
+                                Token</h4>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                Keep your active filters, unsaved rule drafts, and peer cluster configurations intact
+                                without signing in again on your mobile device.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-space-sm bg-surface-container-low p-space-sm rounded-lg">
+                            <input class="w-full bg-transparent font-mono text-body-sm text-on-surface outline-none"
+                                readonly="" type="text" value="https://smartwatch.internal/?t=demo_tok_8491" />
+                            <button
+                                class="px-space-md py-space-xs bg-surface-container-highest hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg shrink-0 transition-colors flex items-center gap-space-2xs"
+                                onclick="navigator.clipboard.writeText('https://smartwatch.internal/?t=demo_tok_8491')"
+                                type="button">
+                                <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                                <span>Copy Link</span>
+                            </button>
+                        </div>
+                        <div class="p-space-sm bg-tertiary-fixed/30 rounded-lg flex items-center gap-space-sm">
+                            <span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">lock_clock</span>
+                            <p class="font-body-sm text-body-sm text-on-surface">
+                                <strong>Security Warning:</strong> This link contains a short-lived bearer session token
+                                expiring in <strong>10 minutes</strong>. Do not share publicly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script>
+            // Simple micro-interaction for the search bar preview
+            document.getElementById('stock-search-input')?.addEventListener('focus', function () {
+                this.classList.add('ring-primary');
+            });
+        </script>
+    </main>
+    <footer class="w-full bg-surface-container-lowest mt-auto shadow-[0_-1px_8px_rgba(0,0,0,0.02)]">
+        <div
+            class="max-w-7xl mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-space-lg"><span>© 2025 MarketPulse Securities. High agency execution
+                    shell.</span></div>
+            <div class="flex items-center gap-space-xl font-label-sm text-label-sm"><span>Telemetry Latency:
+                    0.18ms</span><span>Data verified with SEBI regulated nodes</span></div>
+        </div>
+    </footer>
+</body>
+
+</html>

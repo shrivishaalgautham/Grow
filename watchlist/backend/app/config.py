@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
@@ -25,6 +25,18 @@ class Settings(BaseSettings):
     allowed_origins: Annotated[list[str], NoDecode] = ["http://localhost:5173"]
     llm_global_daily_cap: int = 30
     debug: bool = False
+    app_base_url: str = "http://localhost:3000"
+    api_base_url: str = "http://localhost:8000"
+    email_transport: Literal["console", "smtp"] = "console"
+    email_from: str = "Smart Market Watchlist <watchlist@localhost>"
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    notify_interval_seconds: int = 300
+    notify_min_gap_seconds: int = 1800
+    gdelt_enabled: bool = True
+    google_news_enabled: bool = True
 
     @field_validator("openrouter_models", "allowed_origins", mode="before")
     @classmethod

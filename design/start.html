@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#b91a24", "primary": "#006c4f", "surface-bright": "#f8f9ff", "on-secondary-fixed": "#131b2e", "on-error-container": "#93000a", "inverse-surface": "#213145", "on-primary-fixed": "#002116", "primary-container": "#00d09c", "surface-variant": "#d3e4fe", "outline-variant": "#bacac1", "primary-fixed-dim": "#2fe0aa", "tertiary-fixed": "#ffdad7", "outline": "#6b7b72", "on-primary-fixed-variant": "#00513b", "background": "#f8f9ff", "surface-container": "#e5eeff", "error": "#ba1a1a", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#3f465c", "on-surface": "#0b1c30", "on-secondary-container": "#5c647a", "on-background": "#0b1c30", "secondary-fixed-dim": "#bec6e0", "on-tertiary-fixed-variant": "#930013", "surface-container-high": "#dce9ff", "primary-fixed": "#59fdc5", "secondary-container": "#dae2fd", "surface-tint": "#006c4f", "on-primary": "#ffffff", "surface-dim": "#cbdbf5", "on-primary-container": "#00533c", "surface-container-low": "#eff4ff", "on-tertiary-container": "#960014", "on-surface-variant": "#3c4a43", "tertiary-container": "#ff9d96", "secondary-fixed": "#dae2fd", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-highest": "#d3e4fe", "secondary": "#565e74", "on-error": "#ffffff", "error-container": "#ffdad6", "tertiary-fixed-dim": "#ffb3ad", "on-tertiary-fixed": "#410004", "surface": "#f8f9ff", "inverse-on-surface": "#eaf1ff", "inverse-primary": "#2fe0aa" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-mobile": "1rem", "gutter-desktop": "1.5rem", "space-xl": "1.5rem", "space-xs": "0.25rem", "space-base": "1rem", "margin-tablet": "2rem", "space-sm": "0.5rem", "margin-desktop": "3rem", "gutter-mobile": "1rem", "space-2xl": "2rem", "space-md": "0.75rem", "space-3xl": "3rem", "space-2xs": "0.125rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-md": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "metric-tabular": ["Inter"], "label-lg": ["Inter"], "body-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "metric-display": ["Inter"], "body-md": ["Inter"] }, "fontSize": { "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "metric-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "metric-display": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }] } } } }</script>
+</head>
+
+<body
+    class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex items-center justify-center p-margin-mobile">
+    <main
+        class="w-full max-w-lg bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(15,23,42,0.06)] p-space-2xl">
+        <div class="flex flex-col w-full">
+            <!-- Brand & Hero Identification -->
+            <div class="flex flex-col items-center text-center space-y-space-sm mb-space-xl">
+                <div
+                    class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-space-xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                    Real-Time Algorithmic Digest
+                </div>
+                <div class="flex items-center gap-space-sm">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-fixed shadow-sm">
+                        <span class="material-symbols-outlined text-[24px]">candlestick_chart</span>
+                    </div>
+                    <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Smart Market Watchlist
+                    </h1>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-sm pt-space-xs">
+                    What changed since you last looked, and whether it is the stock or the market.
+                </p>
+            </div>
+            <!-- Interactive Mock State Switcher (Pill Matrix for Demo/Review) -->
+            <div
+                class="mb-space-lg p-space-xs bg-surface-container-low rounded-lg flex items-center justify-between text-on-surface-variant">
+                <span class="font-label-sm text-label-sm uppercase px-space-xs text-outline">Simulate Notice:</span>
+                <div class="flex gap-space-2xs overflow-x-auto">
+                    <button
+                        class="state-btn active px-space-xs py-space-2xs rounded font-label-sm text-label-sm bg-surface-container-lowest text-on-surface shadow-sm"
+                        onclick="showNotice('none')" type="button">Clean</button>
+                    <button
+                        class="state-btn px-space-xs py-space-2xs rounded font-label-sm text-label-sm hover:bg-surface-container"
+                        onclick="showNotice('resuming')" type="button">Resume</button>
+                    <button
+                        class="state-btn px-space-xs py-space-2xs rounded font-label-sm text-label-sm hover:bg-surface-container"
+                        onclick="showNotice('expired')" type="button">401</button>
+                    <button
+                        class="state-btn px-space-xs py-space-2xs rounded font-label-sm text-label-sm hover:bg-surface-container"
+                        onclick="showNotice('ratelimit')" type="button">Rate Limit</button>
+                </div>
+            </div>
+            <!-- Dynamic Notification States Stack -->
+            <div class="mb-space-lg space-y-space-sm" id="notice-container">
+                <!-- Notice: Resuming State (Default hidden or switched via JS) -->
+                <div class="hidden flex items-center gap-space-sm p-space-sm bg-secondary-container text-on-secondary-fixed rounded-lg"
+                    id="notice-resuming">
+                    <span
+                        class="material-symbols-outlined text-[20px] text-primary animate-spin">progress_activity</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-label-md text-label-md font-semibold">Opening your watchlist via resume link...
+                        </p>
+                        <p class="font-body-sm text-body-sm text-on-secondary-fixed-variant truncate">Validating
+                            ephemeral token and reconstructing telemetry cache</p>
+                    </div>
+                </div>
+                <!-- Notice: Expired 401 Session -->
+                <div class="hidden flex items-start gap-space-sm p-space-sm bg-tertiary-fixed text-on-tertiary-fixed rounded-lg"
+                    id="notice-expired">
+                    <span class="material-symbols-outlined text-[20px] text-tertiary mt-0.5">lock_reset</span>
+                    <div class="flex-1">
+                        <p class="font-label-md text-label-md font-bold">Your session has expired (401 unauthorized)</p>
+                        <p class="font-body-sm text-body-sm text-on-tertiary-fixed-variant">Enter a new alias or restart
+                            a session below to resume market monitoring.</p>
+                    </div>
+                </div>
+                <!-- Notice: Rate Limit Warning -->
+                <div class="hidden flex items-start gap-space-sm p-space-sm bg-surface-container-high text-on-surface rounded-lg"
+                    id="notice-ratelimit">
+                    <span class="material-symbols-outlined text-[20px] text-tertiary mt-0.5">speed</span>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="font-label-md text-label-md font-bold text-tertiary">Rate limit reached (10
+                                sessions/hr/IP)</p>
+                            <span class="font-metric-tabular text-metric-tabular text-tertiary font-bold">14m 20s</span>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">Cooling down public
+                            creation slot. Existing direct session tokens remain reachable.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Card: Session Initialization -->
+            <div class="bg-surface-container-low rounded-xl p-space-xl shadow-sm mb-space-xl">
+                <form class="flex flex-col space-y-space-lg" id="sessionForm" onsubmit="event.preventDefault();">
+                    <!-- Input Group -->
+                    <div class="flex flex-col space-y-space-xs">
+                        <div class="flex justify-between items-center">
+                            <label class="font-label-md text-label-md text-on-surface font-semibold"
+                                for="displayName">Display Name</label>
+                            <span class="font-label-sm text-label-sm text-outline">Optional</span>
+                        </div>
+                        <div class="relative flex items-center">
+                            <span
+                                class="material-symbols-outlined absolute left-space-md text-[20px] text-outline pointer-events-none">alternate_email</span>
+                            <input
+                                class="w-full h-11 pl-10 pr-space-md bg-surface-container-lowest text-on-surface font-body-md text-body-md rounded-lg placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container"
+                                id="displayName" pattern="^[a-z0-9-]{3,32}$" placeholder="e.g. nse_trader_42"
+                                type="text" />
+                        </div>
+                        <p
+                            class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-2xs pt-space-2xs">
+                            <span class="material-symbols-outlined text-[14px] text-outline">info</span>
+                            3–32 chars, lowercase, digits, hyphens. Label only — sessions are never looked up by name.
+                        </p>
+                    </div>
+                    <!-- Action CTAs -->
+                    <div class="flex flex-col space-y-space-sm pt-space-xs">
+                        <!-- Primary Action -->
+                        <button
+                            class="w-full flex items-center justify-between px-space-lg py-space-md bg-primary-container text-on-primary-fixed rounded-lg font-label-lg text-label-lg font-bold shadow-sm hover:opacity-95 active:scale-[0.99] transition-all"
+                            id="btnSample" onclick="handleStart(true)" type="button">
+                            <div class="flex flex-col text-left">
+                                <span class="flex items-center gap-space-xs">
+                                    Start with a sample watchlist
+                                    <span class="material-symbols-outlined text-[18px]">bolt</span>
+                                </span>
+                                <span class="font-body-sm text-body-sm font-normal text-on-primary-fixed-variant">12 NSE
+                                    names, backdated 7 days for populated digest</span>
+                            </div>
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                        </button>
+                        <!-- Secondary Action -->
+                        <button
+                            class="w-full flex items-center justify-center gap-space-xs py-space-md bg-surface-container-lowest text-on-surface rounded-lg font-label-lg text-label-lg font-semibold hover:bg-surface-container-high transition-colors"
+                            id="btnEmpty" onclick="handleStart(false)" type="button">
+                            <span class="material-symbols-outlined text-[18px] text-outline">add_circle_outline</span>
+                            Start empty
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Live Health Probe Bar -->
+            <div
+                class="flex items-center justify-between px-space-md py-space-sm bg-surface-container-low rounded-lg mb-space-lg">
+                <div class="flex items-center gap-space-xs">
+                    <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                    <span class="font-label-sm text-label-sm text-on-surface font-semibold">Silent health check:</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">API reachable (healthy)</span>
+                </div>
+                <div class="flex items-center gap-space-2xs text-outline font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[14px]">sensors</span>
+                    <span>24ms</span>
+                </div>
+            </div>
+            <!-- Contextual Sample Preview Snippet (Fintech Depth) -->
+            <div class="p-space-md bg-surface-container-lowest rounded-xl mb-space-xl flex flex-col space-y-space-sm">
+                <div class="flex justify-between items-center">
+                    <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Sample Digest
+                        Preview</span>
+                    <span
+                        class="font-label-sm text-label-sm text-primary font-semibold bg-surface-container px-space-xs py-0.5 rounded">NIFTY
+                        50 BASELINE</span>
+                </div>
+                <div class="flex items-center justify-between py-space-2xs">
+                    <div class="flex items-center gap-space-sm">
+                        <div
+                            class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center font-label-sm text-label-sm font-bold text-on-surface">
+                            R</div>
+                        <div class="flex flex-col">
+                            <span class="font-label-md text-label-md font-semibold text-on-surface">RELIANCE</span>
+                            <span class="font-body-sm text-body-sm text-outline">Energy • NSE</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="font-metric-tabular text-metric-tabular text-on-surface">₹2,984.10</span>
+                        <span class="font-label-sm text-label-sm text-primary font-bold">+2.14% (Excess +1.38%)</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Footnote Disclosures & Methodology -->
+            <div class="flex flex-col items-center text-center space-y-space-xs pt-space-xs">
+                <p class="font-body-sm text-body-sm text-outline max-w-sm">
+                    No passwords. Anyone holding your session link has full access. Only display name and symbol list
+                    stored. Demo data may be refreshed.
+                </p>
+                <a class="inline-flex items-center gap-space-2xs font-label-sm text-label-sm text-primary hover:underline font-semibold pt-space-xs"
+                    href="#methodology">
+                    Inspect methodology &amp; noise reduction in Evidence
+                    <span class="material-symbols-outlined text-[14px]">arrow_outward</span>
+                </a>
+            </div>
+        </div>
+        <script>
+            function showNotice(type) {
+                const notices = ['resuming', 'expired', 'ratelimit'];
+                notices.forEach(n => {
+                    const el = document.getElementById('notice-' + n);
+                    if (el) el.classList.add('hidden');
+                });
+
+                document.querySelectorAll('.state-btn').forEach(btn => {
+                    btn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+                    btn.classList.add('text-on-surface-variant');
+                });
+
+                if (type !== 'none') {
+                    const target = document.getElementById('notice-' + type);
+                    if (target) target.classList.remove('hidden');
+                }
+
+                event.currentTarget.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+                event.currentTarget.classList.remove('text-on-surface-variant');
+            }
+
+            function handleStart(isSample) {
+                const input = document.getElementById('displayName');
+                const val = input.value.trim();
+                if (val && !/^[a-z0-9-]{3,32}$/.test(val)) {
+                    alert('Display name must be 3-32 characters (lowercase, digits, hyphens only).');
+                    input.focus();
+                    return;
+                }
+
+                // Switch to visual loading state
+                const btn = isSample ? document.getElementById('btnSample') : document.getElementById('btnEmpty');
+                btn.style.opacity = '0.7';
+                btn.style.pointerEvents = 'none';
+
+                showNotice('resuming');
+            }
+        </script>
+    </main>
+</body>
+
+</html>
