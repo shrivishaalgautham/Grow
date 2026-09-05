@@ -27,6 +27,8 @@ def stock_specific_facts() -> RuleFacts:
         rvol=1.2,
         peer_return_pct=0.3,
         abs_peer_return_pct=0.3,
+        gap_pct=0.0,
+        abs_gap_pct=0.0,
         level_break=None,
         has_catalyst=False,
     )

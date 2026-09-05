@@ -54,6 +54,7 @@ def _from_row(row: QuoteRow, now: datetime) -> Quote:
     return Quote(
         price=row.price,
         prev_close=row.prev_close,
+        open=row.open,
         day_high=row.day_high,
         day_low=row.day_low,
         volume=row.volume,
@@ -90,6 +91,7 @@ def _from_bar(latest, previous, now: datetime) -> Quote:
     return Quote(
         price=latest.close,
         prev_close=previous.close,
+        open=latest.open,
         day_high=latest.high,
         day_low=latest.low,
         volume=latest.volume,

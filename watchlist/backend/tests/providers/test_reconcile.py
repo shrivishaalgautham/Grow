@@ -12,6 +12,7 @@ def quote(source: str, price: float, age_seconds: int) -> LiveQuote:
         symbol="RELIANCE.NS",
         price=price,
         prev_close=1302.5,
+        open=1302.5,
         day_high=price + 5,
         day_low=price - 5,
         volume=1000,

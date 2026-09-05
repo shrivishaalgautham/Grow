@@ -30,6 +30,7 @@ class LiveQuote:
     symbol: str
     price: float
     prev_close: float
+    open: float
     day_high: float
     day_low: float
     volume: int

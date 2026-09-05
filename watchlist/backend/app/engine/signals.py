@@ -15,6 +15,7 @@ RVOL_CONFIRM = 1.5
 UNUSUAL_Z = 3.0
 SINCE_SEEN_Z = 2.0
 SINCE_SEEN_FLOOR_PCT = 1.5
+GAP_FLOOR_PCT = 2.0
 
 LEVEL_HEADLINES = {
     "52w_high": "New 52-week high",
@@ -29,6 +30,7 @@ class SessionFacts:
     symbol: str
     price: float
     prev_close: float
+    open: float
     day_high: float
     day_low: float
     volume: float
@@ -46,6 +48,7 @@ class Evaluation:
     rvol: float
     rvol_is_approximate: bool
     breaks: list[str]
+    gap_pct: float
     signals: list[Signal]
     score: float
     attention: str
@@ -59,6 +62,7 @@ def evaluate(facts: SessionFacts, b: Baseline) -> Evaluation:
     )
     rvol, is_approximate = relative_volume(facts.volume, b.avg_volume_20d, facts.minutes_since_open)
     breaks = level_breaks(facts.price, facts.day_high, facts.day_low, b)
+    gap_pct = _gap_pct(facts)
     is_low_confidence = b.confidence == "low"
     signals = (
         []
@@ -71,6 +75,7 @@ def evaluate(facts: SessionFacts, b: Baseline) -> Evaluation:
         rvol=rvol,
         rvol_is_approximate=is_approximate,
         breaks=breaks,
+        gap_pct=gap_pct,
         signals=signals,
         score=score_value,
         attention=attention(score_value, bool(signals)),
@@ -90,6 +95,9 @@ def _fired_signals(
     signals: list[Signal] = []
     if abs(d.residual_pct) >= EXCESS_FLOOR_PCT and d.z_score >= EXCESS_Z:
         signals.append(_excess_move(facts, d))
+    gap_pct = _gap_pct(facts)
+    if abs(gap_pct) >= GAP_FLOOR_PCT:
+        signals.append(_gap(facts, gap_pct))
     is_anchored = bool(signals) or any(_is_year_level(name) for name in breaks)
     if is_anchored and rvol >= RVOL_CONFIRM:
         signals.append(_volume_confirmed(facts, rvol, rvol_is_approximate))
@@ -122,6 +130,19 @@ def _excess_move(facts: SessionFacts, d: Decomposition) -> Signal:
 def _volume_confirmed(facts: SessionFacts, rvol: float, is_approximate: bool) -> Signal:
     detail = "Adjusted for time of day." if is_approximate else "Versus the 20-day median."
     return _signal("VOLUME_CONFIRMED", f"{rvol:.1f}× normal volume", detail, facts)
+
+
+def _gap_pct(facts: SessionFacts) -> float:
+    if facts.prev_close <= 0:
+        return 0.0
+    return (facts.open / facts.prev_close - 1) * 100
+
+
+def _gap(facts: SessionFacts, gap_pct: float) -> Signal:
+    direction = "up" if gap_pct >= 0 else "down"
+    headline = f"Gapped {direction} at the open"
+    detail = f"Opened at {facts.open:.2f}, {_signed_pct(gap_pct)} from yesterday's close."
+    return _signal("GAP", headline, detail, facts)
 
 
 def _level_break(facts: SessionFacts, b: Baseline, name: str) -> Signal:

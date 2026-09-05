@@ -241,6 +241,7 @@ def _facts(market: Market, symbol: str, quote: Quote) -> SessionFacts:
         symbol=symbol,
         price=quote.price,
         prev_close=quote.prev_close,
+        open=quote.open if quote.open is not None else quote.prev_close,
         day_high=quote.day_high,
         day_low=quote.day_low,
         volume=float(quote.volume),

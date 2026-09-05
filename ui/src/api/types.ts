@@ -6,7 +6,8 @@ export type SignalType =
   | "VOLUME_CONFIRMED"
   | "LEVEL_BREAK"
   | "SINCE_SEEN_MOVE"
-  | "USER_RULE";
+  | "USER_RULE"
+  | "GAP";
 export type Attention = "high" | "notable" | "quiet";
 export type PeerMethod = "cluster" | "beta";
 export type CatalystStatus =

@@ -87,6 +87,7 @@ def _quote_from_graph(symbol: str, payload: dict, now: datetime) -> LiveQuote:
         symbol=symbol,
         price=price,
         prev_close=prev_close,
+        open=prices[0] if prices else prev_close,
         day_high=max(prices, default=price),
         day_low=min(prices, default=price),
         volume=sum(volume for _, _, volume in traded),

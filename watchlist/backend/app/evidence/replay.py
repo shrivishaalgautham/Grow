@@ -129,6 +129,7 @@ def _facts(
         symbol=symbol,
         price=float(row["close"]),
         prev_close=baseline.prev_close,
+        open=float(row["open"]),
         day_high=float(row["high"]),
         day_low=float(row["low"]),
         volume=float(row["volume"]),

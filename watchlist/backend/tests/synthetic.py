@@ -63,6 +63,7 @@ def make_facts(**overrides) -> SessionFacts:
         symbol="TMPV.NS",
         price=100.0,
         prev_close=100.0,
+        open=100.0,
         day_high=100.0,
         day_low=100.0,
         volume=1_000_000.0,

@@ -8,6 +8,7 @@ const CHIP: Record<SignalType, { icon: IconName; classes: string }> = {
   LEVEL_BREAK: { icon: "show_chart", classes: "bg-secondary-container text-on-secondary-fixed" },
   SINCE_SEEN_MOVE: { icon: "history", classes: "bg-surface-container-high text-on-surface" },
   USER_RULE: { icon: "rule", classes: "bg-primary-container/20 text-on-primary-container" },
+  GAP: { icon: "arrow_outward", classes: "bg-tertiary-fixed/30 text-tertiary" },
 };
 
 export const SIGNAL_NAMES: Record<SignalType, string> = {
@@ -16,6 +17,7 @@ export const SIGNAL_NAMES: Record<SignalType, string> = {
   LEVEL_BREAK: "Level break",
   SINCE_SEEN_MOVE: "Since you looked",
   USER_RULE: "Your rule",
+  GAP: "Gap",
 };
 
 export function SignalChip({ signal }: { signal: Signal }) {

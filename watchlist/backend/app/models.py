@@ -104,6 +104,7 @@ class Quote(Base):
     symbol: Mapped[str] = mapped_column(ForeignKey("symbols.symbol"), primary_key=True)
     price: Mapped[float]
     prev_close: Mapped[float]
+    open: Mapped[float | None]
     day_high: Mapped[float]
     day_low: Mapped[float]
     volume: Mapped[int] = mapped_column(BigInteger)

@@ -22,7 +22,7 @@ MarketStatus = Literal["open", "closed", "pre_open"]
 QuoteSource = Literal["yahoo", "bse"]
 Confidence = Literal["fresh", "delayed", "stale", "disputed", "closed"]
 SignalType = Literal[
-    "EXCESS_MOVE", "VOLUME_CONFIRMED", "LEVEL_BREAK", "SINCE_SEEN_MOVE", "USER_RULE"
+    "EXCESS_MOVE", "VOLUME_CONFIRMED", "LEVEL_BREAK", "SINCE_SEEN_MOVE", "USER_RULE", "GAP"
 ]
 Attention = Literal["high", "notable", "quiet"]
 PeerMethod = Literal["cluster", "beta"]
@@ -36,6 +36,8 @@ RuleField = Literal[
     "rvol",
     "peer_return_pct",
     "abs_peer_return_pct",
+    "gap_pct",
+    "abs_gap_pct",
     "level_break",
     "has_catalyst",
 ]
@@ -65,8 +67,10 @@ NUMERIC_BOUNDS: dict[str, tuple[float, float]] = {
     "abs_residual_pct": (-100, 100),
     "peer_return_pct": (-100, 100),
     "abs_peer_return_pct": (-100, 100),
+    "gap_pct": (-100, 100),
+    "abs_gap_pct": (-100, 100),
 }
-NON_NEGATIVE_FIELDS = {"abs_residual_pct", "abs_peer_return_pct", "rvol", "z_score"}
+NON_NEGATIVE_FIELDS = {"abs_residual_pct", "abs_peer_return_pct", "abs_gap_pct", "rvol", "z_score"}
 
 
 def normalize_display_name(value: str) -> str:
@@ -85,6 +89,7 @@ class AltQuote(BaseModel):
 class Quote(BaseModel):
     price: float
     prev_close: float
+    open: float | None = None
     day_high: float
     day_low: float
     volume: int

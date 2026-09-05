@@ -96,6 +96,7 @@ def _quote_from_chart(symbol: str, meta: dict, bars: list[Bar]) -> LiveQuote:
         symbol=symbol,
         price=price,
         prev_close=float(prev_close),
+        open=float(bars[0].open) if bars else float(prev_close),
         day_high=float(
             meta.get("regularMarketDayHigh") or max((b.high for b in bars), default=price)
         ),

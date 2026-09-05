@@ -2370,6 +2370,17 @@
             "type": "number",
             "title": "Prev Close"
           },
+          "open": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open"
+          },
           "day_high": {
             "type": "number",
             "title": "Day High"
@@ -2553,6 +2564,8 @@
               "rvol",
               "peer_return_pct",
               "abs_peer_return_pct",
+              "gap_pct",
+              "abs_gap_pct",
               "level_break",
               "has_catalyst"
             ],
@@ -2809,7 +2822,8 @@
               "VOLUME_CONFIRMED",
               "LEVEL_BREAK",
               "SINCE_SEEN_MOVE",
-              "USER_RULE"
+              "USER_RULE",
+              "GAP"
             ],
             "title": "Type"
           },

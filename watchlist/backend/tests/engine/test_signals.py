@@ -139,3 +139,33 @@ def test_since_seen_respects_the_absolute_floor():
 
 def test_since_seen_is_none_when_sigma_is_zero():
     assert since_seen_signal(6.2, 0.0, 3, FIRED_AT, TRADING_DATE) is None
+
+
+def test_gap_up_at_the_open_fires_independently_of_the_closing_move():
+    baseline = make_baseline(residual_sigma=0.01)
+
+    evaluation = evaluate(make_facts(open=103.0, price=100.3), baseline)
+
+    assert "GAP" in signal_types(evaluation)
+    assert "EXCESS_MOVE" not in signal_types(evaluation)
+    gap = next(s for s in evaluation.signals if s.type == "GAP")
+    assert gap.headline == "Gapped up at the open"
+    assert gap.detail == "Opened at 103.00, +3.0% from yesterday's close."
+
+
+def test_gap_down_reports_the_down_direction():
+    baseline = make_baseline(residual_sigma=0.01)
+
+    evaluation = evaluate(make_facts(open=97.0, price=99.7), baseline)
+
+    gap = next(s for s in evaluation.signals if s.type == "GAP")
+    assert gap.headline == "Gapped down at the open"
+    assert gap.detail == "Opened at 97.00, -3.0% from yesterday's close."
+
+
+def test_gap_below_the_floor_is_suppressed():
+    baseline = make_baseline(residual_sigma=0.01)
+
+    evaluation = evaluate(make_facts(open=101.0, price=100.0), baseline)
+
+    assert "GAP" not in signal_types(evaluation)

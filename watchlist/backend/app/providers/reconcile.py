@@ -14,6 +14,7 @@ Confidence = Literal["fresh", "delayed", "stale", "disputed", "closed"]
 class Reconciled:
     price: float
     prev_close: float
+    open: float
     day_high: float
     day_low: float
     volume: int
@@ -37,6 +38,7 @@ def reconcile(
     return Reconciled(
         price=served.price,
         prev_close=served.prev_close,
+        open=served.open,
         day_high=served.day_high,
         day_low=served.day_low,
         volume=served.volume,

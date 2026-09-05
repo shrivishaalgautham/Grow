@@ -10,6 +10,8 @@ SUBJECT_PHRASES = {
     "rvol": "its relative volume is",
     "peer_return_pct": "its peer group's signed move is",
     "abs_peer_return_pct": "its peer group moves",
+    "gap_pct": "its signed opening gap is",
+    "abs_gap_pct": "its opening gap is",
 }
 OP_PHRASES = {">=": "at least", "<=": "no more than", "==": "exactly"}
 UNITS = {
@@ -19,6 +21,8 @@ UNITS = {
     "rvol": "×",
     "peer_return_pct": "%",
     "abs_peer_return_pct": "%",
+    "gap_pct": "%",
+    "abs_gap_pct": "%",
 }
 LEVEL_PHRASES = {
     "52w_high": "it makes a new 52-week high",
@@ -36,6 +40,8 @@ class RuleFacts:
     rvol: float
     peer_return_pct: float
     abs_peer_return_pct: float
+    gap_pct: float
+    abs_gap_pct: float
     level_break: str | None
     has_catalyst: bool
 
@@ -49,6 +55,8 @@ def facts_from(evaluation: Evaluation, has_catalyst: bool) -> RuleFacts:
         rvol=evaluation.rvol,
         peer_return_pct=d.peer_change_pct,
         abs_peer_return_pct=abs(d.peer_change_pct),
+        gap_pct=evaluation.gap_pct,
+        abs_gap_pct=abs(evaluation.gap_pct),
         level_break=evaluation.breaks[0] if evaluation.breaks else None,
         has_catalyst=has_catalyst,
     )
