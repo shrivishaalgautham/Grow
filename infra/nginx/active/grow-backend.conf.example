@@ -1,0 +1,1 @@
+set $grow_backend "http://grow-backend:8000";

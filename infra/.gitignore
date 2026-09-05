@@ -1,0 +1,8 @@
+# Real runtime state — never commit. .example templates are checked in.
+# .env files under stacks/*/ are already covered by the root .gitignore's
+# `.env` / `.env.*` (with `!.env.example` negation) — nothing extra needed here.
+
+nginx/active/*.conf
+nginx/certbot/
+stacks/postgres-redis/data/
+stacks/portainer/data/

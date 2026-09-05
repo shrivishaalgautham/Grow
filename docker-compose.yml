@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-watchlist}
+      POSTGRES_USER: ${POSTGRES_USER:-watchlist}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-watchlist} -d ${POSTGRES_DB:-watchlist}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  backend:
+    image: ${DOCKERHUB_USERNAME}/smart-market-watchlist-backend:${BACKEND_IMAGE_TAG:-latest}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      OPENROUTER_MODELS: ${OPENROUTER_MODELS}
+      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL}
+      YAHOO_RPS: ${YAHOO_RPS}
+      YAHOO_IMPERSONATE: ${YAHOO_IMPERSONATE}
+      BSE_ENABLED: ${BSE_ENABLED}
+      REPLAY_DATE: ${REPLAY_DATE}
+      REFRESH_HOT_SECONDS: ${REFRESH_HOT_SECONDS}
+      SCHEDULER_MARKET_HOURS_ONLY: ${SCHEDULER_MARKET_HOURS_ONLY}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      LLM_GLOBAL_DAILY_CAP: ${LLM_GLOBAL_DAILY_CAP}
+      DEBUG: ${DEBUG}
+      APP_BASE_URL: ${APP_BASE_URL}
+      API_BASE_URL: ${API_BASE_URL}
+      EMAIL_TRANSPORT: ${EMAIL_TRANSPORT}
+      EMAIL_FROM: ${EMAIL_FROM}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      NOTIFY_INTERVAL_SECONDS: ${NOTIFY_INTERVAL_SECONDS}
+      NOTIFY_MIN_GAP_SECONDS: ${NOTIFY_MIN_GAP_SECONDS}
+      GDELT_ENABLED: ${GDELT_ENABLED}
+      GOOGLE_NEWS_ENABLED: ${GOOGLE_NEWS_ENABLED}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      OIDC_ISSUER: ${OIDC_ISSUER}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
+      OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    restart: unless-stopped
+
+  frontend:
+    # NEXT_PUBLIC_API_MODE / NEXT_PUBLIC_API_BASE_URL are baked into this
+    # image at build time (Next standalone output inlines them) — rebuild
+    # and push a new tag to change them, setting env here has no effect.
+    image: ${DOCKERHUB_USERNAME}/smart-market-watchlist-frontend:${FRONTEND_IMAGE_TAG:-latest}
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:

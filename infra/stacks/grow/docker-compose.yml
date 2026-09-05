@@ -1,0 +1,39 @@
+services:
+  backend:
+    image: ${DOCKERHUB_USER}/grow-backend:${BACKEND_IMAGE_TAG}
+    container_name: grow-backend
+    env_file:
+      - .env
+    networks:
+      data: {}
+      edge:
+        aliases:
+          - grow-backend
+    ports:
+      - "127.0.0.1:8001:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2).status==200 else 1)"]
+      interval: 15s
+      timeout: 3s
+      start_period: 20s
+      retries: 3
+    restart: unless-stopped
+
+  ui:
+    image: ${DOCKERHUB_USER}/grow-ui:${UI_IMAGE_TAG}
+    container_name: grow-ui
+    networks:
+      edge:
+        aliases:
+          - grow-ui
+    ports:
+      - "127.0.0.1:8011:3000"
+    restart: unless-stopped
+
+networks:
+  data:
+    name: grow-data
+    external: true
+  edge:
+    name: grow-edge
+    external: true

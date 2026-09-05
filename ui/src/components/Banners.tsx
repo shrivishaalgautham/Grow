@@ -113,32 +113,6 @@ export function Banners({
           badge="Failover"
         />
       )}
-      {digest?.market_status === "closed" && !digest.providers_degraded && (
-        <Banner
-          title={`Market closed — bars through ${formatDay(digest.latest_bar_date)}`}
-          detail="Prices are the last close. The digest still covers everything since your last review"
-          badge="EOD"
-        />
-      )}
-      {digest?.market_status === "pre_open" && (
-        <Banner title="Pre-open session" detail="Quotes are indicative until 09:15 IST" badge="Pre-open" />
-      )}
-      {digest && digest.last_reviewed_at === null && digest.total_count > 0 && (
-        <Banner
-          tone="info"
-          icon="visibility"
-          title="First look"
-          detail="No last-review point yet. Mark this reviewed and the next visit becomes a proper diff"
-        />
-      )}
-      {digest && digest.total_count > 0 && digest.changed_count === 0 && (
-        <Banner
-          icon="check_circle"
-          title="A quiet stretch. Nothing needed your attention."
-          detail="A naive 2% rule would have found something to say here; the engine did not"
-          badge="Quiet"
-        />
-      )}
     </section>
   );
 }
