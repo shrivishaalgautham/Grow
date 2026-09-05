@@ -27,6 +27,8 @@ The page at `/evidence` renders this for whatever watchlist the viewer holds.
 - **Grounded briefing**: one paragraph, written by a free OpenRouter model from computed facts only, rejected if it contains a number not in its input, a link, an unknown symbol, or advice words. A deterministic template serves when the model is absent, rejected, or over budget.
 - **Natural-language rules**: "tell me when Tata Motors moves without the auto sector moving" compiles to a bounded JSON rule, is rendered back to English by code, and only runs after the user confirms it.
 - **Disputed prices suppress alerts**: Yahoo and BSE are cross-checked; if they disagree by more than 0.5% both prices are shown and no signal fires.
+- **Email alerts, opt-in and verified**: one email at most every 30 minutes, only when a watched stock fires a signal or a rule matches, batched, with a one-click unsubscribe. Never a buy or sell call.
+- **Plain-words explanation with web-searched context**: for a surfaced stock, the drawer narrates the decomposition and any headlines found on NSE filings, Google News, and GDELT, through the same grounding validators as the briefing.
 
 ## Where AI is used, and where it is refused
 
@@ -68,9 +70,39 @@ npx pnpm install && npx pnpm dev                       # http://localhost:3000
 
 `NEXT_PUBLIC_API_MODE=fixture` runs the UI against bundled fixtures with `?scenario=` switches (`empty`, `quiet`, `closed`, `degraded`, `replay`, `first_visit`, `rate_limited`, `expired`, `down`, `slow`).
 
-Tests: `uv run pytest` (295 tests, needs the docker Postgres; provider and LLM calls are mocked at the HTTP boundary). `pytest -m integration` runs the migration test.
+Tests: `uv run pytest` (310 tests, needs the docker Postgres; provider and LLM calls are mocked at the HTTP boundary). `pytest -m integration` runs the migration test.
 
-Optional: set `OPENROUTER_API_KEY` to enable the model-written briefing and rule compiler. Without it, briefings come from the template and rules compile through a small deterministic parser; both are labelled honestly in the API (`source: template`).
+Optional: set `OPENROUTER_API_KEY` to enable the model-written briefing, rule compiler, and per-stock explanation. Without it, briefings come from the template and rules compile through a small deterministic parser; both are labelled honestly in the API (`source: template`).
+
+Email alerts default to `EMAIL_TRANSPORT=console`, which prints every message (including the confirmation link) to the API log so the flow can be demonstrated without credentials. Set `EMAIL_TRANSPORT=smtp` with `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, and `EMAIL_FROM` to send for real; `APP_BASE_URL` and `API_BASE_URL` are the public origins used in the links. The dispatcher runs every `NOTIFY_INTERVAL_SECONDS` during market hours and once after the end-of-day job, and waits `NOTIFY_MIN_GAP_SECONDS` between emails to the same address.
+
+### Keys and credentials
+
+All secrets live in `watchlist/backend/.env` (git-ignored; `.env.example` ships blank). Restart the API after editing it.
+
+| Variable | What it enables | Where to get it |
+|---|---|---|
+| `OPENROUTER_API_KEY` | Model-written briefing, rule compiler, per-stock explanation. Empty means templates. | openrouter.ai → Keys. Free `:free` models need no credit; set the account privacy setting to disallow training providers. |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` | Real email delivery when `EMAIL_TRANSPORT=smtp`. | Any SMTP relay. Gmail: host `smtp.gmail.com`, port 587, user is the Gmail address, password is a 16-character app password (Google account → Security → 2-Step Verification → App passwords). Brevo and Resend also expose SMTP credentials on their free tiers. |
+| `APP_BASE_URL`, `API_BASE_URL` | Origins written into confirmation and unsubscribe links. | Local defaults are fine; set to the public URLs when deployed. |
+
+### Testing email alerts
+
+The scheduler only dispatches during market hours (09:15–15:30 IST, weekdays) and once after the 16:00 end-of-day job, so use the manual trigger when testing at other times.
+
+**Without credentials (console transport, the default):**
+
+1. Open http://localhost:3000, start a sample watchlist, scroll to "Email alerts", enter any address, and click "Send confirmation link".
+2. The confirmation email is printed in the API log. Copy the link (`http://localhost:3000/?verify=…`) and open it; the panel now shows "Active".
+3. Trigger a dispatch: `cd watchlist/backend && uv run python -m app.notify.dispatch`. The alert email body is printed to the terminal. Run it again and it reports `sent=0`, because every signal is logged per address and never repeated; `--ignore-gap` bypasses only the 30-minute spacing, not the dedupe.
+4. Open the unsubscribe link from the email body; the panel shows "Switched off".
+
+**With a real inbox:** set `EMAIL_TRANSPORT=smtp` and the SMTP variables, restart the API, then repeat the steps above using your own address. Confirmation and alert emails arrive in the inbox instead of the log; the API log shows only a masked address. An address only ever receives each signal once, so to re-send during a test, clear the per-address history and dispatch again:
+
+```bash
+uv run python -c "from sqlalchemy import delete; from app import db; from app.models import NotificationLog; s=db.SessionLocal(); s.execute(delete(NotificationLog)); s.commit()"
+uv run python -m app.notify.dispatch --ignore-gap
+```
 
 `REPLAY_DATE=2026-09-01` pins the clock to a real volatile session for rehearsal. It disables the scheduler.
 
@@ -81,7 +113,9 @@ Optional: set `OPENROUTER_API_KEY` to enable the model-written briefing and rule
 | Quotes and 1y history | Yahoo `v8/finance/chart` | Blocks plain HTTP clients from this network with 429; served through `curl-cffi` browser impersonation. |
 | Cross-check quotes | `api.bseindia.com` | 15-minute delayed, needs a `Referer`. Scrip codes are mapped for the 12 sample symbols. |
 | Corporate announcements | NSE `/api/corporate-announcements` | Works; the cookie handshake returns 403 but the API still answers. |
-| Headlines | Yahoo per-ticker RSS | Returns 200 with zero items for every `.NS` ticker as of 2026-09-05. Kept as a second source; catalysts in practice come from NSE. |
+| Headlines | Yahoo per-ticker RSS | Returns 200 with zero items for every `.NS` ticker as of 2026-09-05. Kept as a fallback source. |
+| News search | Google News RSS (`news.google.com/rss/search`) | Public feed queried by company name, India edition. Terms of use grey area; disclosed below. |
+| News search | GDELT DOC 2.0 API | The one news source with an explicit free-use grant. Throttled to 1 request per 5 seconds. |
 | LLM | OpenRouter `:free` models, ordered list | Every request sets `provider.data_collection: deny`. |
 
 Rejected: NSE quote endpoints (Akamai-blocked from datacenters), Alpha Vantage (returns valid-looking data for an invalid key), Stooq (JavaScript proof-of-work), NewsAPI free (forbids deployed use), Google Gemini free tier (prompts may be read by humans).
@@ -97,7 +131,8 @@ Every quote carries `as_of`, `source`, `staleness_seconds`, and a `confidence` o
 ## Security posture
 
 - **There is no authentication.** Sessions are create-only: every visit makes a new user and a 30-day opaque token stored as a SHA-256 hash. A display name is a label and is never looked up. Anyone holding a session link has full access to that watchlist. Do not put anything you care about in it.
-- **Data stored**: a self-chosen display name and a list of stock symbols. No email, phone, holdings, or account data. Demo data may be deleted without notice.
+- **Data stored**: a self-chosen display name and a list of stock symbols. An email address is stored only if you opt in to alerts and confirm it from the address; it is deleted when you turn alerts off, and every alert carries an unsubscribe link that needs no session. No phone, holdings, or account data. Demo data may be deleted without notice.
+- Alert emails contain symbols, computed numbers, and signal text. They never contain buy or sell language and never mention another user.
 - Every user-scoped query filters on the token's user; no request carries a user id. Symbols are allow-listed against the universe table and a regex at every boundary.
 - Per-IP 30/min on all routes, 10 sessions/hour, 5 catalyst fetches/min; per-user 5/hour and 20/day on the compiler, global 30/day on the model. Catalysts are cache-first under a lock and only served for a stock that surfaced in the caller's own digest.
 - Headlines are delimited as untrusted in prompts and sanitised; model output is validated by code and rendered as a text node.
@@ -114,7 +149,7 @@ Every quote carries `as_of`, `source`, `staleness_seconds`, and a `confidence` o
 
 ## What was cut, and why
 
-RSI (state, not change), Bollinger bands (equivalent to raw z of 2), SMA crossovers (won't demo), gap signals (covered by previous-day level breaks), VWAP (second intraday call per symbol), per-symbol intraday volume curves (doubles the API budget), a job queue and worker (no free worker tier and a polling worker exhausts a metered Redis), WebSocket push, passwords or OAuth, portfolio and P&L, notifications.
+Broker order placement (out of scope by design and no free broker API; alerts stop at email and a documented webhook path), RSI (state, not change), Bollinger bands (equivalent to raw z of 2), SMA crossovers (won't demo), gap signals (covered by previous-day level breaks), VWAP (second intraday call per symbol), per-symbol intraday volume curves (doubles the API budget), a job queue and worker (no free worker tier and a polling worker exhausts a metered Redis), WebSocket push, passwords or OAuth, portfolio and P&L, notifications.
 
 ## Contract
 

@@ -29,6 +29,12 @@ def mock_feeds(router: respx.MockRouter) -> None:
     router.get(host="www.nseindia.com", path="/api/corporate-announcements").mock(
         return_value=httpx.Response(200, json=load_json("nse_announcements.json"))
     )
+    router.get(host="news.google.com").mock(
+        return_value=httpx.Response(200, text=load_text("google_news.xml"))
+    )
+    router.get(host="api.gdeltproject.org").mock(
+        return_value=httpx.Response(200, json=load_json("gdelt_doc.json"))
+    )
 
 
 def test_quiet_symbol_is_not_surfaced_and_no_upstream_call_is_made(client, seeded, router):
@@ -64,15 +70,22 @@ def test_changed_symbol_returns_pending_then_the_cached_result_with_one_upstream
     assert first["status"] == "pending"
     assert second["status"] == "found"
     assert second["items"][0]["headline"] == "Reliance Retail files draft papers for IPO"
-    assert {item["source"] for item in second["items"]} == {"yahoo_rss", "nse"}
+    assert {item["source"] for item in second["items"]} == {
+        "yahoo_rss",
+        "nse",
+        "google_news",
+        "gdelt",
+    }
     assert all("evil.example" not in item["headline"] for item in second["items"])
     assert third == second
-    assert router.calls.call_count == 3
+    assert router.calls.call_count == 5
 
 
 def test_unreachable_feeds_are_reported_as_unavailable(client, seeded, router):
     router.get(host="feeds.finance.yahoo.com").mock(return_value=httpx.Response(404))
     router.get(host="www.nseindia.com").mock(return_value=httpx.Response(403))
+    router.get(host="news.google.com").mock(return_value=httpx.Response(503))
+    router.get(host="api.gdeltproject.org").mock(return_value=httpx.Response(503))
     headers, _ = start_session(client, start_with_sample=True)
 
     client.get(f"/api/symbols/{EVENT_SYMBOL}/catalysts", headers=headers)

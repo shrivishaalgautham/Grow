@@ -313,3 +313,31 @@ export interface ErrorBody {
 export interface ErrorOut {
   error: ErrorBody;
 }
+
+export interface ExplanationOut {
+  status: "ready" | "pending";
+  text: string | null;
+  source: BriefingSource | null;
+  catalyst_status: CatalystStatus;
+  items: CatalystItem[];
+  generated_at: IsoDateTime | null;
+  was_cached: boolean;
+}
+
+export type ChannelStatus = "pending" | "verified" | "disabled";
+
+export interface EmailChannelOut {
+  address_masked: string;
+  status: ChannelStatus;
+  verify_expires_at: IsoDateTime | null;
+  last_notified_at: IsoDateTime | null;
+}
+
+export interface NotificationsOut {
+  email: EmailChannelOut | null;
+}
+
+export interface VerifyOut {
+  status: "verified";
+  address_masked: string;
+}

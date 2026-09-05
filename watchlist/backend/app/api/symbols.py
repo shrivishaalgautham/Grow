@@ -4,6 +4,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app import clock
+from app.ai import explain as explain_ai
 from app.api.ratelimit import global_ip_limit
 from app.db import get_session
 from app.deps import ApiError, current_user, rate_limit, valid_symbol
@@ -16,6 +17,7 @@ from app.models import DailyBar, PeerCluster, Symbol, User, WatchlistItem
 from app.quotes import INDEX_SYMBOL
 from app.schemas import (
     CatalystsOut,
+    ExplanationOut,
     HistoryBar,
     HistoryOut,
     Levels,
@@ -132,23 +134,62 @@ def catalysts(
     session: Session = Depends(get_session),
 ) -> CatalystsOut:
     now = clock.now()
+    item = _surfaced_item(session, user, symbol, now)
+    trading_date = _latest_signal_date(item)
+    hit = catalyst_jobs.cached(symbol.symbol, trading_date)
+    if hit is not None:
+        return hit
+    if catalyst_jobs.try_begin(symbol.symbol, trading_date):
+        background.add_task(
+            catalyst_jobs.fetch_and_cache, symbol.symbol, symbol.name, trading_date, now
+        )
+    return CatalystsOut(status="pending", fetched_at=None, items=[])
+
+
+@router.get(
+    "/{symbol}/explanation",
+    response_model=ExplanationOut,
+    dependencies=[Depends(rate_limit("explanation", CATALYSTS_PER_MINUTE, 60, per="ip"))],
+)
+def explanation(
+    background: BackgroundTasks,
+    symbol: Symbol = Depends(valid_symbol),
+    user: User = Depends(current_user),
+    session: Session = Depends(get_session),
+) -> ExplanationOut:
+    now = clock.now()
+    item = _surfaced_item(session, user, symbol, now)
+    trading_date = _latest_signal_date(item)
+    catalysts = catalyst_jobs.cached(symbol.symbol, trading_date)
+    if catalysts is None:
+        if catalyst_jobs.try_begin(symbol.symbol, trading_date):
+            background.add_task(
+                catalyst_jobs.fetch_and_cache, symbol.symbol, symbol.name, trading_date, now
+            )
+        return ExplanationOut(
+            status="pending",
+            text=None,
+            source=None,
+            catalyst_status="pending",
+            items=[],
+            generated_at=None,
+            was_cached=False,
+        )
+    return explain_ai.explain(user, item, catalysts, trading_date, now)
+
+
+def _surfaced_item(session: Session, user: User, symbol: Symbol, now):
     is_watched = session.scalar(
         select(WatchlistItem.id).where(
             WatchlistItem.user_id == user.id, WatchlistItem.symbol == symbol.symbol
         )
     )
     if is_watched is None:
-        raise ApiError(403, "not_surfaced", "catalysts are only fetched for watched stocks")
+        raise ApiError(403, "not_surfaced", "only watched stocks are explained")
     item = build_item(session, user, symbol, now)
     if not item.is_changed:
-        raise ApiError(403, "not_surfaced", "catalysts are only fetched for stocks that changed")
-    trading_date = _latest_signal_date(item)
-    hit = catalyst_jobs.cached(symbol.symbol, trading_date)
-    if hit is not None:
-        return hit
-    if catalyst_jobs.try_begin(symbol.symbol, trading_date):
-        background.add_task(catalyst_jobs.fetch_and_cache, symbol.symbol, trading_date, now)
-    return CatalystsOut(status="pending", fetched_at=None, items=[])
+        raise ApiError(403, "not_surfaced", "only stocks that changed are explained")
+    return item
 
 
 def _latest_signal_date(item):

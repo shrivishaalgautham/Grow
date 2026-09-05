@@ -64,3 +64,23 @@ export function formatRetryAfter(seconds: number) {
   if (minutes < 90) return `${minutes} minutes`;
   return `${Math.round(minutes / 60)} hours`;
 }
+
+export const initials = (symbol: string) => stripSuffix(symbol).slice(0, 2).toUpperCase();
+
+export function formatClock(iso: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Kolkata",
+  }).format(new Date(iso));
+}
+
+export function formatIsoDate(iso: string) {
+  return iso.slice(0, 10);
+}
+
+export function formatRelative(iso: string) {
+  const seconds = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000));
+  return formatStaleness(seconds);
+}

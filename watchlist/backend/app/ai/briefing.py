@@ -16,7 +16,7 @@ from app.schemas import BriefingOut, DigestOut, Item
 log = logging.getLogger(__name__)
 
 MAX_CHARS = 600
-MAX_TOKENS = 300
+MAX_TOKENS = 800
 MAX_ITEMS = 5
 MAX_CATALYSTS = 3
 BANNED_WORDS = (
@@ -71,12 +71,13 @@ def facts_from_digest(digest: DigestOut) -> dict:
         "changed_count": digest.changed_count,
         "total_count": digest.total_count,
         "market_status": digest.market_status,
-        "items": [_item_facts(item, statuses.get(item.symbol)) for item in changed],
+        "items": [item_facts(item, statuses.get(item.symbol)) for item in changed],
     }
 
 
-def _item_facts(item: Item, catalyst_status: str | None) -> dict:
-    found = catalysts.cached(item.symbol, item.signals[0].trading_date) if item.signals else None
+def item_facts(item: Item, catalyst_status: str | None) -> dict:
+    latest = max((s.trading_date for s in item.signals), default=None)
+    found = catalysts.cached(item.symbol, latest) if latest else None
     headlines = [
         {
             "headline": untrusted(c.headline),
@@ -150,11 +151,19 @@ def validate(text: str, facts: dict) -> str | None:
     for token in NUMBER_RE.findall(text):
         if abs(float(token)) not in allowed_numbers:
             return f"foreign_number:{token}"
-    allowed_symbols = {item["symbol"] for item in facts["items"]}
     for token in TICKER_RE.findall(text):
-        if token not in allowed_symbols and token not in NOT_TICKERS:
+        if token not in _allowed_symbols(facts) and token not in NOT_TICKERS:
             return f"foreign_symbol:{token}"
     return None
+
+
+def _allowed_symbols(facts: dict) -> set[str]:
+    return {item["symbol"] for item in facts["items"]} | {
+        word
+        for item in facts["items"]
+        for signal in item["signals"]
+        for word in TICKER_RE.findall(signal["type"])
+    }
 
 
 def _numeric_source(facts: dict) -> str:

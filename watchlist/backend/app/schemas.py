@@ -331,6 +331,51 @@ class CatalystsOut(BaseModel):
     items: list[CatalystItem]
 
 
+class ExplanationOut(BaseModel):
+    status: Literal["ready", "pending"]
+    text: str | None = Field(default=None, max_length=600)
+    source: BriefingSource | None
+    catalyst_status: CatalystStatus
+    items: list[CatalystItem]
+    generated_at: datetime | None
+    was_cached: bool
+
+
+EMAIL_PATTERN = r"^[^@\s]{1,64}@[^@\s]+\.[^@\s]{2,}$"
+EmailStr = Annotated[str, StringConstraints(pattern=EMAIL_PATTERN, max_length=254)]
+
+ChannelStatus = Literal["pending", "verified", "disabled"]
+
+
+class EmailSubscribeIn(BaseModel):
+    email: EmailStr
+
+    @field_validator("email")
+    @classmethod
+    def lowercase(cls, value: str) -> str:
+        return value.strip().lower()
+
+
+class VerifyIn(BaseModel):
+    token: str = Field(min_length=16, max_length=128)
+
+
+class EmailChannelOut(BaseModel):
+    address_masked: str
+    status: ChannelStatus
+    verify_expires_at: datetime | None
+    last_notified_at: datetime | None
+
+
+class NotificationsOut(BaseModel):
+    email: EmailChannelOut | None
+
+
+class VerifyOut(BaseModel):
+    status: Literal["verified"]
+    address_masked: str
+
+
 class RuleCompileIn(BaseModel):
     text: str = Field(min_length=1, max_length=200)
 

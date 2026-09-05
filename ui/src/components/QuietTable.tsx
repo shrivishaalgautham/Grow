@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import type { Item } from "@/api/types";
-import { FreshnessBadge } from "./FreshnessBadge";
 import { formatInr, formatSignedPercent, stripSuffix } from "@/lib/format";
+import { freshnessText } from "./FreshnessTag";
+
+const PREVIEW_ROWS = 4;
 
 export function QuietTable({
   items,
@@ -13,92 +16,74 @@ export function QuietTable({
   onOpen: (symbol: string) => void;
   onRemove: (symbol: string) => void;
 }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   if (items.length === 0) return null;
+  const visible = isExpanded ? items : items.slice(0, PREVIEW_ROWS);
+  const hidden = items.length - visible.length;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-surface">
-      <table className="w-full border-collapse text-sm">
-        <caption className="border-b border-line px-4 py-3 text-left">
-          <span className="text-sm font-medium text-ink">
-            Quiet · {items.length}
-          </span>
-          <span className="ml-2 text-xs text-muted">
-            moved less than their own noise
-          </span>
-        </caption>
-        <thead>
-          <tr className="text-[11px] tracking-wide text-faint uppercase">
-            <th scope="col" className="px-4 py-2 text-left font-medium">
-              Symbol
-            </th>
-            <th scope="col" className="px-4 py-2 text-right font-medium">
-              Price
-            </th>
-            <th scope="col" className="px-4 py-2 text-right font-medium">
-              Today
-            </th>
-            <th
-              scope="col"
-              className="hidden px-4 py-2 text-right font-medium sm:table-cell"
-            >
-              Stock-specific
-            </th>
-            <th
-              scope="col"
-              className="hidden px-4 py-2 text-left font-medium md:table-cell"
-            >
-              Quote
-            </th>
-            <th scope="col" className="px-4 py-2 text-right font-medium">
-              <span className="sr-only">Actions</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr
-              key={item.symbol}
-              className="border-t border-line/70 transition-colors hover:bg-raised"
-            >
-              <th scope="row" className="px-4 py-2.5 text-left font-normal">
-                <button
-                  type="button"
-                  onClick={() => onOpen(item.symbol)}
-                  className="numeric text-ink hover:underline"
-                >
-                  {stripSuffix(item.symbol)}
-                </button>
-                <span className="ml-2 hidden text-xs text-faint lg:inline">
-                  {item.name}
-                </span>
-              </th>
-              <td className="numeric px-4 py-2.5 text-right text-muted">
-                {formatInr(item.quote.price)}
-              </td>
-              <td
-                className={`numeric px-4 py-2.5 text-right ${item.today_change_pct >= 0 ? "text-up" : "text-down"}`}
-              >
-                {formatSignedPercent(item.today_change_pct)}
-              </td>
-              <td className="numeric hidden px-4 py-2.5 text-right text-faint sm:table-cell">
-                {formatSignedPercent(item.residual_pct)}
-              </td>
-              <td className="hidden px-4 py-2.5 md:table-cell">
-                <FreshnessBadge quote={item.quote} />
-              </td>
-              <td className="px-4 py-2.5 text-right">
-                <button
-                  type="button"
-                  onClick={() => onRemove(item.symbol)}
-                  className="text-xs text-faint transition-colors hover:text-down"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <section className="space-y-space-sm pt-space-md">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="font-headline-md text-headline-md text-on-surface">Quiet watchlist items</h2>
+          <p className="font-body-sm text-body-sm text-secondary">
+            {items.length} {items.length === 1 ? "stock" : "stocks"} moved less than their own noise
+          </p>
+        </div>
+        <span className="font-label-sm text-label-sm text-secondary">Floor 0.75% • z ≥ 2 against peers</span>
+      </div>
+      <div className="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                <th className="py-space-sm px-space-md">Symbol</th>
+                <th className="py-space-sm px-space-md">Company</th>
+                <th className="py-space-sm px-space-md text-right">Price</th>
+                <th className="py-space-sm px-space-md text-right">Today %</th>
+                <th className="py-space-sm px-space-md text-right">Stock-specific %</th>
+                <th className="py-space-sm px-space-md text-center">Freshness</th>
+                <th className="py-space-sm px-space-md text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="text-on-surface font-body-md text-body-md">
+              {visible.map((item) => (
+                <tr key={item.symbol} className="hover:bg-surface-container-low/50 transition-colors">
+                  <td className="py-space-md px-space-md font-headline-sm text-headline-sm">
+                    <button type="button" onClick={() => onOpen(item.symbol)} className="hover:underline">{stripSuffix(item.symbol)}</button>
+                  </td>
+                  <td className="py-space-md px-space-md text-secondary font-body-sm text-body-sm">{item.name}</td>
+                  <td className="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular tabular">{formatInr(item.quote.price)}</td>
+                  <td className={`py-space-md px-space-md text-right font-metric-tabular text-metric-tabular tabular ${item.today_change_pct >= 0 ? "text-primary" : "text-tertiary"}`}>
+                    {formatSignedPercent(item.today_change_pct)}
+                  </td>
+                  <td className="py-space-md px-space-md text-right font-metric-tabular text-metric-tabular text-secondary tabular">{formatSignedPercent(item.residual_pct)}</td>
+                  <td className="py-space-md px-space-md text-center">
+                    <span className="inline-flex items-center gap-space-2xs font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-space-2xs rounded-full whitespace-nowrap">
+                      <span className={`w-1.5 h-1.5 rounded-full ${item.quote.confidence === "fresh" ? "bg-primary" : "bg-secondary"}`} />
+                      {freshnessText(item.quote)}
+                    </span>
+                  </td>
+                  <td className="py-space-md px-space-md text-right">
+                    <div className="inline-flex items-center gap-space-xs">
+                      <button type="button" onClick={() => onOpen(item.symbol)} className="px-space-sm py-space-2xs text-secondary hover:text-on-surface font-label-sm text-label-sm">Details</button>
+                      <button type="button" onClick={() => onRemove(item.symbol)} className="px-space-sm py-space-2xs text-secondary hover:text-tertiary font-label-sm text-label-sm">Remove</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {items.length > PREVIEW_ROWS && (
+          <div className="px-space-md py-space-sm bg-surface-container-low flex items-center justify-between text-secondary font-label-sm text-label-sm">
+            <span>Displaying {visible.length} of {items.length} quiet positions</span>
+            <button type="button" onClick={() => setIsExpanded((v) => !v)} className="font-bold text-on-surface hover:underline">
+              {isExpanded ? "Show fewer ↑" : `View remaining ${hidden} ↓`}
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
