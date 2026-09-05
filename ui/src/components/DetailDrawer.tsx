@@ -165,7 +165,7 @@ export function DetailDrawer({
           <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
               <div>
-                <span className="font-headline-sm text-headline-sm text-on-surface">90 sessions</span>
+                <span className="font-headline-sm text-headline-sm text-on-surface">{history.data ? `${history.data.bars.length} sessions` : "Recent sessions"}</span>
                 <p className="font-body-sm text-body-sm text-secondary">Close against moving averages, with each day&rsquo;s stock-specific residual as bars</p>
               </div>
               <div className="flex flex-wrap items-center gap-space-md text-secondary font-label-sm text-label-sm">
