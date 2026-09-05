@@ -2,16 +2,13 @@ import json
 from datetime import date, datetime
 from pathlib import Path
 
-import httpx
 import numpy as np
 import pandas as pd
-import respx
 from fastapi.testclient import TestClient
 from sqlalchemy import insert
 from sqlalchemy.orm import Session
 
 from app import clock
-from app.ai.client import CHAT_URL
 from app.api.sample import DEMO_SYMBOLS
 from app.engine.baselines import compute_baseline, daily_returns
 from app.models import Baseline, DailyBar, PeerCluster, SignalEvent, Symbol
@@ -60,11 +57,6 @@ def start_session(client: TestClient, **payload) -> tuple[dict[str, str], dict]:
     assert response.status_code == 201, response.text
     body = response.json()
     return {"Authorization": f"Bearer {body['token']}"}, body
-
-
-def mock_llm(content: str) -> respx.Route:
-    body = {"choices": [{"message": {"content": content}}], "usage": {"total_tokens": 42}}
-    return respx.post(CHAT_URL).mock(return_value=httpx.Response(200, json=body))
 
 
 def _insert_bars(session: Session, symbol: str, frame: pd.DataFrame) -> None:

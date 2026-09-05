@@ -5,8 +5,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app import clock
-from app.ai.briefing import briefing_facts, cached_briefing, generate_briefing
-from app.api.ratelimit import enforce_llm_budget, global_ip_limit
+from app.ai import briefing as briefing_ai
+from app.api.ratelimit import global_ip_limit
 from app.cache import cache
 from app.db import get_session
 from app.deps import ApiError, current_user, valid_symbol
@@ -27,16 +27,9 @@ def digest(user: User = Depends(current_user), session: Session = Depends(get_se
 
 
 @router.get("/briefing", response_model=BriefingOut)
-def briefing(
-    user: User = Depends(current_user), session: Session = Depends(get_session)
-) -> BriefingOut:
+def briefing(user: User = Depends(current_user), session: Session = Depends(get_session)):
     now = clock.now()
-    facts = briefing_facts(build_digest(session, user, now), now)
-    cached = cached_briefing(session, user, facts, now)
-    if cached is not None:
-        return cached
-    enforce_llm_budget(user)
-    return generate_briefing(session, user, facts, now)
+    return briefing_ai.generate(session, user, build_digest(session, user, now), now)
 
 
 @router.post("/items", status_code=201, response_model=Item)

@@ -264,7 +264,7 @@ export interface Suppressed {
   total: number;
   market_wide: number;
   below_floor: number;
-  unconfirmed_volume: number;
+  within_noise: number;
 }
 
 export interface CaughtExtra {

@@ -3,15 +3,15 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
-from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import auth, catalysts, evidence, rules, symbols, watchlist
+from app.api import auth, evidence, rules, symbols, watchlist
 from app.api import health as health_api
 from app.cache import cache
 from app.config import settings
 from app.deps import ApiError
+from app.jobs.scheduler import start_scheduler, stop_scheduler
 from app.schemas import ErrorBody, ErrorOut, HealthOut
 
 log = logging.getLogger(__name__)
@@ -31,7 +31,9 @@ def configure_logging() -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     log.info("startup cache_mode=%s cache_ok=%s", cache.mode, cache.ping())
+    start_scheduler(app)
     yield
+    stop_scheduler()
     log.info("shutdown")
 
 
@@ -42,17 +44,6 @@ def error_response(status: int, code: str, message: str, retry_after: int | None
 
 async def api_error_handler(request: Request, exc: ApiError) -> JSONResponse:
     return error_response(exc.status, exc.code, exc.message, exc.retry_after_seconds)
-
-
-async def validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    code = "invalid_rule" if request.url.path.startswith("/api/rules") else "invalid_request"
-    return error_response(400, code, _first_violation(exc))
-
-
-def _first_violation(exc: RequestValidationError) -> str:
-    first = exc.errors()[0]
-    location = ".".join(str(part) for part in first["loc"] if part != "body")
-    return f"{location}: {first['msg']}"[:200]
 
 
 async def unhandled_error_handler(request: Request, exc: Exception) -> JSONResponse:
@@ -75,18 +66,15 @@ def create_app() -> FastAPI:
         allow_headers=["Authorization", "Content-Type"],
     )
     app.add_exception_handler(ApiError, api_error_handler)
-    app.add_exception_handler(RequestValidationError, validation_error_handler)
     app.add_exception_handler(Exception, unhandled_error_handler)
     app.add_api_route("/api/health", health, methods=["GET"], response_model=HealthOut)
-    routers = (
+    for router in (
         auth.router,
         watchlist.router,
         symbols.router,
-        catalysts.router,
         rules.router,
         evidence.router,
         health_api.router,
-    )
-    for router in routers:
+    ):
         app.include_router(router, prefix="/api")
     return app

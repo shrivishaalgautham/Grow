@@ -73,7 +73,7 @@ export function SymbolSearch({
           id={listId}
           role="listbox"
           aria-label="Symbol results"
-          className="absolute z-20 mt-1.5 max-h-72 w-full overflow-auto rounded-lg border border-line-strong bg-raised py-1 shadow-2xl shadow-black/50"
+          className="absolute z-20 mt-1.5 max-h-72 w-full overflow-auto rounded-lg border border-line-strong bg-raised py-1 shadow-xl shadow-black/10"
         >
           {results.length === 0 && (
             <li className="px-3.5 py-3 text-[13px] text-faint">

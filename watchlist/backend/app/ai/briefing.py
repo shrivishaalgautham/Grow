@@ -1,193 +1,211 @@
 import hashlib
+import json
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import date, datetime
 
-from sqlalchemy import select
-from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from app import clock
 from app.ai import client
-from app.ai.prompts import BriefingFacts, SymbolFacts, briefing_messages
-from app.jobs.catalysts import cached_catalysts
-from app.models import BriefingCache, Symbol, User
+from app.ai.prompts import BRIEFING_SYSTEM, UNTRUSTED_BEGIN, UNTRUSTED_END, untrusted
+from app.deps import ApiError
+from app.jobs import catalysts
+from app.models import BriefingCache, User
 from app.schemas import BriefingOut, DigestOut, Item
 
 log = logging.getLogger(__name__)
 
 MAX_CHARS = 600
 MAX_TOKENS = 300
-MAX_NAMED = 3
-CACHE_TTL = timedelta(hours=6)
-DAY_SECONDS = 86400
-
-URL_RE = re.compile(r"https?://|www\.", re.IGNORECASE)
-MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\([^)]*\)")
-BANNED_RE = re.compile(
-    r"\b(ignore|disregard|instructions?|system prompt|buy|sell(?!-off)|hold|recommend|"
-    r"should|must|guaranteed?)\b",
-    re.IGNORECASE,
+MAX_ITEMS = 5
+MAX_CATALYSTS = 3
+BANNED_WORDS = (
+    "bullish",
+    "bearish",
+    "buy",
+    "sell",
+    "hold",
+    "opportunity",
+    "risk",
+    "target",
 )
-SYMBOL_TOKEN_RE = re.compile(r"\b[A-Z][A-Z0-9&-]{0,18}[A-Z0-9](?:\.NS|\.BO)?")
+NUMBER_RE = re.compile(r"-?\d+(?:\.\d+)?")
+URL_RE = re.compile(r"https?://|www\.|\]\(|@", re.IGNORECASE)
+TICKER_RE = re.compile(r"\b[A-Z][A-Z&-]{2,}\b")
+NOT_TICKERS = {"NSE", "BSE", "IST", "INR", "DMA", "AND", "THE", "NOT"}
 
 
-def briefing_facts(digest: DigestOut, now: datetime) -> BriefingFacts:
-    away = digest.away_duration_seconds
-    return BriefingFacts(
-        latest_bar_date=digest.latest_bar_date,
-        total_count=digest.total_count,
-        changed=tuple(_symbol_facts(item, now) for item in digest.items if item.is_changed),
-        away_days=None if away is None else away // DAY_SECONDS,
+def generate(session: Session, user: User, digest: DigestOut, now: datetime) -> BriefingOut:
+    facts = facts_from_digest(digest)
+    key = cache_key(user, digest)
+    hit = session.get(BriefingCache, key)
+    if hit is not None:
+        return BriefingOut(
+            text=hit.text, source=hit.source, generated_at=hit.generated_at, was_cached=True
+        )
+    text, source = _compose(user, facts)
+    session.merge(
+        BriefingCache(cache_key=key, user_id=user.id, text=text, source=source, generated_at=now)
     )
-
-
-def cached_briefing(
-    session: Session, user: User, facts: BriefingFacts, now: datetime
-) -> BriefingOut | None:
-    row = session.get(BriefingCache, _cache_key(user, facts))
-    if row is None or now - row.generated_at >= CACHE_TTL:
-        return None
-    return BriefingOut(
-        text=row.text,
-        source=row.source,
-        generated_at=row.generated_at.astimezone(clock.IST),
-        was_cached=True,
-    )
-
-
-def generate_briefing(
-    session: Session, user: User, facts: BriefingFacts, now: datetime
-) -> BriefingOut:
-    text, source = _compose(session, facts)
-    _store(session, user, _cache_key(user, facts), text, source, now)
     session.commit()
-    log.info("briefing source=%s changed=%d chars=%d", source, len(facts.changed), len(text))
     return BriefingOut(text=text, source=source, generated_at=now, was_cached=False)
 
 
-def rejection_reason(text: str, facts: BriefingFacts, universe: set[str]) -> str | None:
-    if not text:
-        return "empty"
+def cache_key(user: User, digest: DigestOut) -> str:
+    fired = sorted(
+        (item.symbol, signal.type, signal.trading_date.isoformat(), signal.rule_id or "")
+        for item in digest.items
+        if item.is_changed
+        for signal in item.signals
+    )
+    anchor = digest.last_reviewed_at.isoformat() if digest.last_reviewed_at else ""
+    raw = json.dumps([str(user.id), anchor, digest.total_count, fired])
+    return hashlib.sha256(raw.encode()).hexdigest()
+
+
+def facts_from_digest(digest: DigestOut) -> dict:
+    changed = [item for item in digest.items if item.is_changed][:MAX_ITEMS]
+    statuses = catalysts.cached_statuses([i.symbol for i in changed], digest.latest_bar_date)
+    return {
+        "away_human": _away_human(digest.away_duration_seconds),
+        "changed_count": digest.changed_count,
+        "total_count": digest.total_count,
+        "market_status": digest.market_status,
+        "items": [_item_facts(item, statuses.get(item.symbol)) for item in changed],
+    }
+
+
+def _item_facts(item: Item, catalyst_status: str | None) -> dict:
+    found = catalysts.cached(item.symbol, item.signals[0].trading_date) if item.signals else None
+    headlines = [
+        {
+            "headline": untrusted(c.headline),
+            "source": c.source,
+            "published_at": c.published_at.isoformat() if c.published_at else None,
+        }
+        for c in (found.items if found else [])[:MAX_CATALYSTS]
+    ]
+    return {
+        "symbol": item.symbol.split(".")[0],
+        "today_change_pct": round(item.today_change_pct, 1),
+        "peer_change_pct": round(item.peer_change_pct, 1),
+        "residual_pct": round(item.residual_pct, 1),
+        "z_score": round(item.z_score, 1),
+        "rvol": round(item.rvol, 1),
+        "peer_method": item.peer.method,
+        "peer_size": item.peer.size,
+        "signals": [
+            {
+                "type": s.type,
+                "trading_date": s.trading_date.isoformat(),
+                "headline": s.headline,
+                "detail": s.detail,
+            }
+            for s in item.signals
+        ],
+        "catalyst_status": catalyst_status or "not_fetched",
+        "catalysts": headlines,
+    }
+
+
+def _compose(user: User, facts: dict) -> tuple[str, str]:
+    fallback = template(facts)
+    if not client.is_configured() or not facts["items"]:
+        return fallback, "template"
+    if not _budget_allows(user):
+        return fallback, "template"
+    completion = client.complete(
+        "briefing", BRIEFING_SYSTEM, json.dumps(facts, ensure_ascii=False), MAX_TOKENS
+    )
+    if completion is None:
+        return fallback, "template"
+    rejection = validate(completion.text, facts)
+    if rejection is not None:
+        log.info("briefing rejected model=%s reason=%s", completion.model, rejection)
+        return fallback, "template"
+    return completion.text, "llm"
+
+
+def _budget_allows(user: User) -> bool:
+    from app.api.ratelimit import llm_budget
+
+    try:
+        llm_budget(user)
+    except ApiError as exc:
+        log.info("briefing budget_exhausted scope=%s", exc.message)
+        return False
+    return True
+
+
+def validate(text: str, facts: dict) -> str | None:
     if len(text) > MAX_CHARS:
         return "too_long"
     if URL_RE.search(text):
-        return "url"
-    if "@" in text:
-        return "mention"
-    if MARKDOWN_LINK_RE.search(text):
-        return "markdown_link"
-    if BANNED_RE.search(text):
-        return "banned_word"
-    if _foreign_symbols(text, facts, universe):
-        return "foreign_symbol"
+        return "url_or_markup"
+    lowered = text.lower()
+    for word in BANNED_WORDS:
+        if re.search(rf"\b{word}\b", lowered):
+            return f"banned_word:{word}"
+    allowed_numbers = {abs(float(n)) for n in NUMBER_RE.findall(_numeric_source(facts))}
+    for token in NUMBER_RE.findall(text):
+        if abs(float(token)) not in allowed_numbers:
+            return f"foreign_number:{token}"
+    allowed_symbols = {item["symbol"] for item in facts["items"]}
+    for token in TICKER_RE.findall(text):
+        if token not in allowed_symbols and token not in NOT_TICKERS:
+            return f"foreign_symbol:{token}"
     return None
 
 
-def template(facts: BriefingFacts) -> str:
-    for named in range(MAX_NAMED, 0, -1):
-        text = _template(facts, named)
-        if len(text) <= MAX_CHARS:
-            return text
-    return _template(facts, 0)
+def _numeric_source(facts: dict) -> str:
+    stripped = {
+        **facts,
+        "items": [{k: v for k, v in item.items() if k != "catalysts"} for item in facts["items"]],
+    }
+    return json.dumps(stripped)
 
 
-def _symbol_facts(item: Item, now: datetime) -> SymbolFacts:
-    catalysts = cached_catalysts(item.symbol, now)
-    return SymbolFacts(
-        symbol=item.symbol,
-        today_change_pct=item.today_change_pct,
-        peer_change_pct=item.peer_change_pct,
-        residual_pct=item.residual_pct,
-        z_score=item.z_score,
-        rvol=item.rvol,
-        headlines=tuple(c.headline for c in catalysts.items) if catalysts else (),
-    )
-
-
-def _cache_key(user: User, facts: BriefingFacts) -> str:
-    owner = "sample" if user.is_sample else str(user.id)
-    state = "|".join([facts.latest_bar_date.isoformat(), *sorted(s.symbol for s in facts.changed)])
-    return f"{owner}:{hashlib.sha256(state.encode()).hexdigest()[:32]}"
-
-
-def _compose(session: Session, facts: BriefingFacts) -> tuple[str, str]:
-    raw = client.complete(briefing_messages(facts), MAX_TOKENS)
-    if raw is None:
-        return template(facts), "template"
-    reason = rejection_reason(raw, facts, _universe(session))
-    if reason is not None:
-        log.info("briefing_rejected reason=%s chars=%d", reason, len(raw))
-        return template(facts), "template"
-    return raw, "llm"
-
-
-def _universe(session: Session) -> set[str]:
-    return set(session.scalars(select(Symbol.symbol)))
-
-
-def _foreign_symbols(text: str, facts: BriefingFacts, universe: set[str]) -> set[str]:
-    allowed = {_base(item.symbol) for item in facts.changed}
-    mentioned = {_base(token) for token in SYMBOL_TOKEN_RE.findall(text)}
-    known = {_base(symbol) for symbol in universe}
-    return (mentioned & known) - allowed
-
-
-def _base(symbol: str) -> str:
-    return symbol.rpartition(".")[0] if symbol.endswith((".NS", ".BO")) else symbol
-
-
-def _store(session: Session, user: User, key: str, text: str, source: str, now: datetime) -> None:
-    statement = insert(BriefingCache).values(
-        cache_key=key, user_id=user.id, text=text, source=source, generated_at=now
-    )
-    session.execute(
-        statement.on_conflict_do_update(
-            index_elements=["cache_key"],
-            set_={
-                "user_id": statement.excluded.user_id,
-                "text": statement.excluded.text,
-                "source": statement.excluded.source,
-                "generated_at": statement.excluded.generated_at,
-            },
-        )
-    )
-
-
-def _template(facts: BriefingFacts, named: int) -> str:
-    if facts.total_count == 0:
-        return "Your watchlist is empty, so there is nothing to brief on yet. Add a few stocks."
-    window = "since your last review" if facts.away_days is None else _away_phrase(facts.away_days)
-    if not facts.changed:
+def template(facts: dict) -> str:
+    changed, total = facts["changed_count"], facts["total_count"]
+    away = facts["away_human"]
+    if total == 0:
+        return "Your watchlist is empty, so there is nothing to report yet."
+    if changed == 0 or not facts["items"]:
         return (
-            f"None of your {facts.total_count} watched stocks moved on its own {window}; "
-            "they all tracked their peers."
+            f"You were away {away}. Nothing among your {total} stocks needed attention; "
+            "every move stayed inside what the market and its peers explain."
         )
-    sentences = [
-        f"{len(facts.changed)} of {facts.total_count} watched stocks moved on their own {window}."
-    ]
-    sentences.extend(_describe(item) for item in facts.changed[:named])
-    unnamed = len(facts.changed) - named
-    if unnamed > 0:
-        sentences.append(f"{unnamed} more also moved.")
-    if facts.quiet_count > 0:
-        sentences.append(f"The other {facts.quiet_count} were quiet.")
-    return " ".join(sentences)
-
-
-def _away_phrase(days: int) -> str:
-    if days < 1:
-        return "since your last review earlier today"
-    return f"in the {days} {'day' if days == 1 else 'days'} since your last review"
-
-
-def _describe(item: SymbolFacts) -> str:
-    direction = "rose" if item.today_change_pct >= 0 else "fell"
-    text = (
-        f"{_base(item.symbol)} {direction} {abs(item.today_change_pct):.1f}% against "
-        f"{item.peer_change_pct:+.1f}% for its peers, a {item.z_score:.1f}-sigma stock-specific "
-        f"move on {item.rvol:.1f}x normal volume."
+    top = facts["items"][0]
+    return (
+        f"You were away {away}. {changed} of {total} stocks did something meaningful. "
+        f"The one to look at is {top['symbol']}: {_top_event(top)}{_catalyst_clause(top)}."
     )
-    if item.headlines:
-        text += " A public headline was found."
-    return text
+
+
+def _top_event(item: dict) -> str:
+    excess = [s for s in item["signals"] if s["type"] == "EXCESS_MOVE"]
+    signal = (excess or item["signals"])[0]
+    when = date.fromisoformat(signal["trading_date"]).strftime("%-d %b")
+    return f"{signal['detail'].rstrip('.')} ({signal['headline'].lower()}, {when})"
+
+
+def _catalyst_clause(item: dict) -> str:
+    if item["catalyst_status"] == "none_found":
+        return ", with no public catalyst found"
+    if item["catalyst_status"] == "found" and item["catalysts"]:
+        headline = item["catalysts"][0]["headline"]
+        quoted = headline.removeprefix(UNTRUSTED_BEGIN).removesuffix(UNTRUSTED_END)
+        return f", coinciding with: {quoted}"
+    return ""
+
+
+def _away_human(seconds: int | None) -> str:
+    if seconds is None:
+        return "for the first time"
+    days = seconds // 86400
+    if days >= 1:
+        return f"{days} day{'s' if days != 1 else ''}"
+    hours = seconds // 3600
+    if hours >= 1:
+        return f"{hours} hour{'s' if hours != 1 else ''}"
+    return "less than an hour"

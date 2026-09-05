@@ -22,6 +22,7 @@ import { useWatchlistItems } from "@/hooks/useWatchlistItems";
 import { formatDay, formatRetryAfter } from "@/lib/format";
 
 const RESUME_SHOWN_KEY = "swl.resume_shown";
+const CATALYST_PREFETCH_COUNT = 3;
 
 function CardSkeleton() {
   return (
@@ -36,7 +37,7 @@ function CardSkeleton() {
 
 export default function WatchlistPage() {
   const router = useRouter();
-  const { token, ready } = useSession();
+  const { token, ready, end } = useSession();
 
   const digest = useDigest(Boolean(token));
   const briefing = useBriefing((digest.data?.total_count ?? 0) > 0);
@@ -85,14 +86,25 @@ export default function WatchlistPage() {
     <div className="min-h-dvh">
       <AppHeader
         actions={
-          <button
-            type="button"
-            onClick={() => setIsResumeOpen(true)}
-            className="shrink-0 rounded-md border border-line px-2.5 py-1.5 text-[13px] whitespace-nowrap text-muted transition-colors hover:border-line-strong hover:text-ink"
-          >
-            <span className="hidden sm:inline">Open on phone</span>
-            <span className="sm:hidden">Phone</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsResumeOpen(true)}
+              className="shrink-0 rounded-md border border-line px-2.5 py-1.5 text-[13px] whitespace-nowrap text-muted transition-colors hover:border-line-strong hover:text-ink"
+            >
+              <span className="hidden sm:inline">Open on phone</span>
+              <span className="sm:hidden">Phone</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => end.mutate()}
+              disabled={end.isPending}
+              title="Deletes this session and its watchlist on the server"
+              className="shrink-0 rounded-md px-2 py-1.5 text-[13px] whitespace-nowrap text-faint transition-colors hover:text-down disabled:opacity-50"
+            >
+              End session
+            </button>
+          </div>
         }
       />
 
@@ -182,10 +194,11 @@ export default function WatchlistPage() {
                 <h2 className="text-[11px] font-medium tracking-wide text-faint uppercase">
                   Changed · ranked by how much is stock-specific
                 </h2>
-                {changed.map((item) => (
+                {changed.map((item, rank) => (
                   <StockCard
                     key={item.symbol}
                     item={item}
+                    prefetchCatalysts={rank < CATALYST_PREFETCH_COUNT}
                     onOpen={() => setOpenSymbol(item.symbol)}
                     onSeen={() => seen.mutate([item.symbol])}
                     isSeenPending={seen.isPending}

@@ -1,4 +1,4 @@
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
@@ -42,12 +42,14 @@ def replay(
     index_bars: pd.DataFrame,
     clusters: Mapping[str, str | None],
     days: int = 90,
+    symbols: Sequence[str] | None = None,
 ) -> Replay:
     index_returns = daily_returns(index_bars["close"])
     returns = pd.DataFrame({symbol: daily_returns(df["close"]) for symbol, df in bars.items()})
+    replayed = list(bars) if symbols is None else list(symbols)
     sessions = [
         session
-        for symbol, symbol_bars in bars.items()
+        for symbol, symbol_bars in ((s, bars[s]) for s in replayed)
         for session in _replay_symbol(
             symbol,
             symbol_bars,
@@ -59,7 +61,7 @@ def replay(
     ]
     if not sessions:
         raise ValueError("no sessions to replay: bars and index_bars share no dates")
-    return _summarize(sessions, days, len(bars))
+    return _summarize(sessions, days, len(replayed))
 
 
 def _peer_series(
@@ -164,7 +166,7 @@ def _summarize(sessions: list[_Session], days: int, symbols_count: int) -> Repla
             "total": len(suppressed),
             "market_wide": sum(_is_market_wide(s) for s in suppressed),
             "below_floor": sum(_is_below_floor(s) and not _is_market_wide(s) for s in suppressed),
-            "unconfirmed_volume": 0,
+            "within_noise": sum(not _is_below_floor(s) for s in suppressed),
         },
         caught_extra=caught_extra,
     )

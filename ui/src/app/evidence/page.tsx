@@ -52,9 +52,9 @@ function Suppression({ data }: { data: EvidenceOut }) {
       "Residual under the 0.75% floor — statistically loud, economically irrelevant.",
     ],
     [
-      "Volume unconfirmed",
-      data.suppressed.unconfirmed_volume,
-      "A price move on a thin book, with no volume behind it.",
+      "Within its own noise",
+      data.suppressed.within_noise,
+      "Bigger than the floor, but under two standard deviations for a stock that moves this much every week.",
     ],
   ] as const;
 
@@ -109,7 +109,7 @@ export default function EvidencePage() {
             </p>
             <Link
               href="/"
-              className="mt-4 inline-block rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-canvas"
+              className="mt-4 inline-block rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong"
             >
               Start a session
             </Link>
@@ -254,6 +254,20 @@ export default function EvidencePage() {
               Computed {formatDay(data.computed_at.slice(0, 10))} from stored
               end-of-day bars. No live network call is involved.
             </p>
+
+            <section className="mt-8 rounded-xl border border-line bg-raised px-5 py-4">
+              <h2 className="text-sm font-semibold text-ink">
+                Where AI is used, and where it was refused
+              </h2>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
+                Used: unsupervised clustering for peer groups, a model as
+                narrator for the briefing, and a model as compiler for rules.
+                None of them touch a price or decide what is meaningful.
+                Refused: price prediction of any kind, and anomaly-score ML.
+                An anomaly score of 0.87 explains nothing; &ldquo;up 2.1% while
+                peers were flat&rdquo; does.
+              </p>
+            </section>
           </>
         )}
       </main>

@@ -1,19 +1,21 @@
 import pandas as pd
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, BackgroundTasks, Depends, Query
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app import clock
 from app.api.ratelimit import global_ip_limit
 from app.db import get_session
-from app.deps import ApiError, current_user, valid_symbol
+from app.deps import ApiError, current_user, rate_limit, valid_symbol
 from app.engine.baselines import daily_returns
-from app.engine.digest import load_market
+from app.engine.digest import build_item, load_market
 from app.engine.peers import MIN_PEERS, peer_return
-from app.models import DailyBar, PeerCluster, Symbol, User
+from app.jobs import catalysts as catalyst_jobs
 from app.models import Baseline as BaselineRow
+from app.models import DailyBar, PeerCluster, Symbol, User, WatchlistItem
 from app.quotes import INDEX_SYMBOL
 from app.schemas import (
+    CatalystsOut,
     HistoryBar,
     HistoryOut,
     Levels,
@@ -27,6 +29,7 @@ QUERY_MAX_CHARS = 32
 SEARCH_LIMIT = 10
 HISTORY_MAX_DAYS = 365
 SMA_WINDOWS = (20, 50, 200)
+CATALYSTS_PER_MINUTE = 12
 
 router = APIRouter(prefix="/symbols", tags=["symbols"], dependencies=[Depends(global_ip_limit)])
 
@@ -115,6 +118,41 @@ def peers(
             if m in market.returns
         ],
     )
+
+
+@router.get(
+    "/{symbol}/catalysts",
+    response_model=CatalystsOut,
+    dependencies=[Depends(rate_limit("catalysts", CATALYSTS_PER_MINUTE, 60, per="ip"))],
+)
+def catalysts(
+    background: BackgroundTasks,
+    symbol: Symbol = Depends(valid_symbol),
+    user: User = Depends(current_user),
+    session: Session = Depends(get_session),
+) -> CatalystsOut:
+    now = clock.now()
+    is_watched = session.scalar(
+        select(WatchlistItem.id).where(
+            WatchlistItem.user_id == user.id, WatchlistItem.symbol == symbol.symbol
+        )
+    )
+    if is_watched is None:
+        raise ApiError(403, "not_surfaced", "catalysts are only fetched for watched stocks")
+    item = build_item(session, user, symbol, now)
+    if not item.is_changed:
+        raise ApiError(403, "not_surfaced", "catalysts are only fetched for stocks that changed")
+    trading_date = _latest_signal_date(item)
+    hit = catalyst_jobs.cached(symbol.symbol, trading_date)
+    if hit is not None:
+        return hit
+    if catalyst_jobs.try_begin(symbol.symbol, trading_date):
+        background.add_task(catalyst_jobs.fetch_and_cache, symbol.symbol, trading_date, now)
+    return CatalystsOut(status="pending", fetched_at=None, items=[])
+
+
+def _latest_signal_date(item):
+    return max(signal.trading_date for signal in item.signals)
 
 
 def _escape_like(raw: str) -> str:

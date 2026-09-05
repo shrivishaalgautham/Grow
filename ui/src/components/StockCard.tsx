@@ -1,6 +1,7 @@
 "use client";
 
-import type { Attention, Item } from "@/api/types";
+import type { Attention, CatalystStatus, Item, Peer } from "@/api/types";
+import { useCatalysts } from "@/hooks/useCatalysts";
 import { Decomposition } from "./Decomposition";
 import { DisputedPrices, FreshnessBadge } from "./FreshnessBadge";
 import { SignalList } from "./SignalChips";
@@ -23,18 +24,58 @@ const ATTENTION_LABEL: Record<Attention, string> = {
   quiet: "Quiet",
 };
 
+const CATALYST_CHIP: Partial<
+  Record<CatalystStatus, { text: string; tone: string }>
+> = {
+  none_found: {
+    text: "No public catalyst found",
+    tone: "border-high/40 bg-high/10 text-high",
+  },
+  found: {
+    text: "Catalyst found",
+    tone: "border-notable/40 bg-notable/10 text-notable",
+  },
+  pending: { text: "Looking for a catalyst…", tone: "border-line text-faint" },
+  unavailable: {
+    text: "Catalyst source unavailable",
+    tone: "border-line text-faint",
+  },
+};
+
+function peerHint(peer: Peer) {
+  return peer.method === "cluster"
+    ? `${peer.size} behavioural peers did this too`
+    : "Beta-adjusted Nifty move";
+}
+
+function CatalystChip({ status }: { status: CatalystStatus }) {
+  const chip = CATALYST_CHIP[status];
+  if (!chip) return null;
+  return (
+    <span
+      className={`inline-block rounded border px-2 py-0.5 text-[11px] font-medium ${chip.tone}`}
+    >
+      {chip.text}
+    </span>
+  );
+}
+
 export function StockCard({
   item,
+  prefetchCatalysts,
   onOpen,
   onSeen,
   isSeenPending,
 }: {
   item: Item;
+  prefetchCatalysts: boolean;
   onOpen: () => void;
   onSeen: () => void;
   isSeenPending: boolean;
 }) {
   const change = item.today_change_pct;
+  const catalysts = useCatalysts(prefetchCatalysts ? item.symbol : null);
+  const catalystStatus = catalysts.data?.status ?? item.catalyst_status;
 
   return (
     <article className="relative overflow-hidden rounded-xl border border-line bg-surface">
@@ -79,6 +120,7 @@ export function StockCard({
             today={item.today_change_pct}
             peer={item.peer_change_pct}
             residual={item.residual_pct}
+            peerHint={peerHint(item.peer)}
           />
         </div>
 
@@ -87,6 +129,10 @@ export function StockCard({
             <SignalList signals={item.signals} />
           </div>
         )}
+
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <CatalystChip status={catalystStatus} />
+        </div>
 
         <DisputedPrices quote={item.quote} />
 

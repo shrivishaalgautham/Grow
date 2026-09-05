@@ -89,7 +89,7 @@ export default function StartPage() {
           type="button"
           onClick={() => begin(true)}
           disabled={busy || !nameIsValid}
-          className="flex-1 rounded-lg bg-ink px-4 py-3 text-sm font-semibold text-canvas transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="flex-1 rounded-lg bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-strong disabled:opacity-50"
         >
           {busy ? "Setting up…" : "Start with a sample watchlist"}
         </button>

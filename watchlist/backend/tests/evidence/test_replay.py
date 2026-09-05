@@ -67,14 +67,16 @@ def test_market_wide_crash_is_a_naive_alert_the_engine_suppresses(universe, clus
     assert all(abs(row["today_change_pct"]) < 2.0 for row in result.caught_extra)
 
 
-def test_unconfirmed_volume_bucket_is_always_zero_because_excess_move_ignores_volume(
-    universe, clusters
-):
+def test_suppression_reasons_partition_every_suppressed_alert(universe, clusters):
     bars, index_bars = universe
 
     result = replay(bars, index_bars, clusters, days=DAYS)
 
-    assert result.suppressed["unconfirmed_volume"] == 0
+    buckets = result.suppressed
+    assert (
+        buckets["market_wide"] + buckets["below_floor"] + buckets["within_noise"]
+        == (buckets["total"])
+    )
 
 
 def test_replay_covers_the_requested_window(universe, clusters):

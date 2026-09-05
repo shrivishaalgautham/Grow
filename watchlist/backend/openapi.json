@@ -852,7 +852,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Rule Id"
             }
           },
@@ -904,8 +903,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "maximum": 180,
-              "minimum": 10,
+              "maximum": 250,
+              "minimum": 30,
               "default": 90,
               "title": "Days"
             }
@@ -2408,9 +2407,9 @@
             "type": "integer",
             "title": "Below Floor"
           },
-          "unconfirmed_volume": {
+          "within_noise": {
             "type": "integer",
-            "title": "Unconfirmed Volume"
+            "title": "Within Noise"
           }
         },
         "type": "object",
@@ -2418,7 +2417,7 @@
           "total",
           "market_wide",
           "below_floor",
-          "unconfirmed_volume"
+          "within_noise"
         ],
         "title": "Suppressed"
       },

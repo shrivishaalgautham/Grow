@@ -13,6 +13,7 @@ from app.engine.peers import peer_return
 from app.engine.rules_eval import facts_from, matches
 from app.engine.score import attention
 from app.engine.signals import Evaluation, SessionFacts, evaluate, since_seen_signal
+from app.jobs import catalysts
 from app.models import Baseline as BaselineRow
 from app.models import (
     DailyBar,
@@ -136,7 +137,10 @@ def build_digest(session: Session, user: User, now: datetime) -> DigestOut:
     market = load_market(session, [row.symbol for row in rows], now)
     viewer = load_viewer(session, user, [row.symbol for row in rows])
     assessed = sorted((assess(market, viewer, row) for row in rows), key=_digest_order)
-    items = [_to_item(a) for a in assessed]
+    items = [
+        _to_item(a, status)
+        for a, status in zip(assessed, _catalyst_statuses(assessed), strict=True)
+    ]
     away = None
     if user.last_reviewed_at is not None:
         away = int((now - user.last_reviewed_at).total_seconds())
@@ -309,7 +313,18 @@ def _digest_order(a: Assessed) -> tuple[bool, float, str]:
     return (not is_changed, -a.score if is_changed else 0.0, a.symbol.symbol)
 
 
-def _to_item(a: Assessed) -> Item:
+def _catalyst_statuses(assessed: list[Assessed]) -> list[str]:
+    changed = [a for a in assessed if a.signals]
+    by_date: dict[date, list[str]] = {}
+    for a in changed:
+        by_date.setdefault(max(s.trading_date for s in a.signals), []).append(a.symbol.symbol)
+    found: dict[str, str] = {}
+    for trading_date, symbols in by_date.items():
+        found |= catalysts.cached_statuses(symbols, trading_date)
+    return [found.get(a.symbol.symbol, "not_fetched") for a in assessed]
+
+
+def _to_item(a: Assessed, catalyst_status: str = "not_fetched") -> Item:
     d = a.evaluation.decomposition
     is_changed = bool(a.signals)
     return Item(
@@ -347,7 +362,7 @@ def _to_item(a: Assessed) -> Item:
             size=len(a.peers),
             members=a.peers,
         ),
-        catalyst_status="not_fetched",
+        catalyst_status=catalyst_status,
     )
 
 
