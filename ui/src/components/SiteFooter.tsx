@@ -44,7 +44,7 @@ export function SiteFooter() {
             ))}
             <li>
               <a
-                href="https://github.com/shrivishaalgautham/Grow"
+                href="https://github.com/KaviyaaPriyadharshini/Groww-Hackathon"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-space-2xs font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors"
