@@ -45,6 +45,7 @@ def _try_model(
         "max_tokens": max_tokens,
         "temperature": TEMPERATURE,
         "provider": {"data_collection": "deny"},
+        "reasoning": {"enabled": False},
     }
     try:
         response = _client.post(

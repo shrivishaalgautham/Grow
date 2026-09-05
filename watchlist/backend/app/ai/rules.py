@@ -12,7 +12,7 @@ from app.schemas import Rule, RuleCompileOut
 
 log = logging.getLogger(__name__)
 
-MAX_TOKENS = 200
+MAX_TOKENS = 700
 MAX_ERROR_CHARS = 200
 CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE)
 PERCENT_RE = re.compile(r"(\d+(?:\.\d+)?)\s*(?:%|percent|per cent)")

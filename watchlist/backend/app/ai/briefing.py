@@ -16,7 +16,7 @@ from app.schemas import BriefingOut, DigestOut, Item
 log = logging.getLogger(__name__)
 
 MAX_CHARS = 600
-MAX_TOKENS = 300
+MAX_TOKENS = 800
 MAX_ITEMS = 5
 MAX_CATALYSTS = 3
 BANNED_WORDS = (
@@ -151,11 +151,19 @@ def validate(text: str, facts: dict) -> str | None:
     for token in NUMBER_RE.findall(text):
         if abs(float(token)) not in allowed_numbers:
             return f"foreign_number:{token}"
-    allowed_symbols = {item["symbol"] for item in facts["items"]}
     for token in TICKER_RE.findall(text):
-        if token not in allowed_symbols and token not in NOT_TICKERS:
+        if token not in _allowed_symbols(facts) and token not in NOT_TICKERS:
             return f"foreign_symbol:{token}"
     return None
+
+
+def _allowed_symbols(facts: dict) -> set[str]:
+    return {item["symbol"] for item in facts["items"]} | {
+        word
+        for item in facts["items"]
+        for signal in item["signals"]
+        for word in TICKER_RE.findall(signal["type"])
+    }
 
 
 def _numeric_source(facts: dict) -> str:

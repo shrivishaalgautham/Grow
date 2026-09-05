@@ -14,7 +14,7 @@ from app.schemas import CatalystsOut, ExplanationOut, Item
 log = logging.getLogger(__name__)
 
 CACHE_TTL_S = 1200
-MAX_TOKENS = 220
+MAX_TOKENS = 700
 MAX_HEADLINES = 3
 
 
